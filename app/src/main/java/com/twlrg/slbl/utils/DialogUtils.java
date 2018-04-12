@@ -149,4 +149,36 @@ public class DialogUtils
     }
 
 
+
+
+
+    /**
+     * 提示框
+     *
+     * @return
+     */
+    public static void showPromptDialog(Context mContext, final View.OnClickListener onClickListener, final View.OnClickListener onClickListener2)
+    {
+        final Dialog dialog = new Dialog(mContext, R.style.dialogNoAnimation);
+        dialog.setCancelable(true);
+        View v = LayoutInflater.from(mContext).inflate(R.layout.dialog_prompt, null);
+        dialog.setContentView(v);
+        v.findViewById(R.id.tv_submit).setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                dialog.dismiss();
+            }
+        });
+
+        //Dialog部分
+        Window mWindow = dialog.getWindow();
+        WindowManager.LayoutParams lp = mWindow.getAttributes();
+        lp.gravity = Gravity.CENTER;
+        lp.width = APPUtils.getScreenWidth(mContext) * 74/ 4;
+        mWindow.setAttributes(lp);
+        dialog.show();
+    }
+
 }
