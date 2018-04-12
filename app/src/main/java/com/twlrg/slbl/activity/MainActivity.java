@@ -26,8 +26,8 @@ public class MainActivity extends BaseActivity
 
     private String texts[]         = {"首页", "消息", "订单", "我的"};
     private int    imageButton[]   = {
-            R.drawable.ic_home_selector, R.drawable.ic_home_selector,
-            R.drawable.ic_home_selector, R.drawable.ic_home_selector};
+            R.drawable.ic_home_selector, R.drawable.ic_message_selector,
+            R.drawable.ic_order_selector, R.drawable.ic_user_center_selector};
     private Class  fragmentArray[] = {HomeFragment.class, MessageFragment.class, OrderFragment.class, UserCenterFragment.class};
 
     @Override

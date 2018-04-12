@@ -61,8 +61,8 @@ public class GuideActivity extends BaseActivity implements View.OnClickListener,
             @Override
             public void onClick(View v)
             {
-                //                startActivity(new Intent(GuideActivity.this, WelComeActivity.class));
-                //                finish();
+                startActivity(new Intent(GuideActivity.this, MainActivity.class));
+                finish();
             }
         });
     }
@@ -78,8 +78,8 @@ public class GuideActivity extends BaseActivity implements View.OnClickListener,
 
         if (!ConfigManager.instance().getIsFristLogin())
         {
-            //            startActivity(new Intent(GuideActivity.this, WelComeActivity.class));
-            //            finish();
+            startActivity(new Intent(GuideActivity.this, MainActivity.class));
+            finish();
         }
         ConfigManager.instance().setIsFristLogin(false);
 

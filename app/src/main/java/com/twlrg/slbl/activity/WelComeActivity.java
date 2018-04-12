@@ -15,7 +15,7 @@ import com.twlrg.slbl.R;
 public class WelComeActivity extends BaseActivity
 {
 
-    private int TIME = 10000;
+    private int TIME = 3000;
     @Override
     protected void initData()
     {
