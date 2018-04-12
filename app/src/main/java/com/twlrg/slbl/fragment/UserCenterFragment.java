@@ -5,16 +5,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.twlrg.slbl.R;
+
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import com.twlrg.slbl.R;
 
 /**
  * 作者：王先云 on 2018/4/12 16:50
  * 邮箱：wangxianyun1@163.com
- * 描述：首页
+ * 描述：个人中心
  */
-public class HomeFragment extends BaseFragment
+public class UserCenterFragment extends BaseFragment
 {
 
     private View rootView = null;
