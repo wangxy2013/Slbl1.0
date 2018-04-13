@@ -120,7 +120,7 @@ public class LoginActivity extends BaseActivity implements IRequestListener
         }
         else if (v == tvForgetPwd)
         {
-
+            startActivity(new Intent(LoginActivity.this, ForgetPwdActivity.class));
         }
         else if (v == tvRegister)
         {

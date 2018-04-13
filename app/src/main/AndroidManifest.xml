@@ -105,6 +105,14 @@
             android:screenOrientation="portrait">
         </activity>
 
+        <activity
+            android:name=".activity.ForgetPwdActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait">
+        </activity>
+
+
+
 
     </application>
 
