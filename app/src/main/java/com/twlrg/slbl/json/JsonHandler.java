@@ -27,16 +27,18 @@ public abstract class JsonHandler
             }
             else
             {
-                JSONObject jsonOject = new JSONObject(jsonString);
+                JSONObject jsonObject = new JSONObject(jsonString);
 
-                if ("10000".equals(jsonOject.optString("code")))
+                String ret = jsonObject.optString("ret");
+                String msg = jsonObject.optString("msg");
+                if (ret.endsWith("01") || msg.contains("成功"))
                 {
                     setResultCode(ConstantUtil.RESULT_SUCCESS);
                 }
                 else
                 {
 
-                    if ("true".equals(jsonOject.optString("success")))
+                    if (ret.endsWith("02") && ret.startsWith("20"))
                     {
                         setResultCode(ConstantUtil.RESULT_SUCCESS);
                     }
@@ -45,15 +47,13 @@ public abstract class JsonHandler
                         setResultCode(ConstantUtil.RESULT_FAIL);
 
                     }
-                    setResultMsg(jsonOject.optString("message"));
+                    setResultMsg(jsonObject.optString("msg"));
                 }
 
-                //  JSONObject obj = jsonOject.optJSONObject("data");
-                if (null != jsonOject) parseJson(jsonOject);
+                if (null != jsonObject) parseJson(jsonObject);
             }
         } catch (Exception e)
         {
-            // e.printStackTrace();
             setResultCode(ConstantUtil.RESULT_FAIL);
             setResultMsg("网络请求失败...");
         }
