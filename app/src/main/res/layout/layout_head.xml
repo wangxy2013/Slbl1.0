@@ -37,7 +37,6 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/dm_5"
                 android:layout_toRightOf="@+id/iv_back"
-                android:text="返回"
                 android:textColor="@color/black"
                 android:textSize="@dimen/t14"/>
         </RelativeLayout>
