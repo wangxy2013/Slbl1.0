@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/ll_pop_list"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+
+    <ListView
+        android:id="@+id/lv_choice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:divider="@color/gray"
+        android:dividerHeight="@dimen/dm_0.5"
+        android:listSelector="@color/transparent"
+        android:scrollbars="none"
+        />
+
+</LinearLayout>
