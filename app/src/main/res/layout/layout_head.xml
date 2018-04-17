@@ -25,7 +25,7 @@
             android:src="@drawable/ic_black_back"
             />
 
-        <TextView
+        <com.twlrg.slbl.widget.AutoFitTextView
             android:id="@+id/tv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

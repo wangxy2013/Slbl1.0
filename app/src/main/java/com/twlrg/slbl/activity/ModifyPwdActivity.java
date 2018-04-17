@@ -5,7 +5,7 @@ import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RelativeLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.twlrg.slbl.R;
@@ -13,6 +13,7 @@ import com.twlrg.slbl.utils.StringUtils;
 import com.twlrg.slbl.utils.ToastUtil;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * 作者：王先云 on 2018/4/12 23:12
@@ -21,18 +22,18 @@ import butterknife.BindView;
  */
 public class ModifyPwdActivity extends BaseActivity
 {
-    @BindView(R.id.rl_back)
-    RelativeLayout rlBack;
     @BindView(R.id.tv_title)
-    TextView       tvTitle;
+    TextView  tvTitle;
     @BindView(R.id.et_oldPwd)
-    EditText       etOldPwd;
+    EditText  etOldPwd;
     @BindView(R.id.et_newPwd)
-    EditText       etNewPwd;
+    EditText  etNewPwd;
     @BindView(R.id.et_newPwd1)
-    EditText       etNewPwd1;
+    EditText  etNewPwd1;
     @BindView(R.id.btn_submit)
-    Button         btnSubmit;
+    Button    btnSubmit;
+    @BindView(R.id.iv_back)
+    ImageView ivBack;
 
     @Override
     protected void initData()
@@ -50,7 +51,7 @@ public class ModifyPwdActivity extends BaseActivity
     @Override
     protected void initEvent()
     {
-        rlBack.setOnClickListener(this);
+        ivBack.setOnClickListener(this);
         btnSubmit.setOnClickListener(this);
     }
 
@@ -64,7 +65,7 @@ public class ModifyPwdActivity extends BaseActivity
     public void onClick(View v)
     {
         super.onClick(v);
-        if (v == rlBack)
+        if (v == ivBack)
         {
             finish();
         }
@@ -100,5 +101,13 @@ public class ModifyPwdActivity extends BaseActivity
                 return;
             }
         }
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
     }
 }

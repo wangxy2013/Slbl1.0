@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/test"/>
+        android:src="@drawable/gray_frame_5dp"/>
 
     <TextView
         android:id="@+id/tv_price"

@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.twlrg.slbl.R;
 import com.twlrg.slbl.activity.BaseHandler;
+import com.twlrg.slbl.activity.HotelDetailActivity;
 import com.twlrg.slbl.adapter.HotelAdapter;
 import com.twlrg.slbl.entity.HotelInfo;
 import com.twlrg.slbl.http.DataRequest;
@@ -79,6 +80,7 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
     private int pn = 1;
     private int mRefreshStatus;
 
+    private String mStartDate, mEndDate;
     private List<HotelInfo> hotelInfoList = new ArrayList<>();
     private HotelAdapter mHotelAdapter;
     private static final String GET_HOTEL_LIST = "GET_HOTEL_LIST";
@@ -166,7 +168,18 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
             @Override
             public void onItemClick(View view, int position)
             {
+                HotelInfo mHotelInfo = hotelInfoList.get(position);
 
+                startActivity(new Intent(getActivity(), HotelDetailActivity.class)
+                        .putExtra("ID", mHotelInfo.getId())
+                        .putExtra("CITY_VALUE", mHotelInfo.getCity())
+                        .putExtra("S_DATE", mStartDate)
+                        .putExtra("E_DATE", mEndDate)
+                        .putExtra("LNG", mHotelInfo.getLng())
+                        .putExtra("lat", mHotelInfo.getLat())
+
+
+                );
             }
         }
         );
