@@ -17,6 +17,29 @@
         <item>不满意</item>
     </string-array>
 
+    <string-array name="home_star">
+        <item>不限</item>
+        <item>经济型</item>
+        <item>三星实惠</item>
+        <item>四星豪华</item>
+        <item>五星奢华</item>
+    </string-array>
+    <string-array name="home_distance">
+        <item>不限</item>
+        <item>500米内</item>
+        <item>1公里内</item>
+        <item>2公里内</item>
+        <item>5公里内</item>
+        <item>10公里内</item>
+        <item>20公里内</item>
+    </string-array>
 
-
+    <string-array name="home_price">
+        <item>不限</item>
+        <item>150元以下</item>
+        <item>150元-300元</item>
+        <item>301元-450元</item>
+        <item>451元-600元</item>
+        <item>00元以上</item>
+    </string-array>
 </resources>

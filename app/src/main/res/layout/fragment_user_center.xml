@@ -57,7 +57,7 @@
             android:layout_width="@dimen/dm_70"
             android:layout_height="@dimen/dm_70"
             android:scaleType="centerCrop"
-            android:src="@drawable/ic_my_on"/>
+            android:src="@drawable/ic_user"/>
 
         <RelativeLayout
             android:id="@+id/ll_nickName"

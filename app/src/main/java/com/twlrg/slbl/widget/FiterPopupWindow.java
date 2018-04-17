@@ -15,6 +15,8 @@ import android.widget.ListView;
 import android.widget.PopupWindow;
 
 import com.twlrg.slbl.R;
+import com.twlrg.slbl.adapter.FilterAdapter;
+import com.twlrg.slbl.entity.FilterInfo;
 import com.twlrg.slbl.utils.APPUtils;
 
 import java.util.ArrayList;
@@ -30,10 +32,10 @@ public class FiterPopupWindow extends PopupWindow implements PopupWindow.OnDismi
 
     private Activity mContext;
 
-    private QQAdapter mAdapter;
+    private FilterAdapter mAdapter;
 
     private int mHeight;
-    List<QQInfo> mQQList = new ArrayList<>();
+    List<FilterInfo> mFilterList = new ArrayList<>();
 
     public FiterPopupWindow(Activity context)
     {
@@ -85,11 +87,11 @@ public class FiterPopupWindow extends PopupWindow implements PopupWindow.OnDismi
 
     }
 
-    public void setData(List<QQInfo> list)
+    public void setData(List<FilterInfo> list)
     {
-        mQQList.clear();
-        mQQList.addAll(list);
-        mAdapter = new QQAdapter(mQQList, mContext);
+        mFilterList.clear();
+        mFilterList.addAll(list);
+        mAdapter = new FilterAdapter(mFilterList, mContext);
         mQQListView.setAdapter(mAdapter);
         setListViewHeightBasedOnChildren(mQQListView);
         mAdapter.notifyDataSetChanged();

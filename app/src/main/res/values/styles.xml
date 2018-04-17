@@ -100,4 +100,12 @@
         <item name="android:windowBackground">@drawable/dialog_fillet_bg</item>
         <item name="android:backgroundDimEnabled">true</item>
     </style>
+
+
+
+    <style name="foodRatingBar" parent="@android:style/Widget.RatingBar">
+        <item name="android:progressDrawable">@drawable/ratingstars</item>
+        <item name="android:minHeight">@dimen/dm_40</item>
+        <item name="android:maxHeight">@dimen/dm_40</item>
+    </style>
 </resources>

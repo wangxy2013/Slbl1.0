@@ -2,6 +2,7 @@ package com.twlrg.slbl.activity;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentTabHost;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -40,6 +41,7 @@ public class MainActivity extends BaseActivity
     protected void initViews(Bundle savedInstanceState)
     {
         setContentView(R.layout.activity_main);
+        setStatusColor(ContextCompat.getColor(this, R.color.black));
     }
 
     @Override
@@ -84,6 +86,14 @@ public class MainActivity extends BaseActivity
     public void changeTab(int index)
     {
         fragmentTabHost.setCurrentTab(index);
+
+        switch (index)
+        {
+            case 0:
+                setStatusColor(ContextCompat.getColor(this, R.color.black));
+                break;
+        }
+
 
     }
 }

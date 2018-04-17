@@ -26,15 +26,13 @@ public class MessageFragment extends BaseFragment
 
         if (rootView == null)
         {
-            rootView = inflater.inflate(R.layout.fragment_home, null);
+            rootView = inflater.inflate(R.layout.fragment_message, null);
             unbinder = ButterKnife.bind(this, rootView);
             initData();
             initViews();
             initViewData();
             initEvent();
         }
-        // 缓存的rootView需要判断是否已经被加过parent
-        // 如果有parent需要从parent删除，否则会发生这个rootView已经有parent的错误
         ViewGroup parent = (ViewGroup) rootView.getParent();
         if (parent != null)
         {

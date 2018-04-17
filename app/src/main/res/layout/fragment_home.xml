@@ -6,7 +6,230 @@
     android:background="@color/windowBackground"
     android:orientation="vertical"
     >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/black"
+        android:paddingBottom="@dimen/dm_5"
+        android:paddingLeft="@dimen/dm_15"
+        android:paddingRight="@dimen/dm_15"
+        android:paddingTop="@dimen/dm_5">
 
+        <RelativeLayout
+            android:id="@+id/rl_city"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true">
+
+            <TextView
+                android:id="@+id/tv_city"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="南京市"
+                android:textColor="@color/white"
+                android:textSize="@dimen/t14"/>
+
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/dm_5"
+                android:layout_toRightOf="@+id/tv_city"
+                android:src="@drawable/ic_arrow_down_white"/>
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dm_15"
+            android:layout_toRightOf="@+id/rl_city"
+            android:background="@drawable/common_white_bg"
+            android:gravity="center_vertical"
+            android:padding="@dimen/dm_2">
+
+            <TextView
+                android:id="@+id/tv_check"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dm_3"
+                android:text="住 04-17"
+                android:textColor="@color/black"
+                android:textSize="@dimen/t10"/>
+
+            <TextView
+                android:id="@+id/tv_leave"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_check"
+                android:layout_marginLeft="@dimen/dm_3"
+                android:text="离 04-18"
+                android:textColor="@color/black"
+                android:textSize="@dimen/t10"/>
+
+
+            <View
+                android:id="@+id/line1"
+                android:layout_width="@dimen/dm_0.5"
+                android:layout_height="@dimen/dm_28"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/dm_5"
+                android:layout_toRightOf="@+id/tv_check"
+                android:background="@color/transparentBlack"/>
+
+
+            <ImageView
+                android:id="@+id/iv_search"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/dm_5"
+                android:layout_toRightOf="@+id/line1"
+                android:src="@drawable/ic_search_black"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/iv_search"
+                android:background="@color/translucent"
+                android:hint="关键字/位置/酒店名"
+                android:padding="@dimen/dm_5"
+                android:textColor="@color/black"
+                android:textSize="@dimen/t14"/>
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="@dimen/dm_10"
+        android:paddingBottom="@dimen/dm_10">
+
+
+        <RelativeLayout
+            android:id="@+id/rl_star"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/tv_star"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="星级"
+                android:textColor="@color/black"
+                android:textSize="@dimen/t14"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/dm_3"
+                android:layout_toRightOf="@+id/tv_star"
+                android:src="@drawable/ic_arrow_down_black"/>
+        </RelativeLayout>
+
+        <View
+            android:layout_width="@dimen/dm_0.5"
+            android:layout_height="@dimen/dm_20"
+            android:background="@color/transparentBlack"/>
+
+        <RelativeLayout
+            android:id="@+id/rl_distance"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/tv_distance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="距离"
+                android:textColor="@color/black"
+                android:textSize="@dimen/t14"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/dm_3"
+                android:layout_toRightOf="@+id/tv_distance"
+                android:src="@drawable/ic_arrow_down_black"/>
+        </RelativeLayout>
+        <View
+            android:layout_width="@dimen/dm_0.5"
+            android:layout_height="@dimen/dm_20"
+            android:background="@color/transparentBlack"/>
+
+        <RelativeLayout
+            android:id="@+id/rl_price"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/tv_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="价格"
+                android:textColor="@color/black"
+                android:textSize="@dimen/t14"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/dm_3"
+                android:layout_toRightOf="@+id/tv_price"
+                android:src="@drawable/ic_arrow_down_black"/>
+        </RelativeLayout>
+        <View
+            android:layout_width="@dimen/dm_0.5"
+            android:layout_height="@dimen/dm_20"
+            android:background="@color/transparentBlack"/>
+
+        <RelativeLayout
+            android:id="@+id/rl_more"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/tv_more"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="更多"
+                android:textColor="@color/black"
+                android:textSize="@dimen/t14"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/dm_3"
+                android:layout_toRightOf="@+id/tv_more"
+                android:src="@drawable/ic_arrow_down_black"/>
+        </RelativeLayout>
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dm_0.5"
+        android:background="@color/transparentBlack"/>
 
     <com.twlrg.slbl.widget.list.refresh.PullToRefreshRecyclerView
         android:id="@+id/pullToRefreshRecyclerView"

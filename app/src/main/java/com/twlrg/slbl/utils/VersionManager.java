@@ -106,7 +106,7 @@ public class VersionManager implements IRequestListener
     public void init()
     {
         Map<String, String> valuePairs = new HashMap<>();
-        DataRequest.instance().request(mContext, Urls.geVersionUrl(), this, HttpRequest.POST, GET_VERSION, valuePairs,
+        DataRequest.instance().request(mContext, Urls.getVersionUrl(), this, HttpRequest.POST, GET_VERSION, valuePairs,
                 new VersionInfoHandler());
     }
 

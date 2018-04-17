@@ -74,6 +74,7 @@ public class UserCenterFragment extends BaseFragment implements View.OnClickList
         {
             parent.removeView(rootView);
         }
+
         return rootView;
     }
 
@@ -106,10 +107,14 @@ public class UserCenterFragment extends BaseFragment implements View.OnClickList
     }
 
     @Override
-    public void onDestroyView()
+    public void onDestroy()
     {
-        super.onDestroyView();
-        unbinder.unbind();
+        super.onDestroy();
+        if (null != unbinder)
+        {
+            unbinder.unbind();
+            unbinder = null;
+        }
     }
 
 
