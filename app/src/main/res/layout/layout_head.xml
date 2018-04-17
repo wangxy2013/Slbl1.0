@@ -15,31 +15,16 @@
         android:padding="@dimen/dm_5"
         >
 
-        <RelativeLayout
-            android:id="@+id/rl_back"
+
+        <ImageView
+            android:id="@+id/iv_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:paddingBottom="@dimen/dm_5"
-            android:paddingTop="@dimen/dm_5">
-            <ImageView
-                android:id="@+id/iv_back"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:paddingLeft="@dimen/dm_8"
-                android:src="@drawable/ic_back"
-                />
-            <TextView
-                android:id="@+id/tv_back"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/dm_5"
-                android:layout_toRightOf="@+id/iv_back"
-                android:textColor="@color/black"
-                android:textSize="@dimen/t14"/>
-        </RelativeLayout>
+            android:padding="@dimen/dm_8"
+            android:src="@drawable/ic_black_back"
+            />
+
         <TextView
             android:id="@+id/tv_title"
             android:layout_width="wrap_content"
