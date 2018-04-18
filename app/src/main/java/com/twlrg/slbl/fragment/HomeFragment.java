@@ -80,7 +80,15 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
     private int pn = 1;
     private int mRefreshStatus;
 
-    private String mStartDate, mEndDate;
+
+    //手机定位的经纬度
+    private float lng = 0;
+    private float lat = 0;
+
+
+    private String          mStartDate    = "2018-04-18";
+    private String          mEndDate      = "2018-04-19";
+    private String          mCityValue    = "2158";
     private List<HotelInfo> hotelInfoList = new ArrayList<>();
     private HotelAdapter mHotelAdapter;
     private static final String GET_HOTEL_LIST = "GET_HOTEL_LIST";
@@ -172,11 +180,12 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
 
                 startActivity(new Intent(getActivity(), HotelDetailActivity.class)
                         .putExtra("ID", mHotelInfo.getId())
-                        .putExtra("CITY_VALUE", mHotelInfo.getCity())
+                        .putExtra("TITLE", mHotelInfo.getTitle())
+                        .putExtra("CITY_VALUE", mCityValue)
                         .putExtra("S_DATE", mStartDate)
                         .putExtra("E_DATE", mEndDate)
-                        .putExtra("LNG", mHotelInfo.getLng())
-                        .putExtra("lat", mHotelInfo.getLat())
+                        .putExtra("LNG", lng)
+                        .putExtra("LAT", lat)
 
 
                 );

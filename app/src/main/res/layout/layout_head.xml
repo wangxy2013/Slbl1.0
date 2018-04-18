@@ -32,7 +32,7 @@
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:padding="@dimen/dm_8"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:textSize="@dimen/t16"
             />
 

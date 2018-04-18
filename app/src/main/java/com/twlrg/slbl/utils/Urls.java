@@ -32,9 +32,19 @@ public class Urls
         return BASE_URL + "merchant/search";
     }
 
+    //酒店详细
+    public static String getHotelDetailUrl()
+    {
+        return BASE_URL + "merchant/detail";
+    }
 
+
+
+    //获取版本信息
     public static String getVersionUrl()
     {
         return BASE_URL + "merchant/search";
     }
+
+
 }

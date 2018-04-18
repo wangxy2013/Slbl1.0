@@ -15,6 +15,7 @@ public class HotelInfo
     private double price;//200    //无早最低价格
     private String position_label;//"某某地铁/某某商圈   //位置标签
     private String service_label;//"前台热情/会议酒店" //特色服务标签
+    private String  reviews_label;
     private String lat;
     private String lng;
     private String hotel_img;
@@ -66,6 +67,8 @@ public class HotelInfo
         this.hotel_img = obj.optString("hotel_img");
         this.star = obj.optDouble("star", 5);
 
+
+        this.reviews_label = obj.optString("reviews_label");
         this.count = obj.optString("count");
         this.isdelete = obj.optString("isdelete");
         this.sort = obj.optString("sort");
@@ -498,5 +501,15 @@ public class HotelInfo
     public void setCount(String count)
     {
         this.count = count;
+    }
+
+    public String getReviews_label()
+    {
+        return reviews_label;
+    }
+
+    public void setReviews_label(String reviews_label)
+    {
+        this.reviews_label = reviews_label;
     }
 }

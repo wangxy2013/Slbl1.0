@@ -11,17 +11,11 @@ import android.widget.ScrollView;
  */
 public class ObservableScrollView extends ScrollView
 {
-    private ScrollViewListener scrollViewListener = null;
+    private OnScrollListener mOnScrollListener;
 
     public ObservableScrollView(Context context)
     {
         super(context);
-    }
-
-    public ObservableScrollView(Context context, AttributeSet attrs,
-                                int defStyle)
-    {
-        super(context, attrs, defStyle);
     }
 
     public ObservableScrollView(Context context, AttributeSet attrs)
@@ -29,25 +23,51 @@ public class ObservableScrollView extends ScrollView
         super(context, attrs);
     }
 
-    public void setScrollViewListener(ScrollViewListener scrollViewListener)
+    public ObservableScrollView(Context context, AttributeSet attrs, int defStyleAttr)
     {
-        this.scrollViewListener = scrollViewListener;
+        super(context, attrs, defStyleAttr);
     }
 
+    /**
+     * 监听ScroView的滑动情况
+     *
+     * @param l    变化后的X轴位置
+     * @param t    变化后的Y轴的位置
+     * @param oldl 原先的X轴的位置
+     * @param oldt 原先的Y轴的位置
+     */
     @Override
-    protected void onScrollChanged(int x, int y, int oldx, int oldy)
+    protected void onScrollChanged(int l, int t, int oldl, int oldt)
     {
-        super.onScrollChanged(x, y, oldx, oldy);
-        if (scrollViewListener != null)
+        super.onScrollChanged(l, t, oldl, oldt);
+        if (null != mOnScrollListener)
         {
-            scrollViewListener.onScrollChanged(this, x, y, oldx, oldy);
+            mOnScrollListener.onScroll(t);
         }
     }
 
-    public interface ScrollViewListener
-    {
 
-        void onScrollChanged(ObservableScrollView scrollView, int x, int y, int oldx, int oldy);
+    /**
+     * 设置滚动接口
+     *
+     * @param listener
+     */
+    public void setOnScrollListener(OnScrollListener listener)
+    {
+        this.mOnScrollListener = listener;
+    }
+
+    /**
+     * 滚动的回调接口
+     */
+    public interface OnScrollListener
+    {
+        /**
+         * MyScrollView滑动的Y方向距离变化时的回调方法
+         *
+         * @param scrollY
+         */
+        void onScroll(int scrollY);
 
     }
 }

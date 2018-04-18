@@ -29,6 +29,7 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
 {
 
     Unbinder mUnbinder;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -36,7 +37,8 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
 
         initData();
         initViews(savedInstanceState);
-        mUnbinder = ButterKnife.bind(this);;//注册黄油刀
+        mUnbinder = ButterKnife.bind(this);
+        ;//注册黄油刀
         initEvent();
         initViewData();
     }
@@ -129,13 +131,33 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
         //        MobclickAgent.onPageStart(mPageName);
         //        MobclickAgent.onResume(this);
     }
+
     @Override
     public void onClick(View v)
     {
+        if (isFastClick())
+        {
+            return;
+        }
+
     }
 
-    public static final int  MIN_CLICK_DELAY_TIME = 1000;
-    private             long lastClickTime        = 0;
+    private static final int MIN_DELAY_TIME = 1000;  // 两次点击间隔不能少于1000ms
+    private static long lastClickTime;
+
+    public static boolean isFastClick()
+    {
+        boolean flag = true;
+        long currentClickTime = System.currentTimeMillis();
+        if ((currentClickTime - lastClickTime) >= MIN_DELAY_TIME)
+        {
+            flag = false;
+        }
+        lastClickTime = currentClickTime;
+        return flag;
+    }
+
+    public static final int MIN_CLICK_DELAY_TIME = 1000;
 
 
     protected static final int REQUEST_STORAGE_READ_ACCESS_PERMISSION  = 101;
@@ -230,7 +252,9 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
             mProgressDialog = null;
         }
     }
-    protected void onDestroy() {
+
+    protected void onDestroy()
+    {
         super.onDestroy();
         mUnbinder.unbind();
     }
