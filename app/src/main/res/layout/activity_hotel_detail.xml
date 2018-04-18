@@ -12,7 +12,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/ll_chat"
+        android:layout_above="@+id/rl_chat"
         android:layout_below="@+id/ll_head">
 
         <com.twlrg.slbl.widget.ObservableScrollView
@@ -29,7 +29,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:scaleType="centerCrop"
-                  />
+                    />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -207,224 +207,233 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dm_0.5"
                     android:background="@color/transparentBlack"/>
-                    <LinearLayout
-                        android:id="@+id/ll_breakfast"
-                        android:layout_width="match_parent"
+                <LinearLayout
+                    android:id="@+id/ll_breakfast"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/gray"
+                    android:orientation="horizontal"
+                    android:paddingBottom="@dimen/dm_10"
+                    android:paddingTop="@dimen/dm_10">
+
+                    <TextView
+                        android:id="@+id/tv_breakfast_type1"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:background="@color/gray"
-                        android:orientation="horizontal"
-                        android:paddingBottom="@dimen/dm_10"
-                        android:paddingTop="@dimen/dm_10">
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="不限"
+                        android:textColor="@drawable/breakfast_tab_font_selector"
+                        android:textSize="@dimen/t14"/>
 
-                        <TextView
-                            android:id="@+id/tv_breakfast_type1"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:text="不限"
-                            android:textColor="@drawable/breakfast_tab_font_selector"
-                            android:textSize="@dimen/t14"/>
+                    <TextView
+                        android:id="@+id/tv_breakfast_type2"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="无早餐"
+                        android:textColor="@drawable/breakfast_tab_font_selector"
+                        android:textSize="@dimen/t14"/>
 
-                        <TextView
-                            android:id="@+id/tv_breakfast_type2"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:text="无早餐"
-                            android:textColor="@drawable/breakfast_tab_font_selector"
-                            android:textSize="@dimen/t14"/>
+                    <TextView
+                        android:id="@+id/tv_breakfast_type3"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="单早餐"
+                        android:textColor="@drawable/breakfast_tab_font_selector"
+                        android:textSize="@dimen/t14"/>
 
-                        <TextView
-                            android:id="@+id/tv_breakfast_type3"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:text="单早餐"
-                            android:textColor="@drawable/breakfast_tab_font_selector"
-                            android:textSize="@dimen/t14"/>
+                    <TextView
+                        android:id="@+id/tv_breakfast_type4"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="双早餐"
+                        android:textColor="@drawable/breakfast_tab_font_selector"
+                        android:textSize="@dimen/t14"/>
 
-                        <TextView
-                            android:id="@+id/tv_breakfast_type4"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:text="双早餐"
-                            android:textColor="@drawable/breakfast_tab_font_selector"
-                            android:textSize="@dimen/t14"/>
-
-                    </LinearLayout>
+                </LinearLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:descendantFocusability="blocksDescendants">
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/rv_room"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         />
+                </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dm_0.5"
+                    android:background="@color/transparentBlack"/>
+                <LinearLayout
+                    android:id="@+id/ll_room_more"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:id="@+id/iv_room_more"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_margin="@dimen/dm_10"
+                        android:src="@drawable/ic_arrow_down_64"/>
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/dm_0.5"
                         android:background="@color/transparentBlack"/>
-                    <LinearLayout
-                        android:id="@+id/ll_room_more"
-                        android:layout_width="match_parent"
-                        android:visibility="gone"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-                        <ImageView
-                            android:id="@+id/iv_room_more"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_margin="@dimen/dm_10"
-                            android:src="@drawable/ic_arrow_down_64"/>
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="@dimen/dm_0.5"
-                            android:background="@color/transparentBlack"/>
-                    </LinearLayout>
+                </LinearLayout>
 
 
-                    <TextView
-                        android:id="@+id/tv_conference"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="@dimen/dm_10"
-                        android:text="会议室"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/t16"/>
-
+                <TextView
+                    android:id="@+id/tv_conference"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/dm_10"
+                    android:text="会议室"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/t16"/>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:descendantFocusability="blocksDescendants">
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/rv_conference"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         />
+                </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dm_0.5"
+                    android:background="@color/transparentBlack"/>
+                <LinearLayout
+                    android:id="@+id/ll_conference_more"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:id="@+id/iv_conference_more"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_margin="@dimen/dm_10"
+                        android:src="@drawable/ic_arrow_down_64"/>
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/dm_0.5"
                         android:background="@color/transparentBlack"/>
-                    <LinearLayout
-                        android:visibility="gone"
-                        android:id="@+id/ll_conference_more"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                </LinearLayout>
 
-                        <ImageView
-                            android:id="@+id/iv_conference_more"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_margin="@dimen/dm_10"
-                            android:src="@drawable/ic_arrow_down_64"/>
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="@dimen/dm_0.5"
-                            android:background="@color/transparentBlack"/>
-                    </LinearLayout>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/dm_10"
+                    android:text="商户简介"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/t16"
+                    android:textStyle="bold"/>
 
+                <TextView
+                    android:id="@+id/tv_summary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="3"
+                    android:padding="@dimen/dm_5"
+                    android:text="商户简介"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/t14"/>
+
+                <TextView
+                    android:id="@+id/tv_summary_more"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:padding="@dimen/dm_5"
+                    android:text="查看详情更多详情"
+                    android:textColor="#0061b2"
+                    android:textSize="@dimen/t12"/>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dm_0.5"
+                    android:layout_marginLeft="@dimen/dm_10"
+                    android:background="@color/transparentBlack"/>
+
+                <RelativeLayout
+                    android:id="@+id/rl_policy"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="@dimen/dm_10"
-                        android:text="商户简介"
+                        android:text="酒店政策"
                         android:textColor="@color/black"
                         android:textSize="@dimen/t16"
                         android:textStyle="bold"/>
 
-                    <TextView
-                        android:id="@+id/tv_summary"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="@dimen/dm_5"
-                        android:text="商户简介"
-                        android:maxLines="3"
-                        android:ellipsize="end"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/t14"/>
-
-                    <TextView
-                        android:id="@+id/tv_summary_more"
+                    <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="right"
-                        android:padding="@dimen/dm_5"
-                        android:text="查看详情更多详情"
-                        android:textColor="#0061b2"
-                        android:textSize="@dimen/t12"/>
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/dm_0.5"
-                        android:layout_marginLeft="@dimen/dm_10"
-                        android:background="@color/transparentBlack"/>
-
-                    <RelativeLayout
-                        android:id="@+id/rl_policy"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:padding="@dimen/dm_10"
-                            android:text="酒店政策"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/t16"
-                            android:textStyle="bold"/>
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
-                            android:layout_marginRight="@dimen/dm_10"
-                            android:src="@drawable/ic_arrow_right_gray_48"/>
-                    </RelativeLayout>
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/dm_0.5"
-                        android:background="@color/transparentBlack"/>
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="@dimen/dm_10"
+                        android:src="@drawable/ic_arrow_right_gray_48"/>
+                </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dm_0.5"
+                    android:background="@color/transparentBlack"/>
 
 
-                    <RelativeLayout
-                        android:id="@+id/rl_facilities"
+                <RelativeLayout
+                    android:id="@+id/rl_facilities"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:padding="@dimen/dm_10"
-                            android:text="酒店设施"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/t16"
-                            android:textStyle="bold"/>
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/dm_10"
+                        android:text="酒店设施"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/t16"
+                        android:textStyle="bold"/>
 
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
-                            android:layout_marginRight="@dimen/dm_10"
-                            android:src="@drawable/ic_arrow_right_gray_48"/>
-                    </RelativeLayout>
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/dm_0.5"
-                        android:layout_marginBottom="@dimen/dm_15"
-                        android:background="@color/transparentBlack"/>
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="@dimen/dm_10"
+                        android:src="@drawable/ic_arrow_right_gray_48"/>
+                </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dm_0.5"
+                    android:layout_marginBottom="@dimen/dm_15"
+                    android:background="@color/transparentBlack"/>
             </LinearLayout>
         </com.twlrg.slbl.widget.ObservableScrollView>
 
         <LinearLayout
             android:id="@+id/ll_breakfast1"
             android:layout_width="match_parent"
-            android:visibility="gone"
+            android:layout_height="wrap_content"
             android:background="@color/gray"
+            android:orientation="horizontal"
             android:paddingBottom="@dimen/dm_10"
             android:paddingTop="@dimen/dm_10"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:visibility="gone"
             >
             <TextView
                 android:id="@+id/tv_breakfast_type11"
@@ -480,19 +489,19 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:layout_toLeftOf="@+id/tv_chat"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dm_5"
             android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dm_5"
+            android:layout_toLeftOf="@+id/tv_chat"
             android:src="@drawable/ic_message_white"/>
 
 
         <TextView
             android:id="@+id/tv_chat"
-            android:layout_centerInParent="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
             android:layout_marginLeft="@dimen/dm_15"
             android:gravity="center_vertical"
             android:text="联系酒店销售可以议价"
