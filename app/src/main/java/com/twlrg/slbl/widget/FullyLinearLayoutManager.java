@@ -119,4 +119,10 @@ public class FullyLinearLayoutManager extends LinearLayoutManager
         }
     }
 
+    @Override
+    public boolean canScrollVertically()
+    {
+        // 直接禁止垂直滑动
+        return false;
+    }
 }
