@@ -123,6 +123,10 @@ public class OrderFragment extends BaseFragment implements PullToRefreshBase.OnR
     {
         super.onResume();
         ((MainActivity) getActivity()).changeTabStatusColor(2);
+
+        orderInfoList.clear();
+        pn = 1;
+        mRefreshStatus = 0;
         getOrderList();
     }
 

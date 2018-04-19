@@ -20,6 +20,7 @@
             android:layout_toLeftOf="@+id/tv_total_fee"
             android:layout_width="match_parent"
             android:maxLines="1"
+            android:textStyle="bold"
             android:layout_marginRight="@dimen/dm_15"
             android:layout_height="wrap_content"
             android:text="某某酒店1"

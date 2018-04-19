@@ -29,7 +29,8 @@ public class OrderHolder extends RecyclerView.ViewHolder
     private AutoFitTextView mHotelNameTv;
     private TextView        mPriceTv;
     private TextView        mTitleTv;
-    private TextView        mNamelTv;
+    private TextView        mOrderStatusTv;
+    private TextView        mNameTv;
     private TextView        mCreateTimeTv;
 
     private LinearLayout mItemLayout;
@@ -42,8 +43,9 @@ public class OrderHolder extends RecyclerView.ViewHolder
         mHotelNameTv = (AutoFitTextView) rootView.findViewById(R.id.tv_merchant);
         mPriceTv = (TextView) rootView.findViewById(R.id.tv_total_fee);
         mTitleTv = (TextView) rootView.findViewById(R.id.tv_title);
-        mNamelTv = (TextView) rootView.findViewById(R.id.tv_name);
+        mNameTv = (TextView) rootView.findViewById(R.id.tv_name);
         mCreateTimeTv = (TextView) rootView.findViewById(R.id.tv_create_time);
+        mOrderStatusTv = (TextView) rootView.findViewById(R.id.tv_payment_trade_status);
         mItemLayout = (LinearLayout) rootView.findViewById(R.id.ll_item);
         this.listener1 = listener1;
     }
@@ -52,11 +54,12 @@ public class OrderHolder extends RecyclerView.ViewHolder
     public void setOrderInfo(OrderInfo mOrderInfo, Context mContext, final int p)
     {
         mHotelNameTv.setText(mOrderInfo.getMerchant());
-        mPriceTv.setText("￥"+mOrderInfo.getTotal_fee());
-        mTitleTv.setText(mOrderInfo.getTitle() +"  "+mOrderInfo.getBuynum() +"间  " + mOrderInfo.getDays() +"晚");
-        mNamelTv.setText(mOrderInfo.getName() +" " +mOrderInfo.getCheck_in()+"入住" );
+        mPriceTv.setText("￥" + mOrderInfo.getTotal_fee());
+        mTitleTv.setText(mOrderInfo.getTitle() + "  " + mOrderInfo.getBuynum() + "间  " + mOrderInfo.getDays() + "晚");
+        mNameTv.setText(mOrderInfo.getName() + " " + mOrderInfo.getCheck_in() + "入住");
         mCreateTimeTv.setText(mOrderInfo.getCreate_time());
 
+        mOrderStatusTv.setText("0".equals(mOrderInfo.getPayment_trade_status()) ? "未支付" : "已支付");
         mItemLayout.setOnClickListener(new View.OnClickListener()
         {
             @Override
