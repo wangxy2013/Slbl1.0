@@ -3,12 +3,15 @@ package com.twlrg.slbl.activity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.twlrg.slbl.R;
+import com.twlrg.slbl.utils.APPUtils;
 import com.twlrg.slbl.utils.StringUtils;
 import com.twlrg.slbl.utils.ToastUtil;
 
@@ -34,7 +37,8 @@ public class ModifyPwdActivity extends BaseActivity
     Button    btnSubmit;
     @BindView(R.id.iv_back)
     ImageView ivBack;
-
+    @BindView(R.id.topView)
+    View            topView;
     @Override
     protected void initData()
     {
@@ -45,7 +49,7 @@ public class ModifyPwdActivity extends BaseActivity
     protected void initViews(Bundle savedInstanceState)
     {
         setContentView(R.layout.activity_modify_pwd);
-        setStatusColor(ContextCompat.getColor(this, R.color.windowBackground));
+        setTranslucentStatus();
     }
 
     @Override
@@ -59,6 +63,8 @@ public class ModifyPwdActivity extends BaseActivity
     protected void initViewData()
     {
         tvTitle.setText("修改密码");
+        setStatusBarTextDeep(true);
+        topView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, APPUtils.getStatusBarHeight(this)));
     }
 
     @Override
@@ -101,13 +107,5 @@ public class ModifyPwdActivity extends BaseActivity
                 return;
             }
         }
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
     }
 }

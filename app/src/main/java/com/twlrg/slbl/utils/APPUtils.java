@@ -539,7 +539,7 @@ public class APPUtils
     {
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(mContext)
                 .setIcon(R.drawable.ic_launcher)
-                .setMessage("是否安装阳光扶贫");
+                .setMessage("是否安装");
         mBuilder.setPositiveButton("确定", new DialogInterface.OnClickListener()
         {
 
@@ -656,5 +656,15 @@ public class APPUtils
         {
             APPUtils.runApk(mContext, ConstantUtil.THIRD_PACKAGENAME, ConstantUtil.THIRD_CLASSNAME);
         }
+    }
+
+
+    public static int getStatusBarHeight(Context context) {
+        int result = 0;
+        int resourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            result = context.getResources().getDimensionPixelSize(resourceId);
+        }
+        return result;
     }
 }

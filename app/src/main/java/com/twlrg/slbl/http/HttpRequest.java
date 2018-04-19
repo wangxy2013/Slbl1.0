@@ -51,10 +51,10 @@ public class HttpRequest implements Runnable
         this(action, type, url, listener, handler);
         this.mContext = mContext;
         this.valuePair = valuePairs;
-//        valuePair.put("os_version", APPUtils.getCurrentapiVersion() + "");
-//        valuePair.put("os", "android");
+        //        valuePair.put("os_version", APPUtils.getCurrentapiVersion() + "");
+        //        valuePair.put("os", "android");
         //valuePair.put("channel", ConstantUtil.CHANNEL_NO);
-//        valuePair.put("version", APPUtils.getVersionName(mContext));
+        //        valuePair.put("version", APPUtils.getVersionName(mContext));
         if (valuePair == null)
         {
             valuePair = new HashMap<>();
@@ -199,6 +199,10 @@ public class HttpRequest implements Runnable
             return body;
 
         }
+        else
+        {
+            LogUtil.e("TAG", "response--->" + response.code());
+        }
         return null;
     }
 
@@ -283,7 +287,7 @@ public class HttpRequest implements Runnable
     {
         StringBuffer sb = new StringBuffer();
         sb.append("?");
-      //  sb.append("&");
+        //  sb.append("&");
         for (Map.Entry<String, String> map : valuePair.entrySet())
         {
             String key = map.getKey().toString();

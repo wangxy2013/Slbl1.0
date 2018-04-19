@@ -66,7 +66,6 @@ public class LoginActivity extends BaseActivity implements IRequestListener
                     ToastUtil.show(LoginActivity.this, "登录成功!");
                     ConfigManager.instance().setUserPwd(mPwd);
                     ConfigManager.instance().setMobile(mUserName);
-                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
                     finish();
                     break;
 
@@ -105,7 +104,8 @@ public class LoginActivity extends BaseActivity implements IRequestListener
     @Override
     protected void initViewData()
     {
-
+        etPhone.setText(ConfigManager.instance().getMobile());
+        etPwd.setText(ConfigManager.instance().getUserPwd());
     }
 
 
@@ -146,8 +146,9 @@ public class LoginActivity extends BaseActivity implements IRequestListener
             }
 
             Map<String, String> valuePairs = new HashMap<>();
-            valuePairs.put("USERNAME", mUserName);
-            valuePairs.put("PASSWORD", mPwd);
+            valuePairs.put("mobile", mUserName);
+            valuePairs.put("pwd", mPwd);
+            valuePairs.put("role", "1");
             DataRequest.instance().request(LoginActivity.this, Urls.getLoginUrl(), this, HttpRequest.POST, USER_LOGIN, valuePairs,
                     new LoginHandler());
         }

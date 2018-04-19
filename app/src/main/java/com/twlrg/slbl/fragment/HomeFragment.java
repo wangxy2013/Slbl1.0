@@ -3,17 +3,20 @@ package com.twlrg.slbl.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.twlrg.slbl.R;
 import com.twlrg.slbl.activity.BaseHandler;
 import com.twlrg.slbl.activity.HotelDetailActivity;
+import com.twlrg.slbl.activity.MainActivity;
 import com.twlrg.slbl.adapter.HotelAdapter;
 import com.twlrg.slbl.entity.HotelInfo;
 import com.twlrg.slbl.http.DataRequest;
@@ -21,6 +24,7 @@ import com.twlrg.slbl.http.HttpRequest;
 import com.twlrg.slbl.http.IRequestListener;
 import com.twlrg.slbl.json.HotelInfoListHandler;
 import com.twlrg.slbl.listener.MyItemClickListener;
+import com.twlrg.slbl.utils.APPUtils;
 import com.twlrg.slbl.utils.ConstantUtil;
 import com.twlrg.slbl.utils.ToastUtil;
 import com.twlrg.slbl.utils.Urls;
@@ -71,6 +75,9 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
     RelativeLayout            rlMore;
     @BindView(R.id.pullToRefreshRecyclerView)
     PullToRefreshRecyclerView mPullToRefreshRecyclerView;
+    @BindView(R.id.topView)
+    View                      topView;
+    Unbinder unbinder1;
 
     private RecyclerView mRecyclerView;
     private View rootView = null;
@@ -139,6 +146,7 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
         {
             parent.removeView(rootView);
         }
+        unbinder1 = ButterKnife.bind(this, rootView);
         return rootView;
     }
 
@@ -161,9 +169,18 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
 
     }
 
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        ((MainActivity) getActivity()).changeTabStatusColor(0);
+    }
+
     @Override
     protected void initViewData()
     {
+        topView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, APPUtils.getStatusBarHeight(getActivity())));
         mPullToRefreshRecyclerView.setPullLoadEnabled(true);
         mRecyclerView = mPullToRefreshRecyclerView.getRefreshableView();
         mPullToRefreshRecyclerView.setOnRefreshListener(this);
@@ -274,5 +291,12 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
                 mHandler.sendMessage(mHandler.obtainMessage(REQUEST_FAIL, resultMsg));
             }
         }
+    }
+
+    @Override
+    public void onDestroyView()
+    {
+        super.onDestroyView();
+        unbinder1.unbind();
     }
 }

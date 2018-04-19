@@ -22,7 +22,7 @@ public class Urls
     //用戶登录
     public static String getLoginUrl()
     {
-        return BASE_URL + "clientLogin.do";
+        return BASE_URL + "user/login";
     }
 
 
@@ -37,6 +37,44 @@ public class Urls
     {
         return BASE_URL + "merchant/detail";
     }
+
+    //用户注册
+    public static String getRegisterUrl()
+    {
+        return BASE_URL + "user/register";
+    }
+
+    //获取用户信息
+    public static String getUserInfoUrl()
+    {
+        return BASE_URL + "user/user_info";
+    }
+
+    //获取短信验证码
+    public static String getVerifycodeUrl()
+    {
+        return BASE_URL + "user/verifycode";
+    }
+
+    //修改密码
+    public static String getUpdatePwdUrl()
+    {
+        return BASE_URL + "user/update_pwd";
+    }
+
+    //找回密码
+    public static String getForgetPwdUrl()
+    {
+        return BASE_URL + "user/set_pwd";
+    }
+
+
+
+
+
+
+
+
 
 
 

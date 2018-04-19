@@ -2,11 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:background="@drawable/common_blue_5dp"
+              android:background="@drawable/bg_login"
               android:orientation="vertical">
 
 
     <RelativeLayout
+        android:layout_marginTop="@dimen/dm_20"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="@dimen/dm_5"
@@ -30,7 +31,7 @@
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:padding="@dimen/dm_8"
-            android:text="注册"
+            android:text="忘记密码"
             android:textColor="@color/white"
             android:textSize="@dimen/t16"
             />
@@ -60,6 +61,7 @@
         <EditText
             android:id="@+id/et_phone"
             android:layout_width="0dp"
+            android:layout_marginLeft="5dp"
             android:layout_height="wrap_content"
             android:layout_weight="7.5"
             android:background="@color/transparent"
@@ -83,7 +85,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/dm_30"
         android:layout_marginRight="@dimen/dm_30"
-        android:layout_marginTop="@dimen/dm_20"
+        android:layout_marginTop="@dimen/dm_30"
         android:orientation="horizontal">
 
 
@@ -100,6 +102,7 @@
             android:id="@+id/et_code"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dm_5"
             android:layout_weight="4.5"
             android:background="@color/transparent"
             android:hint="请输入验证码"
@@ -132,7 +135,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/dm_30"
         android:layout_marginRight="@dimen/dm_30"
-        android:layout_marginTop="@dimen/dm_20"
+        android:layout_marginTop="@dimen/dm_30"
         android:orientation="horizontal">
 
 
@@ -150,7 +153,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="7.5"
+            android:layout_marginLeft="@dimen/dm_5"
             android:background="@color/transparent"
+            android:inputType="textPassword"
             android:hint="输入新密码(8-16个字符)"
             android:maxLength="16"
             android:textColor="@color/white"
@@ -169,7 +174,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/dm_30"
         android:layout_marginRight="@dimen/dm_30"
-        android:layout_marginTop="@dimen/dm_20"
+        android:layout_marginTop="@dimen/dm_30"
         android:orientation="horizontal">
 
 
@@ -188,6 +193,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="7.5"
             android:background="@color/transparent"
+            android:inputType="textPassword"
+            android:layout_marginLeft="@dimen/dm_5"
             android:hint="输入新密码(8-16个字符)"
             android:maxLength="16"
             android:textColor="@color/white"

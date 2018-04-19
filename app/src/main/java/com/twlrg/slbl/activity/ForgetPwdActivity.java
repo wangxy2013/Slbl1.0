@@ -48,8 +48,8 @@ public class ForgetPwdActivity extends BaseActivity implements IRequestListener
     private static final int    REQUEST_REGISTER_SUCCESS = 0x01;
     public static final  int    REQUEST_FAIL             = 0x02;
     private static final int    GET_CODE_SUCCESS         = 0x03;
-    private static final String USER_REGISTER            = "user_register";
-    private static final String GET_CODE                 = "GET_CODE";
+    private static final String USER_SAVE_PWD            = "user_save_pwd";
+    private static final String GET_CODE                 = "get_code";
 
 
     private BaseHandler mHandler = new BaseHandler(this)
@@ -63,9 +63,9 @@ public class ForgetPwdActivity extends BaseActivity implements IRequestListener
 
 
                 case REQUEST_REGISTER_SUCCESS:
-                    ToastUtil.show(ForgetPwdActivity.this, "注册成功!");
+                    ToastUtil.show(ForgetPwdActivity.this, "新密码保存成功!");
+                    finish();
                     break;
-
 
                 case REQUEST_FAIL:
                     ToastUtil.show(ForgetPwdActivity.this, msg.obj.toString());
@@ -125,9 +125,9 @@ public class ForgetPwdActivity extends BaseActivity implements IRequestListener
                 return;
             }
 
-
             Map<String, String> valuePairs = new HashMap<>();
-            DataRequest.instance().request(ForgetPwdActivity.this, Urls.getLoginUrl(), this, HttpRequest.POST, GET_CODE, valuePairs,
+            valuePairs.put("mobile", phone);
+            DataRequest.instance().request(ForgetPwdActivity.this, Urls.getVerifycodeUrl(), this, HttpRequest.POST, GET_CODE, valuePairs,
                     new ResultHandler());
         }
         else if (v == btnSave)
@@ -162,7 +162,11 @@ public class ForgetPwdActivity extends BaseActivity implements IRequestListener
 
 
             Map<String, String> valuePairs = new HashMap<>();
-            DataRequest.instance().request(ForgetPwdActivity.this, Urls.getLoginUrl(), this, HttpRequest.POST, USER_REGISTER, valuePairs,
+            valuePairs.put("mobile", phone);
+            valuePairs.put("pwd", pwd);
+            valuePairs.put("role", "1");
+            valuePairs.put("verifycode", code);
+            DataRequest.instance().request(ForgetPwdActivity.this, Urls.getForgetPwdUrl(), this, HttpRequest.POST, USER_SAVE_PWD, valuePairs,
                     new ResultHandler());
 
 
@@ -172,7 +176,7 @@ public class ForgetPwdActivity extends BaseActivity implements IRequestListener
     @Override
     public void notify(String action, String resultCode, String resultMsg, Object obj)
     {
-        if (USER_REGISTER.equals(action))
+        if (USER_SAVE_PWD.equals(action))
         {
             if (ConstantUtil.RESULT_SUCCESS.equals(resultCode))
             {

@@ -35,12 +35,12 @@ public class ConfigManager
     private static final String IS_SAVE_PWD       = "is_save_pwd";
     private static final String GUEST_ID          = "guest_id";
     private static final String USER_NICK_NAME    = "user_nick_name";
-    private static final String SEARCH_MY_GROUP   = "SEARCH_MY_GROUP";
+    private static final String USER_EMAIL   = "user_email";
     private static final String SEARCH_GROUP      = "SEARCH_GROUP";
     private static final String SEARCH_VIDEO      = "SEARCH_VIDEO";
-    private static final String REGISER_ID        = "regiser_id";
-    private static final String IS_HOLDER         = "is_holder";
-    private static final String IS_UPLOAD_CHANNEL = "is_upload_channel";
+    private static final String TOKEN             = "TOKEN";
+    private static final String USER_PIC         = "useer_pic";
+    private static final String USER_SEX = "user_sex";
 
     /**
      * 返回实例
@@ -161,24 +161,16 @@ public class ConfigManager
     }
 
 
-
-
-    public void setHolder(String isHolder)
+    public void setUserPic(String isHolder)
     {
 
-        mSharedPreferences.edit().putString(IS_HOLDER, isHolder).commit();
+        mSharedPreferences.edit().putString(USER_PIC, isHolder).commit();
     }
 
-    public String getHolder()
+    public String getUserPic()
     {
-        return mSharedPreferences.getString(IS_HOLDER, "0");
+        return mSharedPreferences.getString(USER_PIC, "");
     }
-
-
-
-
-
-
 
 
     public void setUserNickName(String nickName)
@@ -191,14 +183,14 @@ public class ConfigManager
         return mSharedPreferences.getString(USER_NICK_NAME, "");
     }
 
-    public void setRegisterId(String registerId)
+    public void setToken(String registerId)
     {
-        mSharedPreferences.edit().putString(REGISER_ID, registerId).commit();
+        mSharedPreferences.edit().putString(TOKEN, registerId).commit();
     }
 
-    public String getRegisterId()
+    public String getToken()
     {
-        return mSharedPreferences.getString(REGISER_ID, "");
+        return mSharedPreferences.getString(TOKEN, "");
     }
 
     public boolean getIsFristLogin()
@@ -211,16 +203,26 @@ public class ConfigManager
         mSharedPreferences.edit().putBoolean(IS_FRIST_LOGING, status).commit();
     }
 
-    public boolean getIsUploadChannel()
+    public int  getUserSex()
+{
+    return mSharedPreferences.getInt(USER_SEX, 0);
+}
+
+    public void setUserSex(int  sex)
     {
-        return mSharedPreferences.getBoolean(IS_UPLOAD_CHANNEL, false);
+        mSharedPreferences.edit().putInt(USER_SEX, sex).commit();
     }
 
-    public void setIsUploadChannel(boolean status)
+
+    public void setUserEmail(String email)
     {
-        mSharedPreferences.edit().putBoolean(IS_UPLOAD_CHANNEL, status).commit();
+        mSharedPreferences.edit().putString(USER_EMAIL, email).commit();
     }
 
+    public String getUserEmail()
+    {
+        return mSharedPreferences.getString(USER_EMAIL, "");
+    }
 
 }
 

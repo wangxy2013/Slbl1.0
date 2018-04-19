@@ -4,9 +4,14 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.twlrg.slbl.R;
+import com.twlrg.slbl.activity.MainActivity;
+import com.twlrg.slbl.utils.APPUtils;
+import com.twlrg.slbl.widget.list.refresh.PullToRefreshRecyclerView;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
@@ -18,6 +23,10 @@ import butterknife.Unbinder;
 public class OrderFragment extends BaseFragment
 {
 
+    @BindView(R.id.topView)
+    View                      topView;
+    @BindView(R.id.pullToRefreshRecyclerView)
+    PullToRefreshRecyclerView pullToRefreshRecyclerView;
     private View rootView = null;
     private Unbinder unbinder;
 
@@ -42,6 +51,12 @@ public class OrderFragment extends BaseFragment
         return rootView;
     }
 
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        ((MainActivity) getActivity()).changeTabStatusColor(2);
+    }
 
     @Override
     protected void initData()
@@ -64,6 +79,7 @@ public class OrderFragment extends BaseFragment
     @Override
     protected void initViewData()
     {
-
+        topView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, APPUtils.getStatusBarHeight(getActivity())));
     }
+
 }

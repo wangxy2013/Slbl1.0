@@ -2,10 +2,13 @@ package com.twlrg.slbl.activity;
 
 import android.annotation.TargetApi;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -15,6 +18,8 @@ import com.twlrg.slbl.R;
 import com.twlrg.slbl.utils.LogUtil;
 import com.twlrg.slbl.utils.StatusBarUtil;
 import com.twlrg.slbl.widget.CustomProgressDialog;
+
+import java.lang.reflect.Field;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -48,7 +53,7 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
      *
      * @param isDark
      */
-    public void setStausBarTextDeep(boolean isDark)
+    public void setStatusBarTextDeep(boolean isDark)
     {
         if (isDark == true)
         {
