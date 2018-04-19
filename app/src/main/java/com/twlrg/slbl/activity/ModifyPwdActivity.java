@@ -1,6 +1,7 @@
 package com.twlrg.slbl.activity;
 
 import android.os.Bundle;
+import android.os.Message;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,9 +12,19 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.twlrg.slbl.R;
+import com.twlrg.slbl.http.DataRequest;
+import com.twlrg.slbl.http.HttpRequest;
+import com.twlrg.slbl.http.IRequestListener;
+import com.twlrg.slbl.json.LoginHandler;
 import com.twlrg.slbl.utils.APPUtils;
+import com.twlrg.slbl.utils.ConfigManager;
+import com.twlrg.slbl.utils.ConstantUtil;
 import com.twlrg.slbl.utils.StringUtils;
 import com.twlrg.slbl.utils.ToastUtil;
+import com.twlrg.slbl.utils.Urls;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -23,7 +34,7 @@ import butterknife.ButterKnife;
  * 邮箱：wangxianyun1@163.com
  * 描述：修改密码
  */
-public class ModifyPwdActivity extends BaseActivity
+public class ModifyPwdActivity extends BaseActivity implements IRequestListener
 {
     @BindView(R.id.tv_title)
     TextView  tvTitle;
@@ -38,7 +49,41 @@ public class ModifyPwdActivity extends BaseActivity
     @BindView(R.id.iv_back)
     ImageView ivBack;
     @BindView(R.id.topView)
-    View            topView;
+    View      topView;
+
+
+    private static final int    REQUEST_LOGIN_SUCCESS = 0x01;
+    public static final  int    REQUEST_FAIL          = 0x02;
+    private static final String USER_LOGIN            = "user_login";
+
+
+    private BaseHandler mHandler = new BaseHandler(this)
+    {
+        @Override
+        public void handleMessage(Message msg)
+        {
+            super.handleMessage(msg);
+            switch (msg.what)
+            {
+
+
+                case REQUEST_LOGIN_SUCCESS:
+                    ToastUtil.show(ModifyPwdActivity.this, "密码修改成功!");
+                    ConfigManager.instance().setUserPwd(etNewPwd.getText().toString());
+                    finish();
+                    break;
+
+
+                case REQUEST_FAIL:
+                    ToastUtil.show(ModifyPwdActivity.this, msg.obj.toString());
+                    break;
+
+
+            }
+        }
+    };
+
+
     @Override
     protected void initData()
     {
@@ -81,18 +126,18 @@ public class ModifyPwdActivity extends BaseActivity
             String newPwd = etNewPwd.getText().toString();
             String newPwd1 = etNewPwd1.getText().toString();
 
-            if (StringUtils.stringIsEmpty(oldPwd))
+            if (StringUtils.stringIsEmpty(oldPwd) || !oldPwd.equals(ConfigManager.instance().getUserPwd()))
             {
-                ToastUtil.show(this, "请输入旧密码");
+                ToastUtil.show(this, "请输入正确的旧密码");
                 return;
             }
-
 
             if (StringUtils.stringIsEmpty(newPwd))
             {
                 ToastUtil.show(this, "请输入新密码");
                 return;
             }
+
 
             if (newPwd.length() < 8)
             {
@@ -105,6 +150,32 @@ public class ModifyPwdActivity extends BaseActivity
             {
                 ToastUtil.show(this, "两次新密码输入不一致");
                 return;
+            }
+            Map<String, String> valuePairs = new HashMap<>();
+            valuePairs.put("uid", ConfigManager.instance().getUserID());
+            valuePairs.put("pwd", newPwd);
+            valuePairs.put("role", "1");
+            valuePairs.put("token", ConfigManager.instance().getToken());
+
+            DataRequest.instance().request(ModifyPwdActivity.this, Urls.getUpdatePwdUrl(), this, HttpRequest.POST, USER_LOGIN, valuePairs,
+                    new LoginHandler());
+
+        }
+    }
+
+    @Override
+    public void notify(String action, String resultCode, String resultMsg, Object obj)
+    {
+        if (USER_LOGIN.equals(action))
+        {
+            if (ConstantUtil.RESULT_SUCCESS.equals(resultCode))
+            {
+                mHandler.sendMessage(mHandler.obtainMessage(REQUEST_LOGIN_SUCCESS, obj));
+            }
+
+            else
+            {
+                mHandler.sendMessage(mHandler.obtainMessage(REQUEST_FAIL, resultMsg));
             }
         }
     }

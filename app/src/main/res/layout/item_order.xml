@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout
-    android:id="@+id/ll_head"
+    android:id="@+id/ll_item"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -15,13 +15,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <TextView
+        <com.twlrg.slbl.widget.AutoFitTextView
             android:id="@+id/tv_merchant"
-            android:layout_width="wrap_content"
+            android:layout_toLeftOf="@+id/tv_total_fee"
+            android:layout_width="match_parent"
+            android:maxLines="1"
+            android:layout_marginRight="@dimen/dm_15"
             android:layout_height="wrap_content"
             android:text="某某酒店1"
             android:textColor="@color/black"
-            android:textSize="@dimen/t14"/>
+            android:textSize="@dimen/t16"/>
 
         <TextView
             android:id="@+id/tv_total_fee"

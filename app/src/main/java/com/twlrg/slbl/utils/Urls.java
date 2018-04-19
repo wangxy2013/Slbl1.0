@@ -69,12 +69,19 @@ public class Urls
     }
 
 
+    //修改用户信息
+    public static String getUpdateUserInfoUrl()
+    {
+        return BASE_URL + "user/update_userinfo";
+    }
 
 
 
-
-
-
+    //获取订单列表
+    public static String getOrderListUrl()
+    {
+        return BASE_URL + "order/list_info";
+    }
 
 
 

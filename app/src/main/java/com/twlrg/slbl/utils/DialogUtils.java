@@ -16,7 +16,10 @@ import android.widget.TextView;
 
 
 import com.twlrg.slbl.R;
+import com.twlrg.slbl.adapter.CategoryAdapter;
+import com.twlrg.slbl.listener.MyItemClickListener;
 import com.twlrg.slbl.listener.MyOnClickListener;
+import com.twlrg.slbl.widget.NoScrollListView;
 
 import java.util.List;
 
@@ -71,40 +74,40 @@ public class DialogUtils
 //    }
 
 
-//    public static Dialog showCategoryDialog(Context mContext, List<String> list, final MyItemClickListener mMyItemClickListener)
-//    {
-//        final Dialog dialog = new Dialog(mContext, R.style.dialogNoAnimation);
-//        dialog.setCancelable(false);
-//        final View view = LayoutInflater.from(mContext).inflate(R.layout.dialog_type, null);
-//        dialog.setContentView(view);
-//
-//        NoScrollListView mListView = (NoScrollListView) view.findViewById(R.id.lv_type);
-//        CategoryAdapter mCategoryAdapter = new CategoryAdapter(mContext, list);
-//        mListView.setAdapter(mCategoryAdapter);
-//
-//        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
-//        {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
-//            {
-//                mMyItemClickListener.onItemClick(view, position);
-//                dialog.dismiss();
-//            }
-//        });
-//
-//        //Dialog部分
-//        Window mWindow = dialog.getWindow();
-//        WindowManager.LayoutParams lp = mWindow.getAttributes();
-//        DisplayMetrics dm = new DisplayMetrics();
-//        ((Activity) mContext).getWindowManager().getDefaultDisplay().getMetrics(dm);
-//        lp.width = (int) (dm.widthPixels * 0.75);
-//        mWindow.setGravity(Gravity.CENTER);
-//        mWindow.setAttributes(lp);
-//        dialog.setCancelable(true);
-//        dialog.show();
-//        return dialog;
-//    }
-//
+    public static Dialog showCategoryDialog(Context mContext, List<String> list, final MyItemClickListener mMyItemClickListener)
+    {
+        final Dialog dialog = new Dialog(mContext, R.style.dialogNoAnimation);
+        dialog.setCancelable(false);
+        final View view = LayoutInflater.from(mContext).inflate(R.layout.dialog_category, null);
+        dialog.setContentView(view);
+
+        NoScrollListView mListView = (NoScrollListView) view.findViewById(R.id.lv_type);
+        CategoryAdapter mCategoryAdapter = new CategoryAdapter(mContext, list);
+        mListView.setAdapter(mCategoryAdapter);
+
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+            {
+                mMyItemClickListener.onItemClick(view, position);
+                dialog.dismiss();
+            }
+        });
+
+        //Dialog部分
+        Window mWindow = dialog.getWindow();
+        WindowManager.LayoutParams lp = mWindow.getAttributes();
+        DisplayMetrics dm = new DisplayMetrics();
+        ((Activity) mContext).getWindowManager().getDefaultDisplay().getMetrics(dm);
+        lp.width = (int) (dm.widthPixels * 0.75);
+        mWindow.setGravity(Gravity.CENTER);
+        mWindow.setAttributes(lp);
+        dialog.setCancelable(true);
+        dialog.show();
+        return dialog;
+    }
+
     public static void showVersionUpdateDialog(Context mContext, String content, final MyOnClickListener.OnSubmitListener listener)
     {
         final Dialog dialog = new Dialog(mContext, R.style.dialogNoAnimation);

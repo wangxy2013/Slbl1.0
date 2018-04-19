@@ -77,7 +77,6 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
     PullToRefreshRecyclerView mPullToRefreshRecyclerView;
     @BindView(R.id.topView)
     View                      topView;
-    Unbinder unbinder1;
 
     private RecyclerView mRecyclerView;
     private View rootView = null;
@@ -146,7 +145,6 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
         {
             parent.removeView(rootView);
         }
-        unbinder1 = ButterKnife.bind(this, rootView);
         return rootView;
     }
 
@@ -297,6 +295,11 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
     public void onDestroyView()
     {
         super.onDestroyView();
-        unbinder1.unbind();
+
+        if (null != unbinder)
+        {
+            unbinder.unbind();
+            unbinder = null;
+        }
     }
 }

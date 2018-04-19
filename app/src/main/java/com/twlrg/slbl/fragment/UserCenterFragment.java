@@ -23,14 +23,18 @@ import com.twlrg.slbl.http.HttpRequest;
 import com.twlrg.slbl.http.IRequestListener;
 import com.twlrg.slbl.json.LoginHandler;
 import com.twlrg.slbl.json.ResultHandler;
+import com.twlrg.slbl.listener.MyItemClickListener;
 import com.twlrg.slbl.utils.APPUtils;
 import com.twlrg.slbl.utils.ConfigManager;
 import com.twlrg.slbl.utils.ConstantUtil;
+import com.twlrg.slbl.utils.DialogUtils;
 import com.twlrg.slbl.utils.LogUtil;
+import com.twlrg.slbl.utils.StringUtils;
 import com.twlrg.slbl.utils.ToastUtil;
 import com.twlrg.slbl.utils.Urls;
 import com.twlrg.slbl.widget.CircleImageView;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -76,11 +80,11 @@ public class UserCenterFragment extends BaseFragment implements View.OnClickList
     private Unbinder unbinder;
 
     private int mEditStatus;
+    private int sexType;
 
-
-    private static final int    REQUEST_LOGIN_SUCCESS = 0x01;
-    public static final  int    REQUEST_FAIL          = 0x02;
-    private static final String GET_USER_INFO         = "get_user_info";
+    private static final int    REQUEST_SUCCESS  = 0x01;
+    public static final  int    REQUEST_FAIL     = 0x02;
+    private static final String UPDATE_USER_INFO = "update_user_info";
 
 
     private BaseHandler mHandler = new BaseHandler(getActivity())
@@ -93,7 +97,14 @@ public class UserCenterFragment extends BaseFragment implements View.OnClickList
             {
 
 
-                case REQUEST_LOGIN_SUCCESS:
+                case REQUEST_SUCCESS:
+
+                    ConfigManager.instance().setUserEmail(etUserEmail.getText().toString());
+                    ConfigManager.instance().setUserSex(sexType);
+                    ConfigManager.instance().setUserName(etUserName.getText().toString());
+                    ConfigManager.instance().setUserNickName(etNickName.getText().toString());
+                    showEditStatus(false);
+                    ToastUtil.show(getActivity(), "保存成功");
 
                     break;
 
@@ -141,7 +152,7 @@ public class UserCenterFragment extends BaseFragment implements View.OnClickList
         {
             startActivity(new Intent(getActivity(), LoginActivity.class));
         }
-
+        showEditStatus(false);
     }
 
     @Override
@@ -163,6 +174,7 @@ public class UserCenterFragment extends BaseFragment implements View.OnClickList
         tvCancel.setOnClickListener(this);
         tvModifyPwd.setOnClickListener(this);
         btnLogout.setOnClickListener(this);
+        tvUserSex.setOnClickListener(this);
     }
 
     @Override
@@ -251,6 +263,39 @@ public class UserCenterFragment extends BaseFragment implements View.OnClickList
             else
             {
                 //TODO 执行保存操作  保存成功后 调用  showEditStatus(false);
+
+                String nickname = etNickName.getText().toString();
+                String name = etUserName.getText().toString();
+                String email = etUserEmail.getText().toString();
+
+
+                if (StringUtils.stringIsEmpty(nickname))
+                {
+                    ToastUtil.show(getActivity(), "请输入昵称");
+                    return;
+                }
+                if (StringUtils.stringIsEmpty(name))
+                {
+                    ToastUtil.show(getActivity(), "请输入姓名");
+                    return;
+                }
+
+                if (!StringUtils.checkEmail(email))
+                {
+                    ToastUtil.show(getActivity(), "请输入正确的邮箱");
+                    return;
+                }
+                Map<String, String> valuePairs = new HashMap<>();
+                valuePairs.put("uid", ConfigManager.instance().getUserID());
+                valuePairs.put("token", ConfigManager.instance().getToken());
+                valuePairs.put("role", "1");
+                valuePairs.put("nickname", nickname);
+                valuePairs.put("sex", sexType + "");
+                valuePairs.put("email", email);
+                valuePairs.put("name", name);
+                DataRequest.instance().request(getActivity(), Urls.getUpdateUserInfoUrl(), this, HttpRequest.POST, UPDATE_USER_INFO, valuePairs,
+                        new ResultHandler());
+
             }
         }
         else if (v == btnLogout)
@@ -264,7 +309,28 @@ public class UserCenterFragment extends BaseFragment implements View.OnClickList
         }
         else if (v == tvUserSex)
         {
+            String[] sexArr = getActivity().getResources().getStringArray(R.array.sexType);
+            DialogUtils.showCategoryDialog(getActivity(), Arrays.asList(sexArr), new MyItemClickListener()
+            {
+                @Override
+                public void onItemClick(View view, int position)
+                {
+                    sexType = position;
 
+                    if (sexType == 0)
+                    {
+                        tvUserSex.setText("保密");
+                    }
+                    else if (sexType == 1)
+                    {
+                        tvUserSex.setText("男");
+                    }
+                    else
+                    {
+                        tvUserSex.setText("女");
+                    }
+                }
+            });
         }
 
     }
@@ -272,11 +338,11 @@ public class UserCenterFragment extends BaseFragment implements View.OnClickList
     @Override
     public void notify(String action, String resultCode, String resultMsg, Object obj)
     {
-        if (GET_USER_INFO.equals(action))
+        if (UPDATE_USER_INFO.equals(action))
         {
             if (ConstantUtil.RESULT_SUCCESS.equals(resultCode))
             {
-                mHandler.sendMessage(mHandler.obtainMessage(REQUEST_LOGIN_SUCCESS, obj));
+                mHandler.sendMessage(mHandler.obtainMessage(REQUEST_SUCCESS, obj));
             }
 
             else
