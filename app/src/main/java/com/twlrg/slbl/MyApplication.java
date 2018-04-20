@@ -5,6 +5,7 @@ import android.app.Application;
 
 import com.twlrg.slbl.utils.APPUtils;
 import com.twlrg.slbl.utils.ConfigManager;
+import com.twlrg.slbl.utils.StringUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,8 +34,19 @@ public class MyApplication extends Application
         APPUtils.configImageLoader(getApplicationContext());
         ConfigManager.instance().init(this);
 
-
     }
 
+
+    public boolean isLogin()
+    {
+        if (StringUtils.stringIsEmpty(ConfigManager.instance().getUserID()))
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
 
 }

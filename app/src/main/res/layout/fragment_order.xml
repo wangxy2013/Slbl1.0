@@ -7,7 +7,7 @@
     android:orientation="vertical"
     >
 
-
+    <include layout="@layout/layout_head"/>
     <com.twlrg.slbl.widget.list.refresh.PullToRefreshRecyclerView
         android:id="@+id/pullToRefreshRecyclerView"
         android:layout_width="match_parent"

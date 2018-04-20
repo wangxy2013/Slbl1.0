@@ -19,10 +19,15 @@ public class LoginHandler extends JsonHandler
     {
         try
         {
-            JSONObject obj = jsonObj.optJSONObject("bodys");
-            ConfigManager.instance().setUserId(obj.optString("USER_ID"));
-            ConfigManager.instance().setUserName(obj.optString("NAME"));
-
+            JSONObject obj = jsonObj.optJSONObject("data");
+            ConfigManager.instance().setUserId(obj.optString("uid"));
+            ConfigManager.instance().setUserName(obj.optString("name"));
+            ConfigManager.instance().setToken(obj.optString("token"));
+            ConfigManager.instance().setUserNickName(obj.optString("nickname"));
+            ConfigManager.instance().setMobile(obj.optString("mobile"));
+            ConfigManager.instance().setUserPic(obj.optString("portrait"));
+            ConfigManager.instance().setUserSex(obj.optInt("sex"));
+            ConfigManager.instance().setUserEmail(obj.optString("email"));
         } catch (Exception e)
         {
             e.printStackTrace();

@@ -7,6 +7,7 @@
         <item>未知</item>
     </string-array>
     <string-array name="sexType">
+        <item>保密</item>
         <item>男</item>
         <item>女</item>
     </string-array>

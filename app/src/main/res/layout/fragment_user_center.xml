@@ -9,10 +9,9 @@
 
 
     <View
+        android:id="@+id/topView"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dm_1"
-        android:background="@color/line"/>
-
+        android:layout_height="wrap_content"/>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/dm_40">

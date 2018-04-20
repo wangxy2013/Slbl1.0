@@ -64,6 +64,7 @@ public class RegisterActivity extends BaseActivity implements IRequestListener
 
                 case REQUEST_REGISTER_SUCCESS:
                     ToastUtil.show(RegisterActivity.this, "注册成功!");
+                    finish();
                     break;
 
 
@@ -125,9 +126,9 @@ public class RegisterActivity extends BaseActivity implements IRequestListener
                 return;
             }
 
-
             Map<String, String> valuePairs = new HashMap<>();
-            DataRequest.instance().request(RegisterActivity.this, Urls.getLoginUrl(), this, HttpRequest.POST, GET_CODE, valuePairs,
+            valuePairs.put("mobile",phone);
+            DataRequest.instance().request(RegisterActivity.this, Urls.getVerifycodeUrl(), this, HttpRequest.POST, GET_CODE, valuePairs,
                     new ResultHandler());
         }
         else if (v == btnRegister)
@@ -160,9 +161,14 @@ public class RegisterActivity extends BaseActivity implements IRequestListener
                 return;
             }
 
-
             Map<String, String> valuePairs = new HashMap<>();
-            DataRequest.instance().request(RegisterActivity.this, Urls.getLoginUrl(), this, HttpRequest.POST, USER_REGISTER, valuePairs,
+            valuePairs.put("nickname",phone);
+            valuePairs.put("mobile",phone);
+            valuePairs.put("pwd",pwd);
+            valuePairs.put("role","1");
+            valuePairs.put("sex","0");
+            valuePairs.put("verifycode",code);
+            DataRequest.instance().request(RegisterActivity.this, Urls.getRegisterUrl(), this, HttpRequest.POST, USER_REGISTER, valuePairs,
                     new ResultHandler());
 
 

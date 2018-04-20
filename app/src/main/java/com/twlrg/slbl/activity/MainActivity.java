@@ -14,6 +14,8 @@ import com.twlrg.slbl.fragment.HomeFragment;
 import com.twlrg.slbl.fragment.MessageFragment;
 import com.twlrg.slbl.fragment.OrderFragment;
 import com.twlrg.slbl.fragment.UserCenterFragment;
+import com.twlrg.slbl.utils.ConfigManager;
+import com.twlrg.slbl.utils.StatusBarUtil;
 
 import butterknife.BindView;
 
@@ -41,7 +43,7 @@ public class MainActivity extends BaseActivity
     protected void initViews(Bundle savedInstanceState)
     {
         setContentView(R.layout.activity_main);
-        setStatusColor(ContextCompat.getColor(this, R.color.black));
+        setTranslucentStatus();
     }
 
     @Override
@@ -83,15 +85,16 @@ public class MainActivity extends BaseActivity
         return view;
     }
 
-    public void changeTab(int index)
+    public void changeTabStatusColor(int index)
     {
-        fragmentTabHost.setCurrentTab(index);
 
-        switch (index)
+        if (index == 0)
         {
-            case 0:
-                setStatusColor(ContextCompat.getColor(this, R.color.black));
-                break;
+            setStatusBarTextDeep(false);
+        }
+        else
+        {
+            setStatusBarTextDeep(true);
         }
 
 

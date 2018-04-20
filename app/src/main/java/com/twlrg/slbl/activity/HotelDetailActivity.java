@@ -7,7 +7,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
@@ -118,6 +117,10 @@ public class HotelDetailActivity extends BaseActivity implements IRequestListene
     TextView     tvBreakfastType33;
     @BindView(R.id.tv_breakfast_type44)
     TextView     tvBreakfastType44;
+    @BindView(R.id.tv_conference)
+    TextView     tvConference;
+
+
     private String id, city_value, s_date, e_date, lng, lat, title;
     private boolean summary_is_open;
 
@@ -131,6 +134,11 @@ public class HotelDetailActivity extends BaseActivity implements IRequestListene
     private List<RoomInfo>       roomInfoList       = new ArrayList<>();
     private List<ConferenceInfo> conferenceInfoList = new ArrayList<>();
 
+    private List<RoomInfo> roomInfoListBreakfast = new ArrayList<>();
+
+
+    private String  mBreakfastType; //wz dz sz
+    private boolean isShowMoreRoom, isShowMoreConference;
 
     private static final int    REQUEST_SUCCESS  = 0x01;
     private static final int    REQUEST_FAIL     = 0x02;
@@ -168,12 +176,10 @@ public class HotelDetailActivity extends BaseActivity implements IRequestListene
                     roomInfoListAll.addAll(mHotelDetailHandler.getRoomInfoList());
                     conferenceInfoListAll.addAll(mHotelDetailHandler.getConferenceInfoList());
 
-                    roomInfoList.addAll(mHotelDetailHandler.getRoomInfoList());
-                    conferenceInfoList.addAll(mHotelDetailHandler.getConferenceInfoList());
-
-                    mConferenceAdapter.notifyDataSetChanged();
-                    mRoomAdapter.notifyDataSetChanged();
-
+                    //                    roomInfoList.addAll(mHotelDetailHandler.getRoomInfoList());
+                    //                    conferenceInfoList.addAll(mHotelDetailHandler.getConferenceInfoList());
+                    updateRoom();
+                    updateConference();
 
                     break;
 
@@ -263,7 +269,8 @@ public class HotelDetailActivity extends BaseActivity implements IRequestListene
     protected void initViewData()
     {
         tvTitle.setText(title);
-
+        tvBreakfastType1.setSelected(true);
+        tvBreakfastType11.setSelected(true);
         rvRoom.setLayoutManager(new FullyLinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         rvRoom.addItemDecoration(new EmptyDecoration(HotelDetailActivity.this, ""));
         mRoomAdapter = new RoomAdapter(roomInfoList, HotelDetailActivity.this, new MyItemClickListener()
@@ -317,12 +324,12 @@ public class HotelDetailActivity extends BaseActivity implements IRequestListene
         //更多房间
         else if (v == llRoomMore)
         {
-
+            updateRoom();
         }
         //更多会议室
         else if (v == llConferenceMore)
         {
-
+            updateConference();
         }
         //查看全部简介
         else if (v == tvSummaryMore)
@@ -358,25 +365,197 @@ public class HotelDetailActivity extends BaseActivity implements IRequestListene
         //不限早餐
         else if (v == tvBreakfastType1 || v == tvBreakfastType11)
         {
-
+            mBreakfastType = "bx";
+            isShowMoreRoom=false;
+            updateRoom();
+            tvBreakfastType1.setSelected(true);
+            tvBreakfastType11.setSelected(true);
+            tvBreakfastType2.setSelected(false);
+            tvBreakfastType22.setSelected(false);
+            tvBreakfastType3.setSelected(false);
+            tvBreakfastType33.setSelected(false);
+            tvBreakfastType4.setSelected(false);
+            tvBreakfastType44.setSelected(false);
         }
         //无早餐
         else if (v == tvBreakfastType2 || v == tvBreakfastType22)
         {
-
+            mBreakfastType = "wz";
+            isShowMoreRoom=false;
+            updateRoom();
+            tvBreakfastType1.setSelected(false);
+            tvBreakfastType11.setSelected(false);
+            tvBreakfastType2.setSelected(true);
+            tvBreakfastType22.setSelected(true);
+            tvBreakfastType3.setSelected(false);
+            tvBreakfastType33.setSelected(false);
+            tvBreakfastType4.setSelected(false);
+            tvBreakfastType44.setSelected(false);
         }
         //单早餐
         else if (v == tvBreakfastType3 || v == tvBreakfastType33)
         {
-
+            mBreakfastType = "dz";
+            isShowMoreRoom=false;
+            updateRoom();
+            tvBreakfastType1.setSelected(false);
+            tvBreakfastType11.setSelected(false);
+            tvBreakfastType2.setSelected(false);
+            tvBreakfastType22.setSelected(false);
+            tvBreakfastType3.setSelected(true);
+            tvBreakfastType33.setSelected(true);
+            tvBreakfastType4.setSelected(false);
+            tvBreakfastType44.setSelected(false);
         }
         //双早餐
         else if (v == tvBreakfastType4 || v == tvBreakfastType44)
         {
-
+            mBreakfastType = "sz";
+            isShowMoreRoom=false;
+            updateRoom();
+            tvBreakfastType1.setSelected(false);
+            tvBreakfastType11.setSelected(false);
+            tvBreakfastType2.setSelected(false);
+            tvBreakfastType22.setSelected(false);
+            tvBreakfastType3.setSelected(false);
+            tvBreakfastType33.setSelected(false);
+            tvBreakfastType4.setSelected(true);
+            tvBreakfastType44.setSelected(true);
         }
 
     }
+
+
+    private List<RoomInfo> getBreakfastRoomList()
+    {
+        List<RoomInfo> list = new ArrayList<>();
+
+        if ("wz".equals(mBreakfastType))
+        {
+            for (int i = 0; i < roomInfoListAll.size(); i++)
+            {
+                if ("wz".equals(roomInfoListAll.get(i).getPrice_type()))
+
+                {
+                    list.add(roomInfoListAll.get(i));
+                }
+            }
+        }
+        else if ("dz".equals(mBreakfastType))
+        {
+            for (int i = 0; i < roomInfoListAll.size(); i++)
+            {
+                if ("dz".equals(roomInfoListAll.get(i).getPrice_type()))
+
+                {
+                    list.add(roomInfoListAll.get(i));
+                }
+            }
+        }
+        else if ("sz".equals(mBreakfastType))
+        {
+            for (int i = 0; i < roomInfoListAll.size(); i++)
+            {
+                if ("sz".equals(roomInfoListAll.get(i).getPrice_type()))
+
+                {
+                    list.add(roomInfoListAll.get(i));
+                }
+            }
+        }
+        else
+        {
+            list.addAll(roomInfoListAll);
+        }
+
+        return list;
+    }
+
+
+    private void updateRoom()
+    {
+        roomInfoListBreakfast.clear();
+        roomInfoListBreakfast.addAll(getBreakfastRoomList());
+        if (isShowMoreRoom)
+        {
+            isShowMoreRoom = false;
+            roomInfoList.clear();
+            roomInfoList.addAll(roomInfoListBreakfast);
+            ivRoomMore.setImageResource(R.drawable.ic_arrow_up_64);
+        }
+        else
+        {
+
+            ivRoomMore.setImageResource(R.drawable.ic_arrow_down_64);
+            roomInfoList.clear();
+            if (roomInfoListBreakfast.size() > 2)
+            {
+                isShowMoreRoom = true;
+                for (int i = 0; i < 2; i++)
+                {
+                    roomInfoList.add(roomInfoListBreakfast.get(i));
+                }
+
+                llRoomMore.setVisibility(View.VISIBLE);
+
+            }
+            else
+            {
+                roomInfoList.addAll(roomInfoListBreakfast);
+                llRoomMore.setVisibility(View.GONE);
+            }
+
+
+        }
+        mRoomAdapter.notifyDataSetChanged();
+    }
+
+
+    private void updateConference()
+    {
+
+        if (isShowMoreConference)
+        {
+            isShowMoreConference = false;
+            conferenceInfoList.clear();
+            conferenceInfoList.addAll(conferenceInfoListAll);
+            ivConferenceMore.setImageResource(R.drawable.ic_arrow_up_64);
+        }
+        else
+        {
+            ivConferenceMore.setImageResource(R.drawable.ic_arrow_down_64);
+            conferenceInfoList.clear();
+            if (conferenceInfoListAll.size() > 1)
+            {
+                isShowMoreConference = true;
+                for (int i = 0; i < 1; i++)
+                {
+                    conferenceInfoList.add(conferenceInfoListAll.get(i));
+                }
+
+                llConferenceMore.setVisibility(View.VISIBLE);
+
+            }
+            else
+            {
+                conferenceInfoList.addAll(conferenceInfoListAll);
+                llConferenceMore.setVisibility(View.GONE);
+            }
+
+
+        }
+
+        if (conferenceInfoList.isEmpty())
+        {
+            tvConference.setVisibility(View.GONE);
+        }
+        else
+        {
+            tvConference.setVisibility(View.VISIBLE);
+        }
+        mConferenceAdapter.notifyDataSetChanged();
+    }
+
 
     @Override
     public void notify(String action, String resultCode, String resultMsg, Object obj)

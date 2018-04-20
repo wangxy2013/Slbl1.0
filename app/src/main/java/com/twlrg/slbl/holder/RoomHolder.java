@@ -15,6 +15,7 @@ import com.twlrg.slbl.entity.HotelInfo;
 import com.twlrg.slbl.entity.RoomInfo;
 import com.twlrg.slbl.listener.MyItemClickListener;
 import com.twlrg.slbl.utils.APPUtils;
+import com.twlrg.slbl.utils.StringUtils;
 import com.twlrg.slbl.utils.Urls;
 import com.twlrg.slbl.widget.AutoFitTextView;
 
@@ -68,6 +69,12 @@ public class RoomHolder extends RecyclerView.ViewHolder
         String mWifi = "有WIFI";
         String mWindow = "有窗";
         String zc = "无早餐";
+        String floor =  mRoomInfo.getFloor();
+
+        if(!StringUtils.stringIsEmpty(floor) && !floor.contains("层"))
+        {
+            floor = floor+"层";
+        }
 
         if (!"1".equals(smokeless))
         {
@@ -95,7 +102,7 @@ public class RoomHolder extends RecyclerView.ViewHolder
             zc = "双早餐";
         }
 
-        mAreaTv.setText(mRoomInfo.getArea() + "/" + mRoomInfo.getFloor() + "/" + mWindow + "/" + mSmokeless);
+        mAreaTv.setText(mRoomInfo.getArea() + "㎡/" + floor+ "/" + mWindow + "/" + mSmokeless);
         mBedTypeTv.setText(mRoomInfo.getBed_type() + "  " + zc + "  " + mWifi);
 
         mReserveTv.setOnClickListener(new View.OnClickListener()
