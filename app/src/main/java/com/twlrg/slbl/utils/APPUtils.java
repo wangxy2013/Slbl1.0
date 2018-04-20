@@ -539,7 +539,7 @@ public class APPUtils
     {
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(mContext)
                 .setIcon(R.drawable.ic_launcher)
-                .setMessage("是否安装阳光扶贫");
+                .setMessage("是否安装");
         mBuilder.setPositiveButton("确定", new DialogInterface.OnClickListener()
         {
 
