@@ -152,6 +152,33 @@ public class UserCenterFragment extends BaseFragment implements View.OnClickList
         {
             startActivity(new Intent(getActivity(), LoginActivity.class));
         }
+        else
+        {
+
+            ImageLoader.getInstance().displayImage(Urls.getImgUrl(ConfigManager.instance().getUserPic()), ivUserHead);
+            etNickName.setText(ConfigManager.instance().getUserNickName());
+            tvAccount.setText(ConfigManager.instance().getMobile());
+            etUserName.setText(ConfigManager.instance().getUserName());
+
+            int sex = ConfigManager.instance().getUserSex();
+
+            if (sex == 0)
+            {
+                tvUserSex.setText("保密");
+            }
+            else if (sex == 1)
+            {
+                tvUserSex.setText("男");
+            }
+            else
+            {
+                tvUserSex.setText("女");
+            }
+
+            tvUserPhone.setText(ConfigManager.instance().getMobile());
+            etUserEmail.setText(ConfigManager.instance().getUserEmail());
+            tvVersion.setText("版本：V" + APPUtils.getVersionName(getActivity()));
+        }
         showEditStatus(false);
     }
 
@@ -183,29 +210,6 @@ public class UserCenterFragment extends BaseFragment implements View.OnClickList
         showEditStatus(false);
         topView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, APPUtils.getStatusBarHeight(getActivity())));
 
-        ImageLoader.getInstance().displayImage(Urls.getImgUrl(ConfigManager.instance().getUserPic()), ivUserHead);
-        etNickName.setText(ConfigManager.instance().getUserNickName());
-        tvAccount.setText(ConfigManager.instance().getMobile());
-        etUserName.setText(ConfigManager.instance().getUserName());
-
-        int sex = ConfigManager.instance().getUserSex();
-
-        if (sex == 0)
-        {
-            tvUserSex.setText("保密");
-        }
-        else if (sex == 1)
-        {
-            tvUserSex.setText("男");
-        }
-        else
-        {
-            tvUserSex.setText("女");
-        }
-
-        tvUserPhone.setText(ConfigManager.instance().getMobile());
-        etUserEmail.setText(ConfigManager.instance().getUserEmail());
-        tvVersion.setText("版本：V" + APPUtils.getVersionName(getActivity()));
 
     }
 

@@ -41,6 +41,6 @@
         <item>150元-300元</item>
         <item>301元-450元</item>
         <item>451元-600元</item>
-        <item>00元以上</item>
+        <item>600元以上</item>
     </string-array>
 </resources>

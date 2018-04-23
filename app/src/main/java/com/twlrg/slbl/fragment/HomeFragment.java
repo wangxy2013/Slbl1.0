@@ -3,7 +3,7 @@ package com.twlrg.slbl.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
-import android.support.v7.widget.LinearLayoutCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -18,6 +18,7 @@ import com.twlrg.slbl.activity.BaseHandler;
 import com.twlrg.slbl.activity.HotelDetailActivity;
 import com.twlrg.slbl.activity.MainActivity;
 import com.twlrg.slbl.adapter.HotelAdapter;
+import com.twlrg.slbl.entity.FilterInfo;
 import com.twlrg.slbl.entity.HotelInfo;
 import com.twlrg.slbl.http.DataRequest;
 import com.twlrg.slbl.http.HttpRequest;
@@ -29,6 +30,7 @@ import com.twlrg.slbl.utils.ConstantUtil;
 import com.twlrg.slbl.utils.ToastUtil;
 import com.twlrg.slbl.utils.Urls;
 import com.twlrg.slbl.widget.EmptyDecoration;
+import com.twlrg.slbl.widget.FilterPopupWindow;
 import com.twlrg.slbl.widget.list.refresh.PullToRefreshBase;
 import com.twlrg.slbl.widget.list.refresh.PullToRefreshRecyclerView;
 
@@ -77,6 +79,9 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
     PullToRefreshRecyclerView mPullToRefreshRecyclerView;
     @BindView(R.id.topView)
     View                      topView;
+    @BindView(R.id.ll_top)
+    LinearLayout              llTopLayout;
+
 
     private RecyclerView mRecyclerView;
     private View rootView = null;
@@ -90,6 +95,15 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
     //手机定位的经纬度
     private float lng = 0;
     private float lat = 0;
+    private int star;
+    private int range;
+    private int price;
+
+
+    private List<FilterInfo> starFilterInfos     = new ArrayList<>();
+    private List<FilterInfo> distanceFilterInfos = new ArrayList<>();
+    private List<FilterInfo> priceFilterInfos    = new ArrayList<>();
+    private List<FilterInfo> moreFilterInfos     = new ArrayList<>();
 
 
     private String          mStartDate    = "2018-04-18";
@@ -152,6 +166,48 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
     @Override
     protected void initData()
     {
+        String[] starArr = getActivity().getResources().getStringArray(R.array.home_star);
+        String[] distanceArr = getActivity().getResources().getStringArray(R.array.home_distance);
+        String[] priceArr = getActivity().getResources().getStringArray(R.array.home_price);
+
+        for (int i = 0; i < starArr.length; i++)
+        {
+            FilterInfo mFilterInfo = new FilterInfo();
+            mFilterInfo.setTitle(starArr[i]);
+            if (i == 0)
+            {
+                mFilterInfo.setSelected(true);
+            }
+
+            starFilterInfos.add(mFilterInfo);
+
+        }
+
+        for (int i = 0; i < priceArr.length; i++)
+        {
+            FilterInfo mFilterInfo = new FilterInfo();
+            mFilterInfo.setTitle(priceArr[i]);
+            if (i == 0)
+            {
+                mFilterInfo.setSelected(true);
+            }
+
+            priceFilterInfos.add(mFilterInfo);
+
+        }
+
+
+        for (int i = 0; i < distanceArr.length; i++)
+        {
+            FilterInfo mFilterInfo = new FilterInfo();
+            mFilterInfo.setTitle(distanceArr[i]);
+            if (i == 0)
+            {
+                mFilterInfo.setSelected(true);
+            }
+
+            distanceFilterInfos.add(mFilterInfo);
+        }
 
     }
 
@@ -164,6 +220,10 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
     @Override
     protected void initEvent()
     {
+        rlStar.setOnClickListener(this);
+        rlDistance.setOnClickListener(this);
+        rlPrice.setOnClickListener(this);
+        rlMore.setOnClickListener(this);
 
     }
 
@@ -231,9 +291,9 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
         valuePairs.put("lat", "0");
         valuePairs.put("lng", "0");
         valuePairs.put("city_value", "2158");
-        valuePairs.put("star", "0");
-        valuePairs.put("range", "0");
-        valuePairs.put("price", "0");
+        valuePairs.put("star", star + "");
+        valuePairs.put("range", range + "");
+        valuePairs.put("price", price + "");
         valuePairs.put("s_date", "2018-04-17");
         valuePairs.put("e_date", "2018-04-18");
         valuePairs.put("page", pn + "");
@@ -258,11 +318,76 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
         getHotelList();
     }
 
+    private FilterPopupWindow mStarFilterPopupWindow;
+    private FilterPopupWindow mDistanceFilterPopupWindow;
+    private FilterPopupWindow mPriceFilterPopupWindow;
+    private FilterPopupWindow mMoreFilterPopupWindow;
 
     @Override
     public void onClick(View v)
     {
+        if (v == rlStar)
+        {
+            if (null == mStarFilterPopupWindow)
+            {
+                mStarFilterPopupWindow = new FilterPopupWindow(getActivity(), starFilterInfos, new MyItemClickListener()
+                {
+                    @Override
+                    public void onItemClick(View view, int position)
+                    {
+                        star = position;
+                        tvStar.setText(starFilterInfos.get(position).getTitle());
+                        tvStar.setTextColor(ContextCompat.getColor(getActivity(),R.color.green));
+                        mStarFilterPopupWindow.dismiss();
+                    }
+                });
 
+            }
+            mStarFilterPopupWindow.showAsDropDown(llTopLayout);
+
+        }
+        else if (v == rlDistance)
+        {
+            if (null == mDistanceFilterPopupWindow)
+            {
+                mDistanceFilterPopupWindow = new FilterPopupWindow(getActivity(), distanceFilterInfos, new MyItemClickListener()
+                {
+                    @Override
+                    public void onItemClick(View view, int position)
+                    {
+                        range = position;
+                        tvDistance.setText(distanceFilterInfos.get(position).getTitle());
+                        tvDistance.setTextColor(ContextCompat.getColor(getActivity(),R.color.green));
+                        mDistanceFilterPopupWindow.dismiss();
+                        hotelInfoList.clear();
+                        getHotelList();
+                    }
+                });
+
+            }
+            mDistanceFilterPopupWindow.showAsDropDown(llTopLayout);
+        }
+        else if (v == rlPrice)
+        {
+            if (null == mPriceFilterPopupWindow)
+            {
+                mPriceFilterPopupWindow = new FilterPopupWindow(getActivity(), priceFilterInfos, new MyItemClickListener()
+                {
+                    @Override
+                    public void onItemClick(View view, int position)
+                    {
+                        price = position;
+                        tvPrice.setText(priceFilterInfos.get(position).getTitle());
+                        tvPrice.setTextColor(ContextCompat.getColor(getActivity(),R.color.green));
+                        mPriceFilterPopupWindow.dismiss();
+                        hotelInfoList.clear();
+                        getHotelList();
+                    }
+                });
+
+            }
+            mPriceFilterPopupWindow.showAsDropDown(llTopLayout);
+        }
     }
 
 

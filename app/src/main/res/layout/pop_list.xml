@@ -6,10 +6,13 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-
+<View
+    android:background="@color/transparentBlack"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/dm_0.5"/>
     <ListView
         android:id="@+id/lv_choice"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:divider="@color/gray"
         android:dividerHeight="@dimen/dm_0.5"
