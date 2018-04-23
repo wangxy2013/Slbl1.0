@@ -1,20 +1,20 @@
 package com.twlrg.slbl.activity;
 
-import android.os.Bundle;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+        import android.os.Bundle;
+        import android.view.View;
+        import android.view.ViewGroup;
+        import android.widget.Button;
+        import android.widget.ImageView;
+        import android.widget.LinearLayout;
+        import android.widget.TextView;
 
-import com.suke.widget.SwitchButton;
-import com.twlrg.slbl.R;
-import com.twlrg.slbl.utils.APPUtils;
-import com.twlrg.slbl.utils.LogUtil;
+        import com.suke.widget.SwitchButton;
+        import com.twlrg.slbl.R;
+        import com.twlrg.slbl.utils.APPUtils;
+        import com.twlrg.slbl.utils.LogUtil;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
+        import butterknife.BindView;
+        import butterknife.ButterKnife;
 
 /**
  * 作者：王先云 on 2018/4/23 16:48
