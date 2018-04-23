@@ -48,8 +48,8 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/dm_10"
-            android:textColor="@color/white"
-            android:textSize="@dimen/t12"
+            android:textColor="@color/black"
+            android:textSize="@dimen/t14"
             />
 
 
@@ -58,4 +58,6 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/dm_1"
         android:background="@color/line"/>
+
+
 </LinearLayout>

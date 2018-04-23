@@ -100,11 +100,18 @@ public class Urls
         return BASE_URL + "order/order_cancel";
     }
 
+    //发布评论
+    public static String getAddCommentUrl()
+    {
+        return BASE_URL + "comment/add";
+    }
 
 
-
-
-
+    //获取评论列表
+    public static String getCommentListUrl()
+    {
+        return BASE_URL + "comment/list_info";
+    }
 
 
 }

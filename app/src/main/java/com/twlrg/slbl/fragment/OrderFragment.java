@@ -178,7 +178,7 @@ public class OrderFragment extends BaseFragment implements PullToRefreshBase.OnR
 
     }
 
-    private void getOrderList()
+       private void getOrderList()
     {
         Map<String, String> valuePairs = new HashMap<>();
         valuePairs.put("uid", ConfigManager.instance().getUserID());

@@ -52,16 +52,15 @@ public class BookRoomActivity extends BaseActivity
     @Override
     protected void initEvent()
     {
-        setStatusBarTextDeep(true);
-        topView.setVisibility(View.VISIBLE);
-        topView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, APPUtils.getStatusBarHeight(this)));
+
     }
 
     @Override
     protected void initViewData()
     {
-
-
+        setStatusBarTextDeep(true);
+        topView.setVisibility(View.VISIBLE);
+        topView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, APPUtils.getStatusBarHeight(this)));
         switchButton.setOnCheckedChangeListener(new SwitchButton.OnCheckedChangeListener()
         {
             @Override

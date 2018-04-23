@@ -292,6 +292,7 @@ public class HotelDetailActivity extends BaseActivity implements IRequestListene
         mConferenceAdapter = new ConferenceAdapter(conferenceInfoList, HotelDetailActivity.this);
         rvConference.setAdapter(mConferenceAdapter);
 
+        showProgressDialog();
         Map<String, String> valuePairs = new HashMap<>();
         valuePairs.put("id", id);
         valuePairs.put("lat", lat);
@@ -321,7 +322,7 @@ public class HotelDetailActivity extends BaseActivity implements IRequestListene
         //评论列表
         else if (v == tvCommentCount)
         {
-
+            startActivity(new Intent(HotelDetailActivity.this, CommentListActivity.class).putExtra("MERCHANT_ID", id));
         }
         //更多房间
         else if (v == llRoomMore)
@@ -562,6 +563,7 @@ public class HotelDetailActivity extends BaseActivity implements IRequestListene
     @Override
     public void notify(String action, String resultCode, String resultMsg, Object obj)
     {
+        hideProgressDialog();
         if (GET_HOTEL_DETAIL.equals(action))
         {
             if (ConstantUtil.RESULT_SUCCESS.equals(resultCode))

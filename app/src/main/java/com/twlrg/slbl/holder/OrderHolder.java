@@ -1,6 +1,7 @@
 package com.twlrg.slbl.holder;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.twlrg.slbl.R;
+import com.twlrg.slbl.activity.AddCommentActivity;
 import com.twlrg.slbl.entity.HotelInfo;
 import com.twlrg.slbl.entity.OrderInfo;
 import com.twlrg.slbl.listener.MyItemClickListener;
@@ -52,7 +54,7 @@ public class OrderHolder extends RecyclerView.ViewHolder
     }
 
 
-    public void setOrderInfo(OrderInfo mOrderInfo, Context mContext, final int p)
+    public void setOrderInfo(final OrderInfo mOrderInfo, final Context mContext, final int p)
     {
         mEvaluateTv.setVisibility(View.GONE);
         mHotelNameTv.setText(mOrderInfo.getMerchant());
@@ -103,7 +105,7 @@ public class OrderHolder extends RecyclerView.ViewHolder
             @Override
             public void onClick(View v)
             {
-
+                mContext.startActivity(new Intent(mContext, AddCommentActivity.class).putExtra("MERCHANT_ID", mOrderInfo.getMerchant_id()));
             }
         });
     }

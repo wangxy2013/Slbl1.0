@@ -51,7 +51,6 @@ public class LoginActivity extends BaseActivity implements IRequestListener
     public static final  int    REQUEST_FAIL          = 0x02;
     private static final String USER_LOGIN            = "user_login";
 
-
     private BaseHandler mHandler = new BaseHandler(this)
     {
         @Override
@@ -78,6 +77,7 @@ public class LoginActivity extends BaseActivity implements IRequestListener
             }
         }
     };
+
 
     @Override
     protected void initData()
