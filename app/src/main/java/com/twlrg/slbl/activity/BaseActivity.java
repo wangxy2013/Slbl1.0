@@ -1,6 +1,7 @@
 package com.twlrg.slbl.activity;
 
 import android.annotation.TargetApi;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Build;
@@ -15,6 +16,7 @@ import android.view.View;
 
 
 import com.twlrg.slbl.R;
+import com.twlrg.slbl.utils.DialogUtils;
 import com.twlrg.slbl.utils.LogUtil;
 import com.twlrg.slbl.utils.StatusBarUtil;
 import com.twlrg.slbl.widget.CustomProgressDialog;
@@ -220,7 +222,7 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
     }
 
 
-    private CustomProgressDialog mProgressDialog = null;
+    private Dialog mProgressDialog = null;
 
     /**
      * @return void
@@ -237,10 +239,8 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
         LogUtil.e("TAG", "showProgressDialog");
         if (mProgressDialog == null)
         {
-            mProgressDialog = CustomProgressDialog.createDialog(this);
+            mProgressDialog = DialogUtils.createLoadingDialog(this,"加载中...");
         }
-        mProgressDialog.setTitle("");
-        mProgressDialog.setMessage("");
         mProgressDialog.show();
     }
 

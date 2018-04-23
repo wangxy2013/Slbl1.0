@@ -15,6 +15,7 @@ import com.twlrg.slbl.R;
 import com.twlrg.slbl.activity.BaseHandler;
 import com.twlrg.slbl.activity.HotelDetailActivity;
 import com.twlrg.slbl.activity.MainActivity;
+import com.twlrg.slbl.activity.OrderDetailActivity;
 import com.twlrg.slbl.adapter.OrderAdapter;
 import com.twlrg.slbl.entity.HotelInfo;
 import com.twlrg.slbl.entity.OrderInfo;
@@ -153,6 +154,8 @@ public class OrderFragment extends BaseFragment implements PullToRefreshBase.OnR
     {
         ivBack.setVisibility(View.GONE);
         tvTitle.setText("我的订单");
+
+        topView.setVisibility(View.VISIBLE);
         topView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, APPUtils.getStatusBarHeight(getActivity())));
         mPullToRefreshRecyclerView.setPullLoadEnabled(true);
         mRecyclerView = mPullToRefreshRecyclerView.getRefreshableView();
@@ -166,7 +169,7 @@ public class OrderFragment extends BaseFragment implements PullToRefreshBase.OnR
             @Override
             public void onItemClick(View view, int position)
             {
-
+                startActivity(new Intent(getActivity(), OrderDetailActivity.class).putExtra("ORDER_ID", orderInfoList.get(position).getId()));
             }
         }
         );
@@ -179,7 +182,7 @@ public class OrderFragment extends BaseFragment implements PullToRefreshBase.OnR
     {
         Map<String, String> valuePairs = new HashMap<>();
         valuePairs.put("uid", ConfigManager.instance().getUserID());
-        valuePairs.put("token",  ConfigManager.instance().getToken());
+        valuePairs.put("token", ConfigManager.instance().getToken());
         valuePairs.put("role", "1");
         valuePairs.put("type", "0");
         valuePairs.put("page", pn + "");

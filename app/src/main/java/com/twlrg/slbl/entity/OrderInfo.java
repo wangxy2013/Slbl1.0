@@ -21,7 +21,7 @@ public class OrderInfo
     private String create_time;//2017-05-12 16:05
     private String ordcode;//120520173923164211,
     private String payment_trade_status;//0    //0为未支付，1为已支付
-    private String is_used;//0 //0待确认，1已留房，2客满
+    private int is_used;//0 //0待确认，1已留房，2客满  3.取消确认中 4.已取消 5.酒店拒绝取消
     private String id;//222,
     private String microweb_id;//0,
     private String merchant_id;//4,
@@ -49,9 +49,26 @@ public class OrderInfo
     private String buyer_email;//
     private String notify_time;//"
 
+    private String status;
+    private String  price_type;
+    //酒店销售人员信息
+    private String salesperson;
+    private String portrait;
+    private String position;
+    private String nickname;
+    private String sale_mobile;
+
 
     public OrderInfo(JSONObject obj)
     {
+        this.status = obj.optString("status");
+        this.price_type=obj.optString("price_type");
+        this.salesperson=obj.optString("salesperson");
+        this.portrait=obj.optString("portrait");
+        this.position=obj.optString("position");
+        this.nickname=obj.optString("nickname");
+        this.sale_mobile=obj.optString("sale_mobile");
+
         this.order_id = obj.optString("order_id");
         this.merchant = obj.optString("merchant");
         this.title = obj.optString("title");
@@ -64,7 +81,7 @@ public class OrderInfo
         this.create_time = obj.optString("create_time");
         this.ordcode = obj.optString("ordcode");
         this.payment_trade_status = obj.optString("payment_trade_status");
-        this.is_used = obj.optString("is_used");
+        this.is_used = obj.optInt("is_used");
         this.id = obj.optString("id");
         this.microweb_id = obj.optString("microweb_id");
         this.merchant_id = obj.optString("merchant_id");
@@ -204,12 +221,12 @@ public class OrderInfo
         this.payment_trade_status = payment_trade_status;
     }
 
-    public String getIs_used()
+    public int getIs_used()
     {
         return is_used;
     }
 
-    public void setIs_used(String is_used)
+    public void setIs_used(int is_used)
     {
         this.is_used = is_used;
     }
@@ -472,5 +489,85 @@ public class OrderInfo
     public void setNotify_time(String notify_time)
     {
         this.notify_time = notify_time;
+    }
+
+    public String getOrder_id()
+    {
+        return order_id;
+    }
+
+    public void setOrder_id(String order_id)
+    {
+        this.order_id = order_id;
+    }
+
+    public String getPrice_type()
+    {
+        return price_type;
+    }
+
+    public void setPrice_type(String price_type)
+    {
+        this.price_type = price_type;
+    }
+
+    public String getSalesperson()
+    {
+        return salesperson;
+    }
+
+    public void setSalesperson(String salesperson)
+    {
+        this.salesperson = salesperson;
+    }
+
+    public String getPortrait()
+    {
+        return portrait;
+    }
+
+    public void setPortrait(String portrait)
+    {
+        this.portrait = portrait;
+    }
+
+    public String getPosition()
+    {
+        return position;
+    }
+
+    public void setPosition(String position)
+    {
+        this.position = position;
+    }
+
+    public String getNickname()
+    {
+        return nickname;
+    }
+
+    public void setNickname(String nickname)
+    {
+        this.nickname = nickname;
+    }
+
+    public String getSale_mobile()
+    {
+        return sale_mobile;
+    }
+
+    public void setSale_mobile(String sale_mobile)
+    {
+        this.sale_mobile = sale_mobile;
+    }
+
+    public String getStatus()
+    {
+        return status;
+    }
+
+    public void setStatus(String status)
+    {
+        this.status = status;
     }
 }

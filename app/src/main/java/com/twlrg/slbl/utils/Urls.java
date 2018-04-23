@@ -13,6 +13,11 @@ public class Urls
 
     public static final String BASE_URL = HTTP_IP + "/api/";
 
+    //获取版本信息
+    public static String getVersionUrl()
+    {
+        return BASE_URL + "merchant/search";
+    }
 
     public static String getImgUrl(String url)
     {
@@ -83,13 +88,23 @@ public class Urls
         return BASE_URL + "order/list_info";
     }
 
-
-
-    //获取版本信息
-    public static String getVersionUrl()
+    //获取订单详情
+    public static String getOrderDetailUrl()
     {
-        return BASE_URL + "merchant/search";
+        return BASE_URL + "order/order_detail";
     }
+
+    //取消订单申请
+    public static String getOrderCancelUrl()
+    {
+        return BASE_URL + "order/order_cancel";
+    }
+
+
+
+
+
+
 
 
 }

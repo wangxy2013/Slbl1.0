@@ -659,12 +659,27 @@ public class APPUtils
     }
 
 
-    public static int getStatusBarHeight(Context context) {
+    public static int getStatusBarHeight(Context context)
+    {
         int result = 0;
         int resourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
-        if (resourceId > 0) {
+        if (resourceId > 0)
+        {
             result = context.getResources().getDimensionPixelSize(resourceId);
         }
         return result;
+    }
+
+
+    /**
+     * 调用拨号界面
+     *
+     * @param phone 电话号码
+     */
+    public static void callPhone(Context cxt, String phone)
+    {
+        Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + phone));
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        cxt.startActivity(intent);
     }
 }

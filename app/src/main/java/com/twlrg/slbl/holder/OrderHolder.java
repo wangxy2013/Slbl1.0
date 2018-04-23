@@ -32,14 +32,15 @@ public class OrderHolder extends RecyclerView.ViewHolder
     private TextView        mOrderStatusTv;
     private TextView        mNameTv;
     private TextView        mCreateTimeTv;
-
-    private LinearLayout mItemLayout;
+    private TextView        mEvaluateTv;
+    private LinearLayout    mItemLayout;
 
     private MyItemClickListener listener1;
 
     public OrderHolder(View rootView, MyItemClickListener listener1)
     {
         super(rootView);
+        mEvaluateTv = (TextView) rootView.findViewById(R.id.tv_evaluate);
         mHotelNameTv = (AutoFitTextView) rootView.findViewById(R.id.tv_merchant);
         mPriceTv = (TextView) rootView.findViewById(R.id.tv_total_fee);
         mTitleTv = (TextView) rootView.findViewById(R.id.tv_title);
@@ -53,19 +54,56 @@ public class OrderHolder extends RecyclerView.ViewHolder
 
     public void setOrderInfo(OrderInfo mOrderInfo, Context mContext, final int p)
     {
+        mEvaluateTv.setVisibility(View.GONE);
         mHotelNameTv.setText(mOrderInfo.getMerchant());
         mPriceTv.setText("￥" + mOrderInfo.getTotal_fee());
         mTitleTv.setText(mOrderInfo.getTitle() + "  " + mOrderInfo.getBuynum() + "间  " + mOrderInfo.getDays() + "晚");
         mNameTv.setText(mOrderInfo.getName() + " " + mOrderInfo.getCheck_in() + "入住");
         mCreateTimeTv.setText(mOrderInfo.getCreate_time());
+        String status = "待支付";
 
-        mOrderStatusTv.setText("0".equals(mOrderInfo.getPayment_trade_status()) ? "未支付" : "已支付");
+
+        switch (mOrderInfo.getIs_used())
+        {
+            case 0:
+                status = "待支付";
+                break;
+            case 1:
+                status = "已预订成功";
+                mEvaluateTv.setVisibility(View.VISIBLE);
+                break;
+            case 2:
+                status = "酒店满房拒单";
+                break;
+            case 3:
+                status = "取消确认中";
+                break;
+            case 4:
+                status = "已取消";
+                break;
+            case 5:
+                status = "酒店拒绝取消";
+                break;
+        }
+
+
+        mOrderStatusTv.setText(status);
         mItemLayout.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
                 listener1.onItemClick(v, p);
+            }
+        });
+
+        //跳转评价界面
+        mEvaluateTv.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+
             }
         });
     }

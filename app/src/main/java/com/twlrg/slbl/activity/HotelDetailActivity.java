@@ -278,7 +278,9 @@ public class HotelDetailActivity extends BaseActivity implements IRequestListene
             @Override
             public void onItemClick(View view, int position)
             {
-
+                Bundle b = new Bundle();
+                b.putSerializable("ROOM", roomInfoList.get(position));
+                startActivity(new Intent(HotelDetailActivity.this, BookRoomActivity.class).putExtras(b));
             }
         });
         rvRoom.setAdapter(mRoomAdapter);
@@ -366,7 +368,7 @@ public class HotelDetailActivity extends BaseActivity implements IRequestListene
         else if (v == tvBreakfastType1 || v == tvBreakfastType11)
         {
             mBreakfastType = "bx";
-            isShowMoreRoom=false;
+            isShowMoreRoom = false;
             updateRoom();
             tvBreakfastType1.setSelected(true);
             tvBreakfastType11.setSelected(true);
@@ -381,7 +383,7 @@ public class HotelDetailActivity extends BaseActivity implements IRequestListene
         else if (v == tvBreakfastType2 || v == tvBreakfastType22)
         {
             mBreakfastType = "wz";
-            isShowMoreRoom=false;
+            isShowMoreRoom = false;
             updateRoom();
             tvBreakfastType1.setSelected(false);
             tvBreakfastType11.setSelected(false);
@@ -396,7 +398,7 @@ public class HotelDetailActivity extends BaseActivity implements IRequestListene
         else if (v == tvBreakfastType3 || v == tvBreakfastType33)
         {
             mBreakfastType = "dz";
-            isShowMoreRoom=false;
+            isShowMoreRoom = false;
             updateRoom();
             tvBreakfastType1.setSelected(false);
             tvBreakfastType11.setSelected(false);
@@ -411,7 +413,7 @@ public class HotelDetailActivity extends BaseActivity implements IRequestListene
         else if (v == tvBreakfastType4 || v == tvBreakfastType44)
         {
             mBreakfastType = "sz";
-            isShowMoreRoom=false;
+            isShowMoreRoom = false;
             updateRoom();
             tvBreakfastType1.setSelected(false);
             tvBreakfastType11.setSelected(false);

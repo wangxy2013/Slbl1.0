@@ -30,48 +30,48 @@ import java.util.List;
  */
 public class DialogUtils
 {
-//    //性别选择
-//    public static Dialog showSexDialog(final Context mContext, final OnClickListenerUtils.OnSubmitBtnClickListerner listerner)
-//    {
-//        final Dialog dialog = new Dialog(mContext, R.style.DialogStyle);
-//        dialog.setCancelable(false);
-//        final View view = LayoutInflater.from(mContext).inflate(R.layout.dialog_sex, null);
-//        dialog.setContentView(view);
-//
-//        LinearLayout mManLayout = (LinearLayout) view.findViewById(R.id.ll_man);
-//        LinearLayout mWomenLayout = (LinearLayout) view.findViewById(R.id.ll_women);
-//
-//        mManLayout.setOnClickListener(new View.OnClickListener()
-//        {
-//            @Override
-//            public void onClick(View v)
-//            {
-//                listerner.onSubmit("0");
-//                dialog.dismiss();
-//            }
-//        });
-//
-//        mWomenLayout.setOnClickListener(new View.OnClickListener()
-//        {
-//            @Override
-//            public void onClick(View v)
-//            {
-//                listerner.onSubmit("1");
-//                dialog.dismiss();
-//            }
-//        });
-//        Window mWindow = dialog.getWindow();
-//        WindowManager.LayoutParams lp = mWindow.getAttributes();
-//        DisplayMetrics dm = new DisplayMetrics();
-//        ((Activity) mContext).getWindowManager().getDefaultDisplay().getMetrics(dm);
-//        lp.width = dm.widthPixels * 3 / 4;
-//        mWindow.setGravity(Gravity.CENTER);
-//        //        mWindow.setWindowAnimations(R.style.dialogAnim);
-//        mWindow.setAttributes(lp);
-//        dialog.setCancelable(true);
-//        dialog.show();
-//        return dialog;
-//    }
+    //    //性别选择
+    //    public static Dialog showSexDialog(final Context mContext, final OnClickListenerUtils.OnSubmitBtnClickListerner listerner)
+    //    {
+    //        final Dialog dialog = new Dialog(mContext, R.style.DialogStyle);
+    //        dialog.setCancelable(false);
+    //        final View view = LayoutInflater.from(mContext).inflate(R.layout.dialog_sex, null);
+    //        dialog.setContentView(view);
+    //
+    //        LinearLayout mManLayout = (LinearLayout) view.findViewById(R.id.ll_man);
+    //        LinearLayout mWomenLayout = (LinearLayout) view.findViewById(R.id.ll_women);
+    //
+    //        mManLayout.setOnClickListener(new View.OnClickListener()
+    //        {
+    //            @Override
+    //            public void onClick(View v)
+    //            {
+    //                listerner.onSubmit("0");
+    //                dialog.dismiss();
+    //            }
+    //        });
+    //
+    //        mWomenLayout.setOnClickListener(new View.OnClickListener()
+    //        {
+    //            @Override
+    //            public void onClick(View v)
+    //            {
+    //                listerner.onSubmit("1");
+    //                dialog.dismiss();
+    //            }
+    //        });
+    //        Window mWindow = dialog.getWindow();
+    //        WindowManager.LayoutParams lp = mWindow.getAttributes();
+    //        DisplayMetrics dm = new DisplayMetrics();
+    //        ((Activity) mContext).getWindowManager().getDefaultDisplay().getMetrics(dm);
+    //        lp.width = dm.widthPixels * 3 / 4;
+    //        mWindow.setGravity(Gravity.CENTER);
+    //        //        mWindow.setWindowAnimations(R.style.dialogAnim);
+    //        mWindow.setAttributes(lp);
+    //        dialog.setCancelable(true);
+    //        dialog.show();
+    //        return dialog;
+    //    }
 
 
     public static Dialog showCategoryDialog(Context mContext, List<String> list, final MyItemClickListener mMyItemClickListener)
@@ -152,9 +152,6 @@ public class DialogUtils
     }
 
 
-
-
-
     /**
      * 提示框
      *
@@ -179,9 +176,37 @@ public class DialogUtils
         Window mWindow = dialog.getWindow();
         WindowManager.LayoutParams lp = mWindow.getAttributes();
         lp.gravity = Gravity.CENTER;
-        lp.width = APPUtils.getScreenWidth(mContext) * 74/ 4;
+        lp.width = APPUtils.getScreenWidth(mContext) * 74 / 4;
         mWindow.setAttributes(lp);
         dialog.show();
     }
 
+
+    public static Dialog createLoadingDialog(Context context, String msg)
+    {
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View v = inflater.inflate(R.layout.dialog_loading1, null);// 得到加载view
+        LinearLayout layout = (LinearLayout) v
+                .findViewById(R.id.dialog_loading_view);// 加载布局
+        TextView tipTextView = (TextView) v.findViewById(R.id.tipTextView);// 提示文字
+        tipTextView.setText(msg);// 设置加载信息
+
+        Dialog loadingDialog = new Dialog(context, R.style.MyDialogStyle);// 创建自定义样式dialog
+        loadingDialog.setCancelable(true); // 是否可以按“返回键”消失
+        loadingDialog.setCanceledOnTouchOutside(false); // 点击加载框以外的区域
+        loadingDialog.setContentView(layout, new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT));// 设置布局
+        /**
+         *将显示Dialog的方法封装在这里面
+         */
+        Window window = loadingDialog.getWindow();
+        WindowManager.LayoutParams lp = window.getAttributes();
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        window.setGravity(Gravity.CENTER);
+        window.setAttributes(lp);
+        window.setWindowAnimations(R.style.PopWindowAnimStyle);
+        return loadingDialog;
+    }
 }
