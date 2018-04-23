@@ -113,5 +113,11 @@ public class Urls
         return BASE_URL + "comment/list_info";
     }
 
+    //设施信息
+    public static String getFacilitiesUrl()
+    {
+        return BASE_URL + "merchant/facilities";
+    }
+
 
 }
