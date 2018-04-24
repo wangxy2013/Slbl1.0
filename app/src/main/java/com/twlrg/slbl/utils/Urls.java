@@ -80,7 +80,11 @@ public class Urls
         return BASE_URL + "user/update_userinfo";
     }
 
-
+    //生成订单
+    public static String getCreatOrderUrl()
+    {
+        return BASE_URL + "order/create_order";
+    }
 
     //获取订单列表
     public static String getOrderListUrl()
@@ -118,6 +122,10 @@ public class Urls
     {
         return BASE_URL + "merchant/facilities";
     }
+
+
+
+
 
 
 }

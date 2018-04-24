@@ -108,7 +108,7 @@ public class OrderDetailActivity extends BaseActivity implements IRequestListene
                     if (null != mOrderInfo)
                     {
                         tvTitle.setText("订单号" + mOrderInfo.getId());
-                        tvName.setText(mOrderInfo.getName());
+                        tvName.setText(mOrderInfo.getOccupant());
                         tvMobile.setText(mOrderInfo.getMobile());
                         tvMerchant.setText(mOrderInfo.getMerchant());
                         tvTotalFee.setText("总额:￥" + mOrderInfo.getTotal_fee());
@@ -135,7 +135,7 @@ public class OrderDetailActivity extends BaseActivity implements IRequestListene
                         tvDays.setText(mOrderInfo.getDays() + "晚");
                         tvStatus.setText("0".equals(mOrderInfo.getStatus()) ? "未支付" : "已支付");
 
-                        if (StringUtils.stringIsEmpty(mOrderInfo.getSalesperson()) ||"-".equals(mOrderInfo.getSalesperson()))
+                        if (StringUtils.stringIsEmpty(mOrderInfo.getSalesperson()) || "-".equals(mOrderInfo.getSalesperson()))
                         {
                             rlSale.setVisibility(View.GONE);
                         }
@@ -233,6 +233,8 @@ public class OrderDetailActivity extends BaseActivity implements IRequestListene
         setStatusBarTextDeep(true);
         topView.setVisibility(View.VISIBLE);
         topView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, APPUtils.getStatusBarHeight(this)));
+
+        showProgressDialog();
         Map<String, String> valuePairs = new HashMap<>();
         valuePairs.put("order_id", order_id);
         DataRequest.instance().request(OrderDetailActivity.this, Urls.getOrderDetailUrl(), this, HttpRequest.POST, GET_ORDER_INFO, valuePairs,

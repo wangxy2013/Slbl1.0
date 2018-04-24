@@ -14,6 +14,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.twlrg.slbl.MyApplication;
 import com.twlrg.slbl.R;
 import com.twlrg.slbl.adapter.ConferenceAdapter;
 import com.twlrg.slbl.adapter.RoomAdapter;
@@ -139,7 +140,7 @@ public class HotelDetailActivity extends BaseActivity implements IRequestListene
 
     private String  mBreakfastType; //wz dz sz
     private boolean isShowMoreRoom, isShowMoreConference;
-
+    private HotelInfo mHotelInfo;
     private static final int    REQUEST_SUCCESS  = 0x01;
     private static final int    REQUEST_FAIL     = 0x02;
     private static final String GET_HOTEL_DETAIL = "GET_HOTEL_DETAIL";
@@ -155,8 +156,7 @@ public class HotelDetailActivity extends BaseActivity implements IRequestListene
             {
                 case REQUEST_SUCCESS:
                     HotelDetailHandler mHotelDetailHandler = (HotelDetailHandler) msg.obj;
-                    HotelInfo mHotelInfo = mHotelDetailHandler.getHotelInfo();
-
+                    mHotelInfo = mHotelDetailHandler.getHotelInfo();
                     if (null != mHotelInfo)
                     {
                         int width = APPUtils.getScreenWidth(HotelDetailActivity.this);
@@ -278,9 +278,30 @@ public class HotelDetailActivity extends BaseActivity implements IRequestListene
             @Override
             public void onItemClick(View view, int position)
             {
-                Bundle b = new Bundle();
-                b.putSerializable("ROOM", roomInfoList.get(position));
-                startActivity(new Intent(HotelDetailActivity.this, BookRoomActivity.class).putExtras(b));
+                //                Bundle b = new Bundle();
+                //                b.putSerializable("ROOM", roomInfoList.get(position));
+
+
+                if (MyApplication.getInstance().isLogin())
+                {
+                    startActivity(new Intent(HotelDetailActivity.this, BookRoomActivity.class)
+                            .putExtra("HOTEL_NAME", mHotelInfo.getTitle())
+                            .putExtra("ROOM_NAME", roomInfoList.get(position).getTitle())
+                            .putExtra("MERCHANT_ID", mHotelInfo.getId())
+                            .putExtra("ROOM_ID", roomInfoList.get(position).getId())
+                            .putExtra("CHECK_IN", s_date)
+                            .putExtra("CHECK_OUT", e_date)
+                            .putExtra("CITY_VALUE", city_value)
+                            .putExtra("PRICE_TYPE", roomInfoList.get(position).getPrice_type())
+
+                    );
+                }
+                else
+                {
+                    startActivity(new Intent(HotelDetailActivity.this, LoginActivity.class));
+                }
+
+
             }
         });
         rvRoom.setAdapter(mRoomAdapter);
@@ -353,6 +374,13 @@ public class HotelDetailActivity extends BaseActivity implements IRequestListene
         //查看政策
         else if (v == rlPolicy)
         {
+            if (null != mHotelInfo)
+            {
+                Bundle b = new Bundle();
+                b.putSerializable("HOTEL", mHotelInfo);
+                startActivity(new Intent(HotelDetailActivity.this, HotelPolicyActivity.class).putExtras(b));
+            }
+
 
         }
         //查看设施

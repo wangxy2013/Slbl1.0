@@ -11,7 +11,9 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 
@@ -209,4 +211,97 @@ public class DialogUtils
         window.setWindowAnimations(R.style.PopWindowAnimStyle);
         return loadingDialog;
     }
+
+    /**
+     * 温馨提示
+     *
+     * @return
+     */
+    public static void showToastDialog2Button(Context mContext, String str, final View.OnClickListener onClickListener)
+    {
+        final Dialog dialog = new Dialog(mContext, R.style.dialogNoAnimation);
+        dialog.setCancelable(false);
+        View v = LayoutInflater.from(mContext).inflate(R.layout.dialog_toast_2_button, null);
+        dialog.setContentView(v);
+        TextView mTitle = (TextView) v.findViewById(R.id.tv_title);
+        mTitle.setText(str);
+        ((RelativeLayout) v.findViewById(R.id.rl_confirm)).setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                dialog.dismiss();
+                onClickListener.onClick(v);
+            }
+        });
+
+        v.findViewById(R.id.rl_cancel).setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                dialog.dismiss();
+            }
+        });
+        //Dialog部分
+        Window mWindow = dialog.getWindow();
+        WindowManager.LayoutParams lp = mWindow.getAttributes();
+        lp.gravity = Gravity.CENTER;
+        lp.width = APPUtils.getScreenWidth(mContext) * 7 / 8;
+        mWindow.setAttributes(lp);
+        dialog.show();
+    }
+
+    /**
+     * 房间数
+     *
+     * @return
+     */
+    public static void showRoomCountDialog(final Context mContext, final MyOnClickListener.OnSubmitListener listener)
+    {
+        final Dialog dialog = new Dialog(mContext, R.style.dialogNoAnimation);
+        dialog.setCancelable(false);
+        View v = LayoutInflater.from(mContext).inflate(R.layout.dialog_room_count, null);
+        dialog.setContentView(v);
+        final EditText etRoom = (EditText) v.findViewById(R.id.et_room);
+        ((RelativeLayout) v.findViewById(R.id.rl_confirm)).setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+
+                String roomCount = etRoom.getText().toString();
+
+                if (StringUtils.stringIsEmpty(roomCount))
+                {
+                    ToastUtil.show(mContext,"请输入房间数");
+                    return;
+                }
+                if (Integer.parseInt(roomCount)<=10)
+                {
+                    ToastUtil.show(mContext,"请输入房间数大于10");
+                    return;
+                }
+                listener.onSubmit(roomCount);
+                dialog.dismiss();
+            }
+        });
+
+        v.findViewById(R.id.rl_cancel).setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                dialog.dismiss();
+            }
+        });
+        //Dialog部分
+        Window mWindow = dialog.getWindow();
+        WindowManager.LayoutParams lp = mWindow.getAttributes();
+        lp.gravity = Gravity.CENTER;
+        lp.width = APPUtils.getScreenWidth(mContext) * 7 / 8;
+        mWindow.setAttributes(lp);
+        dialog.show();
+    }
+
 }

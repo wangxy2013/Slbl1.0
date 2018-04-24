@@ -19,6 +19,8 @@
     <dimen name="dm_13">13dp</dimen>
     <dimen name="dm_14">14dp</dimen>
     <dimen name="dm_15">15dp</dimen>
+    <dimen name="dm_16">16dp</dimen>
+    <dimen name="dm_17">17dp</dimen>
     <dimen name="dm_18">18dp</dimen>
     <dimen name="dm_20">20dp</dimen>
     <dimen name="dm_22">22dp</dimen>

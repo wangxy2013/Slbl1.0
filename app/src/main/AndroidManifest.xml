@@ -140,6 +140,12 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden"/>
 
+        <activity
+            android:name=".activity.HotelPolicyActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden"/>
+
 
     </application>
 

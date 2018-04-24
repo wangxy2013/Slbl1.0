@@ -106,8 +106,8 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
     private List<FilterInfo> moreFilterInfos     = new ArrayList<>();
 
 
-    private String          mStartDate    = "2018-04-18";
-    private String          mEndDate      = "2018-04-19";
+    private String          mStartDate    = "2018-04-24";
+    private String          mEndDate      = "2018-04-28";
     private String          mCityValue    = "2158";
     private List<HotelInfo> hotelInfoList = new ArrayList<>();
     private HotelAdapter mHotelAdapter;

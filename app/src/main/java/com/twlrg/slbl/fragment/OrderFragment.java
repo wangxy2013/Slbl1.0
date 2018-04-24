@@ -11,9 +11,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.twlrg.slbl.MyApplication;
 import com.twlrg.slbl.R;
 import com.twlrg.slbl.activity.BaseHandler;
 import com.twlrg.slbl.activity.HotelDetailActivity;
+import com.twlrg.slbl.activity.LoginActivity;
 import com.twlrg.slbl.activity.MainActivity;
 import com.twlrg.slbl.activity.OrderDetailActivity;
 import com.twlrg.slbl.adapter.OrderAdapter;
@@ -125,10 +127,18 @@ public class OrderFragment extends BaseFragment implements PullToRefreshBase.OnR
         super.onResume();
         ((MainActivity) getActivity()).changeTabStatusColor(2);
 
-        orderInfoList.clear();
-        pn = 1;
-        mRefreshStatus = 0;
-        getOrderList();
+        if(MyApplication.getInstance().isLogin())
+        {
+            orderInfoList.clear();
+            pn = 1;
+            mRefreshStatus = 0;
+            getOrderList();
+        }
+        else
+        {
+            startActivity(new Intent(getActivity(), LoginActivity.class));
+        }
+
     }
 
     @Override

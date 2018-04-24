@@ -46,7 +46,6 @@
                     android:layout_width="@dimen/dm_0"
                     android:layout_height="wrap_content"
                     android:layout_weight="7"
-                    android:text="1111"
                     android:textColor="@color/black"
                     android:textSize="@dimen/t14"/>
 
@@ -71,7 +70,6 @@
                     android:layout_width="@dimen/dm_0"
                     android:layout_height="wrap_content"
                     android:layout_weight="7"
-                    android:text="1111"
                     android:textColor="@color/black"
                     android:textSize="@dimen/t14"/>
 
@@ -97,7 +95,6 @@
                     android:layout_width="@dimen/dm_0"
                     android:layout_height="wrap_content"
                     android:layout_weight="6"
-                    android:text="1111"
                     android:textColor="@color/black"
                     android:textSize="@dimen/t14"/>
 
@@ -131,7 +128,6 @@
                     android:layout_width="@dimen/dm_0"
                     android:layout_height="wrap_content"
                     android:layout_weight="6"
-                    android:text="2018-01-01至2018-01-01"
                     android:textColor="@color/black"
                     android:textSize="@dimen/t14"/>
 
@@ -198,7 +194,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_toLeftOf="@+id/tv_fwf"
-                        android:text="12345"
+                        android:text="0"
                         android:textColor="@color/orange"
                         android:textSize="@dimen/t14"/>
 

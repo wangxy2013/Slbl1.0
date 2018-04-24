@@ -48,6 +48,9 @@ public class OrderInfo
     private String payment_trade_no;//
     private String buyer_email;//
     private String notify_time;//"
+    private String   occupant;
+
+
 
     private String status;
     private String  price_type;
@@ -69,6 +72,8 @@ public class OrderInfo
         this.nickname=obj.optString("nickname");
         this.sale_mobile=obj.optString("sale_mobile");
 
+
+        this.occupant = obj.optString("occupant");
         this.order_id = obj.optString("order_id");
         this.merchant = obj.optString("merchant");
         this.title = obj.optString("title");
@@ -569,5 +574,15 @@ public class OrderInfo
     public void setStatus(String status)
     {
         this.status = status;
+    }
+
+    public String getOccupant()
+    {
+        return occupant;
+    }
+
+    public void setOccupant(String occupant)
+    {
+        this.occupant = occupant;
     }
 }
