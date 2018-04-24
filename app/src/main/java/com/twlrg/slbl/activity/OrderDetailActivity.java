@@ -19,6 +19,7 @@ import com.twlrg.slbl.http.DataRequest;
 import com.twlrg.slbl.http.HttpRequest;
 import com.twlrg.slbl.http.IRequestListener;
 import com.twlrg.slbl.json.OrderInfoHandler;
+import com.twlrg.slbl.json.OrderListHandler;
 import com.twlrg.slbl.json.ResultHandler;
 import com.twlrg.slbl.utils.APPUtils;
 import com.twlrg.slbl.utils.ConfigManager;
@@ -91,9 +92,11 @@ public class OrderDetailActivity extends BaseActivity implements IRequestListene
     private static final int REQUEST_LOGIN_SUCCESS = 0x01;
     public static final  int REQUEST_FAIL          = 0x02;
     private static final int ORDER_CANCEL_SUCCESS  = 0x03;
-
+    private static final int GET_ORDER_DETAIL_SUCCESS  = 0x04;
     private static final String GET_ORDER_INFO = "get_order_info";
-    private static final String ORDER_CANCEL   = "ORDER_CANCEL";
+    private static final String ORDER_CANCEL   = "order_cancel";
+    private static final String GET_ORDER_DETAIL = "get_order_detail";
+
 
     private BaseHandler mHandler = new BaseHandler(this)
     {
@@ -188,6 +191,11 @@ public class OrderDetailActivity extends BaseActivity implements IRequestListene
                 case ORDER_CANCEL_SUCCESS:
                     ToastUtil.show(OrderDetailActivity.this, "申请退订提交成功");
                     finish();
+                    break;
+
+                case GET_ORDER_DETAIL_SUCCESS:
+                    OrderListHandler mOrderListHandler=(OrderListHandler)msg.obj;
+
                     break;
             }
         }
@@ -285,7 +293,11 @@ public class OrderDetailActivity extends BaseActivity implements IRequestListene
         }
         else if (v == tvPriceDetail)
         {
-
+            showProgressDialog();
+            Map<String, String> valuePairs = new HashMap<>();
+            valuePairs.put("order_id", order_id);
+            DataRequest.instance().request(OrderDetailActivity.this, Urls.getOrderDetailedUrl(), this, HttpRequest.POST, GET_ORDER_DETAIL, valuePairs,
+                    new OrderInfoHandler());
         }
     }
 
@@ -329,6 +341,18 @@ public class OrderDetailActivity extends BaseActivity implements IRequestListene
             if (ConstantUtil.RESULT_SUCCESS.equals(resultCode))
             {
                 mHandler.sendMessage(mHandler.obtainMessage(ORDER_CANCEL_SUCCESS, obj));
+            }
+
+            else
+            {
+                mHandler.sendMessage(mHandler.obtainMessage(REQUEST_FAIL, resultMsg));
+            }
+        }
+        else if (GET_ORDER_DETAIL.equals(action))
+        {
+            if (ConstantUtil.RESULT_SUCCESS.equals(resultCode))
+            {
+                mHandler.sendMessage(mHandler.obtainMessage(GET_ORDER_DETAIL_SUCCESS, obj));
             }
 
             else
