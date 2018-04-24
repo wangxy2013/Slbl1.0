@@ -1,5 +1,6 @@
 package com.twlrg.slbl.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
 import android.view.View;
@@ -12,10 +13,12 @@ import android.widget.TextView;
 
 import com.suke.widget.SwitchButton;
 import com.twlrg.slbl.R;
+import com.twlrg.slbl.entity.SubOrderInfo;
 import com.twlrg.slbl.http.DataRequest;
 import com.twlrg.slbl.http.HttpRequest;
 import com.twlrg.slbl.http.IRequestListener;
 import com.twlrg.slbl.json.ResultHandler;
+import com.twlrg.slbl.json.SubOrderInfoHandler;
 import com.twlrg.slbl.listener.MyOnClickListener;
 import com.twlrg.slbl.utils.APPUtils;
 import com.twlrg.slbl.utils.ConfigManager;
@@ -139,10 +142,9 @@ public class BookRoomActivity extends BaseActivity implements IRequestListener
     private String hotel_name, room_name, merchant_id, room_id, check_in, check_out, city_value, price_type;
 
     private int buynum = 1;
-
     private boolean isShowRoom;
     private boolean isAllName = true;//判断房间姓名是否全部填写完整
-
+    private String  zc        = "无早餐";
 
     private static final int    REQUEST_LOGIN_SUCCESS = 0x01;
     public static final  int    REQUEST_FAIL          = 0x02;
@@ -160,6 +162,27 @@ public class BookRoomActivity extends BaseActivity implements IRequestListener
 
                 case REQUEST_LOGIN_SUCCESS:
                     ToastUtil.show(BookRoomActivity.this, "生成订单成功!");
+
+                    SubOrderInfoHandler mSubOrderInfoHandler = (SubOrderInfoHandler) msg.obj;
+                    SubOrderInfo mSubOrderInfo = mSubOrderInfoHandler.getSubOrderInfo();
+
+                    if (null != mSubOrderInfo)
+                    {
+                        mSubOrderInfo.setBuynum(buynum + "");
+                        if (!StringUtils.stringIsEmpty(occupant))
+                        {
+                            mSubOrderInfo.setOccupant(occupant.substring(0, occupant.length() - 1));
+                        }
+                        mSubOrderInfo.setHotelName(hotel_name);
+                        mSubOrderInfo.setRoomTitle(room_name + "(" + zc + ")");
+                        mSubOrderInfo.setS_data(check_in);
+                        mSubOrderInfo.setE_data(check_out);
+                        mSubOrderInfo.setPhone(etPhone.getText().toString());
+                        mSubOrderInfo.setMerchant_id(merchant_id);
+                    }
+                    Bundle b = new Bundle();
+                    b.putSerializable("SubOrderInfo", mSubOrderInfo);
+                    startActivity(new Intent(BookRoomActivity.this, SubmitOrderActivity.class).putExtras(b));
                     finish();
                     break;
 
@@ -185,6 +208,19 @@ public class BookRoomActivity extends BaseActivity implements IRequestListener
         check_out = getIntent().getStringExtra("CHECK_OUT");
         city_value = getIntent().getStringExtra("CITY_VALUE");
         price_type = getIntent().getStringExtra("PRICE_TYPE");
+
+        if ("wz".equals(price_type))
+        {
+            zc = "无早餐";
+        }
+        else if ("dz".equals(price_type))
+        {
+            zc = "单早餐";
+        }
+        else if ("sz".equals(price_type))
+        {
+            zc = "双早餐";
+        }
     }
 
     @Override
@@ -297,6 +333,7 @@ public class BookRoomActivity extends BaseActivity implements IRequestListener
         }
     }
 
+    String occupant;
 
     @Override
     public void onClick(View v)
@@ -329,7 +366,7 @@ public class BookRoomActivity extends BaseActivity implements IRequestListener
 
             String mobile = etPhone.getText().toString();
 
-            String occupant = getAllName();
+            occupant = getAllName();
 
             if (StringUtils.stringIsEmpty(occupant) || !isAllName)
             {
@@ -358,7 +395,7 @@ public class BookRoomActivity extends BaseActivity implements IRequestListener
             valuePairs.put("name", etName1.getText().toString());
             valuePairs.put("occupant", occupant.substring(0, occupant.length() - 1));
             DataRequest.instance().request(BookRoomActivity.this, Urls.getCreatOrderUrl(), this, HttpRequest.POST, CREATE_ORDER, valuePairs,
-                    new ResultHandler());
+                    new SubOrderInfoHandler());
         }
     }
 

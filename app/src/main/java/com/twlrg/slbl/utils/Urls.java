@@ -104,6 +104,17 @@ public class Urls
         return BASE_URL + "order/order_cancel";
     }
 
+    //选择销售
+    public static String getSelectSaleUrl()
+    {
+        return BASE_URL + "order/select_sale";
+    }
+    //获取销售
+    public static String getSaleListUrl()
+    {
+        return BASE_URL + "order/sale_list";
+    }
+
     //发布评论
     public static String getAddCommentUrl()
     {

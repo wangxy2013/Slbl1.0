@@ -1,5 +1,6 @@
 package com.twlrg.slbl.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.twlrg.slbl.R;
 import com.twlrg.slbl.entity.OrderInfo;
+import com.twlrg.slbl.entity.SubOrderInfo;
 import com.twlrg.slbl.http.DataRequest;
 import com.twlrg.slbl.http.HttpRequest;
 import com.twlrg.slbl.http.IRequestListener;
@@ -115,20 +117,8 @@ public class OrderDetailActivity extends BaseActivity implements IRequestListene
 
                         tvTime.setText(mOrderInfo.getCheck_in() + "至" + mOrderInfo.getCheck_out());
 
-                        String price_type = mOrderInfo.getPrice_type();
-                        String zc = "无早餐";
-                        if ("wz".equals(price_type))
-                        {
-                            zc = "无早餐";
-                        }
-                        else if ("dz".equals(price_type))
-                        {
-                            zc = "单早餐";
-                        }
-                        else if ("sz".equals(price_type))
-                        {
-                            zc = "双早餐";
-                        }
+                        String zc = getZc(mOrderInfo.getPrice_type());
+
 
                         tvRoom.setText(mOrderInfo.getTitle() + "[" + zc + "]");
                         tvBuynum.setText(mOrderInfo.getBuynum() + "间");
@@ -278,11 +268,44 @@ public class OrderDetailActivity extends BaseActivity implements IRequestListene
         else if (v == btnStatus)//去支付
         {
 
+            SubOrderInfo mSubOrderInfo = new SubOrderInfo();
+            mSubOrderInfo.setBuynum(mOrderInfo.getBuynum());
+            mSubOrderInfo.setOccupant(mOrderInfo.getOccupant());
+            mSubOrderInfo.setHotelName(mOrderInfo.getMerchant());
+            mSubOrderInfo.setRoomTitle(mOrderInfo.getTitle() + "(" + getZc(mOrderInfo.getPrice_type()) + ")");
+            mSubOrderInfo.setS_data(mOrderInfo.getCheck_in());
+            mSubOrderInfo.setE_data(mOrderInfo.getCheck_out());
+            mSubOrderInfo.setPhone(mOrderInfo.getMobile());
+            mSubOrderInfo.setDays(mOrderInfo.getDays());
+            mSubOrderInfo.setTotal_feel(mOrderInfo.getTotal_fee());
+            mSubOrderInfo.setMerchant_id(mOrderInfo.getMerchant_id());
+            Bundle b = new Bundle();
+            b.putSerializable("SubOrderInfo", mSubOrderInfo);
+            startActivity(new Intent(OrderDetailActivity.this, SubmitOrderActivity.class).putExtras(b));
         }
         else if (v == tvPriceDetail)
         {
 
         }
+    }
+
+    private String getZc(String price_type)
+    {
+        String zc = "无早餐";
+        if ("wz".equals(price_type))
+        {
+            zc = "无早餐";
+        }
+        else if ("dz".equals(price_type))
+        {
+            zc = "单早餐";
+        }
+        else if ("sz".equals(price_type))
+        {
+            zc = "双早餐";
+        }
+
+        return zc;
     }
 
     @Override
