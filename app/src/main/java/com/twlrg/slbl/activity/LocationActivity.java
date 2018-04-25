@@ -12,6 +12,7 @@ import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
 import com.baidu.mapapi.map.BitmapDescriptorFactory;
 import com.baidu.mapapi.map.InfoWindow;
+import com.baidu.mapapi.map.MapStatus;
 import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
@@ -103,11 +104,11 @@ public class LocationActivity extends BaseActivity
                     {
                         public void onInfoWindowClick()
                         {
-                            LatLng ll = marker.getPosition();
-                            LatLng llNew = new LatLng(ll.latitude + 0.005,
-                                    ll.longitude + 0.005);
-                            marker.setPosition(llNew);
-                            mBaiduMap.hideInfoWindow();
+//                            LatLng ll = marker.getPosition();
+//                            LatLng llNew = new LatLng(ll.latitude + 0.005,
+//                                    ll.longitude + 0.005);
+//                            marker.setPosition(llNew);
+//                            mBaiduMap.hideInfoWindow();
                         }
                     };
                     LatLng ll = marker.getPosition();
@@ -129,8 +130,18 @@ public class LocationActivity extends BaseActivity
 //            ooA.animateType(MarkerOptions.MarkerAnimateType.drop);
 //        }
         mMarkerA = (Marker) (mBaiduMap.addOverlay(ooA));
+        MapStatus mMapStatus = new MapStatus.Builder()
+                //要移动的点
+                .target(llA)
+                //放大地图到20倍
+                .zoom(16)
+                .build();
 
+        //定义MapStatusUpdate对象，以便描述地图状态将要发生的变化
+        MapStatusUpdate mMapStatusUpdate = MapStatusUpdateFactory.newMapStatus(mMapStatus);
 
+        //改变地图状态
+        mBaiduMap.setMapStatus(mMapStatusUpdate);
     }
 
     @Override
