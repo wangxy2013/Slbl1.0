@@ -50,14 +50,14 @@ public class LocationActivity extends BaseActivity
 
 
     private String hotelName;
-    private double lat, lng;
+    private String  lat, lng;
 
     @Override
     protected void initData()
     {
         hotelName = getIntent().getStringExtra("HOTEL_NAME");
-        lat = getIntent().getDoubleExtra("LAT", 0);
-        lng = getIntent().getDoubleExtra("LNG", 0);
+        lat = getIntent().getStringExtra("LAT");
+        lng = getIntent().getStringExtra("LNG");
 
         LogUtil.e("TAG",lat+"、"+lng);
     }
@@ -122,7 +122,7 @@ public class LocationActivity extends BaseActivity
 
     public void initOverlay()
     {
-        LatLng llA = new LatLng(39.963175, 116.400244);
+        LatLng llA = new LatLng(Double.parseDouble(lat), Double.parseDouble(lng));
         MarkerOptions ooA = new MarkerOptions().position(llA).icon(bdA).zIndex(9).draggable(true);
 //        if (animationBox.isChecked()) {
 //            // 掉下动画
