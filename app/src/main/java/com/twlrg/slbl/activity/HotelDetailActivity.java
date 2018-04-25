@@ -338,7 +338,12 @@ public class HotelDetailActivity extends BaseActivity implements IRequestListene
         //地图定位
         else if (v == ivLocation)
         {
+            startActivity(new Intent(HotelDetailActivity.this, LocationActivity.class)
+                    .putExtra("LAT", mHotelInfo.getLat())
+                    .putExtra("LNG", mHotelInfo.getLng())
+                    .putExtra("HOTEL_NAME", mHotelInfo.getTitle())
 
+            );
         }
         //评论列表
         else if (v == tvCommentCount)

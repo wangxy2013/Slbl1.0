@@ -9,12 +9,18 @@ import android.widget.ImageView;
 import android.widget.TabHost;
 import android.widget.TextView;
 
+import com.baidu.location.BDAbstractLocationListener;
+import com.baidu.location.BDLocation;
+import com.baidu.location.Poi;
+import com.twlrg.slbl.MyApplication;
 import com.twlrg.slbl.R;
 import com.twlrg.slbl.fragment.HomeFragment;
 import com.twlrg.slbl.fragment.MessageFragment;
 import com.twlrg.slbl.fragment.OrderFragment;
 import com.twlrg.slbl.fragment.UserCenterFragment;
+import com.twlrg.slbl.service.LocationService;
 import com.twlrg.slbl.utils.ConfigManager;
+import com.twlrg.slbl.utils.LogUtil;
 import com.twlrg.slbl.utils.StatusBarUtil;
 
 import butterknife.BindView;
@@ -22,16 +28,15 @@ import butterknife.BindView;
 public class MainActivity extends BaseActivity
 {
 
-
     @BindView(android.R.id.tabhost)
     FragmentTabHost fragmentTabHost;
-
 
     private String texts[]         = {"首页", "消息", "订单", "我的"};
     private int    imageButton[]   = {
             R.drawable.ic_home_selector, R.drawable.ic_message_selector,
             R.drawable.ic_order_selector, R.drawable.ic_user_center_selector};
     private Class  fragmentArray[] = {HomeFragment.class, MessageFragment.class, OrderFragment.class, UserCenterFragment.class};
+
 
     @Override
     protected void initData()
@@ -96,7 +101,8 @@ public class MainActivity extends BaseActivity
         {
             setStatusBarTextDeep(true);
         }
-
-
     }
+
+
+
 }

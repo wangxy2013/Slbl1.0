@@ -1,8 +1,12 @@
 package com.twlrg.slbl;
 
 import android.app.Application;
+import android.app.Service;
+import android.os.Vibrator;
 
 
+import com.baidu.mapapi.SDKInitializer;
+import com.twlrg.slbl.service.LocationService;
 import com.twlrg.slbl.utils.APPUtils;
 import com.twlrg.slbl.utils.ConfigManager;
 import com.twlrg.slbl.utils.StringUtils;
@@ -20,8 +24,9 @@ import cn.jpush.android.api.JPushInterface;
  */
 public class MyApplication extends Application
 {
-
-    private static MyApplication instance;
+    public         LocationService locationService;
+    public         Vibrator        mVibrator;
+    private static MyApplication   instance;
 
     public static MyApplication getInstance() {return instance;}
 
@@ -33,7 +38,12 @@ public class MyApplication extends Application
         instance = this;
         APPUtils.configImageLoader(getApplicationContext());
         ConfigManager.instance().init(this);
-
+        /***
+         * 初始化定位sdk，建议在Application中创建
+         */
+        locationService = new LocationService(getApplicationContext());
+        mVibrator = (Vibrator) getApplicationContext().getSystemService(Service.VIBRATOR_SERVICE);
+        SDKInitializer.initialize(getApplicationContext());
     }
 
 

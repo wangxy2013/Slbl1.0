@@ -167,17 +167,19 @@ public class DialogUtils
      *
      * @return
      */
-    public static void showPromptDialog(Context mContext, final View.OnClickListener onClickListener, final View.OnClickListener onClickListener2)
+    public static void showPromptDialog(Context mContext,String title,final MyItemClickListener listener)
     {
         final Dialog dialog = new Dialog(mContext, R.style.dialogNoAnimation);
         dialog.setCancelable(true);
         View v = LayoutInflater.from(mContext).inflate(R.layout.dialog_prompt, null);
         dialog.setContentView(v);
+        ((TextView) v.findViewById(R.id.tv_content)).setText(title);
         v.findViewById(R.id.tv_submit).setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
+                listener.onItemClick(v,0);
                 dialog.dismiss();
             }
         });
@@ -186,8 +188,9 @@ public class DialogUtils
         Window mWindow = dialog.getWindow();
         WindowManager.LayoutParams lp = mWindow.getAttributes();
         lp.gravity = Gravity.CENTER;
-        lp.width = APPUtils.getScreenWidth(mContext) * 74 / 4;
+        lp.width = APPUtils.getScreenWidth(mContext) * 3 / 4;
         mWindow.setAttributes(lp);
+        dialog.setCancelable(false);
         dialog.show();
     }
 
@@ -337,7 +340,7 @@ public class DialogUtils
 
         for (int i = 0; i < orderInfoList.size(); i++)
         {
-            allPrice += Integer.parseInt(orderInfoList.get(i).getPrice()) *Integer.parseInt(orderInfoList.get(i).getBuynum());
+            allPrice += Integer.parseInt(orderInfoList.get(i).getPrice()) * Integer.parseInt(orderInfoList.get(i).getBuynum());
         }
 
         tvPrice.setText("￥" + allPrice);

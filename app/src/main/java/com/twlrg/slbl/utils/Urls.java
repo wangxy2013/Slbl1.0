@@ -116,6 +116,7 @@ public class Urls
     {
         return BASE_URL + "order/select_sale";
     }
+
     //获取销售
     public static String getSaleListUrl()
     {
@@ -141,9 +142,11 @@ public class Urls
         return BASE_URL + "merchant/facilities";
     }
 
-
-
-
+    //获取城市信息
+    public static String getCityListUrl()
+    {
+        return BASE_URL + "city/list_info";
+    }
 
 
 }

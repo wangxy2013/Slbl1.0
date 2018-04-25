@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/dm_10"
-        android:text="提示"
+        android:text="温馨提示"
         android:textColor="@color/black"
         android:textSize="18sp"
         android:textStyle="bold"/>
@@ -21,10 +21,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginLeft="@dimen/dm_10"
-        android:layout_marginRight="@dimen/dm_10"
+        android:layout_marginLeft="@dimen/dm_15"
+        android:layout_marginRight="@dimen/dm_15"
         android:layout_marginTop="@dimen/dm_10"
-        android:textColor="@color/blackA"
+        android:gravity="center"
+        android:textColor="@color/black"
         android:textSize="14sp"/>
 
     <View
