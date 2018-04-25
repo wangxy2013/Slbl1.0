@@ -3,10 +3,14 @@ package com.twlrg.slbl.utils;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
@@ -19,8 +23,12 @@ import android.widget.TextView;
 
 import com.twlrg.slbl.R;
 import com.twlrg.slbl.adapter.CategoryAdapter;
+import com.twlrg.slbl.adapter.PriceDetailAdapter;
+import com.twlrg.slbl.entity.OrderInfo;
 import com.twlrg.slbl.listener.MyItemClickListener;
 import com.twlrg.slbl.listener.MyOnClickListener;
+import com.twlrg.slbl.widget.EmptyDecoration;
+import com.twlrg.slbl.widget.FullyLinearLayoutManager;
 import com.twlrg.slbl.widget.NoScrollListView;
 
 import java.util.List;
@@ -274,12 +282,12 @@ public class DialogUtils
 
                 if (StringUtils.stringIsEmpty(roomCount))
                 {
-                    ToastUtil.show(mContext,"请输入房间数");
+                    ToastUtil.show(mContext, "请输入房间数");
                     return;
                 }
-                if (Integer.parseInt(roomCount)<=10)
+                if (Integer.parseInt(roomCount) <= 10)
                 {
-                    ToastUtil.show(mContext,"请输入房间数大于10");
+                    ToastUtil.show(mContext, "请输入房间数大于10");
                     return;
                 }
                 listener.onSubmit(roomCount);
@@ -303,5 +311,55 @@ public class DialogUtils
         mWindow.setAttributes(lp);
         dialog.show();
     }
+
+
+    /**
+     * 房间数
+     *
+     * @return
+     */
+    public static void showPriceDetailDialog(final Context mContext, List<OrderInfo> orderInfoList)
+    {
+        final Dialog dialog = new Dialog(mContext);
+        dialog.setCancelable(false);
+        View v = LayoutInflater.from(mContext).inflate(R.layout.dialog_order_detail, null);
+        dialog.setContentView(v);
+
+        TextView tvDays = (TextView) v.findViewById(R.id.tv_days);
+        TextView tvPrice = (TextView) v.findViewById(R.id.tv_price);
+        TextView tvTotalPrice = (TextView) v.findViewById(R.id.tv_total_price);
+        RecyclerView mRecyclerView = (RecyclerView) v.findViewById(R.id.recyclerView);
+        mRecyclerView.setLayoutManager(new FullyLinearLayoutManager(mContext));
+        mRecyclerView.addItemDecoration(new EmptyDecoration(mContext, ""));
+        mRecyclerView.setAdapter(new PriceDetailAdapter(orderInfoList));
+        tvDays.setText(orderInfoList.size() + "晚总价");
+        int allPrice = 0;
+
+        for (int i = 0; i < orderInfoList.size(); i++)
+        {
+            allPrice += Integer.parseInt(orderInfoList.get(i).getPrice()) *Integer.parseInt(orderInfoList.get(i).getBuynum());
+        }
+
+        tvPrice.setText("￥" + allPrice);
+        tvTotalPrice.setText("￥" + allPrice);
+
+        v.findViewById(R.id.iv_back).setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                dialog.dismiss();
+            }
+        });
+        //Dialog部分
+        Window mWindow = dialog.getWindow();
+        WindowManager.LayoutParams lp = mWindow.getAttributes();
+        lp.alpha = 0.7f;
+        mWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        mWindow.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        mWindow.setAttributes(lp);
+        dialog.show();
+    }
+
 
 }

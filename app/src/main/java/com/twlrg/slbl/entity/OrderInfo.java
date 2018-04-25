@@ -51,7 +51,7 @@ public class OrderInfo
     private String   occupant;
 
 
-
+    private String  date;
     private String status;
     private String  price_type;
     //酒店销售人员信息
@@ -71,7 +71,7 @@ public class OrderInfo
         this.position=obj.optString("position");
         this.nickname=obj.optString("nickname");
         this.sale_mobile=obj.optString("sale_mobile");
-
+        this.date = obj.optString("date");
 
         this.occupant = obj.optString("occupant");
         this.order_id = obj.optString("order_id");
@@ -584,5 +584,15 @@ public class OrderInfo
     public void setOccupant(String occupant)
     {
         this.occupant = occupant;
+    }
+
+    public String getDate()
+    {
+        return date;
+    }
+
+    public void setDate(String date)
+    {
+        this.date = date;
     }
 }

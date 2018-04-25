@@ -18,11 +18,13 @@ import com.twlrg.slbl.entity.SubOrderInfo;
 import com.twlrg.slbl.http.DataRequest;
 import com.twlrg.slbl.http.HttpRequest;
 import com.twlrg.slbl.http.IRequestListener;
+import com.twlrg.slbl.json.OrderListHandler;
 import com.twlrg.slbl.json.ResultHandler;
 import com.twlrg.slbl.json.SaleInfoListHandler;
 import com.twlrg.slbl.listener.MyItemClickListener;
 import com.twlrg.slbl.utils.APPUtils;
 import com.twlrg.slbl.utils.ConstantUtil;
+import com.twlrg.slbl.utils.DialogUtils;
 import com.twlrg.slbl.utils.ToastUtil;
 import com.twlrg.slbl.utils.Urls;
 import com.twlrg.slbl.widget.AutoFitTextView;
@@ -75,14 +77,15 @@ public class SubmitOrderActivity extends BaseActivity implements IRequestListene
     EditText        etMark;
     private SubOrderInfo mSubOrderInfo;
     private SaleAdapter  mSaleAdapter;
-    private              List<SaleInfo> saleInfoList          = new ArrayList<>();
-    private static final int            REQUEST_LOGIN_SUCCESS = 0x01;
-    public static final  int            REQUEST_FAIL          = 0x02;
-    private static final int            GET_SALE_SUCCESS      = 0x03;
-
-    private static final String      SUB_ORDER = "sub_order";
-    private static final String      GET_SALE  = "get_sale";
-    private              BaseHandler mHandler  = new BaseHandler(this)
+    private              List<SaleInfo> saleInfoList             = new ArrayList<>();
+    private static final int            REQUEST_LOGIN_SUCCESS    = 0x01;
+    public static final  int            REQUEST_FAIL             = 0x02;
+    private static final int            GET_SALE_SUCCESS         = 0x03;
+    private static final int            GET_ORDER_DETAIL_SUCCESS = 0x04;
+    private static final String         GET_ORDER_DETAIL         = "get_order_detail";
+    private static final String         SUB_ORDER                = "sub_order";
+    private static final String         GET_SALE                 = "get_sale";
+    private              BaseHandler    mHandler                 = new BaseHandler(this)
     {
         @Override
         public void handleMessage(Message msg)
@@ -108,6 +111,11 @@ public class SubmitOrderActivity extends BaseActivity implements IRequestListene
                     saleInfoList.addAll(mSaleInfoListHandler.getSaleInfoList());
                     mSaleAdapter.notifyDataSetChanged();
                     break;
+
+                case GET_ORDER_DETAIL_SUCCESS:
+                    OrderListHandler mOrderListHandler = (OrderListHandler) msg.obj;
+                    DialogUtils.showPriceDetailDialog(SubmitOrderActivity.this, mOrderListHandler.getOrderInfoList());
+                    break;
             }
         }
     };
@@ -131,6 +139,7 @@ public class SubmitOrderActivity extends BaseActivity implements IRequestListene
     {
         ivBack.setOnClickListener(this);
         btnSubmit.setOnClickListener(this);
+        tvPriceDetail.setOnClickListener(this);
     }
 
     @Override
@@ -201,13 +210,21 @@ public class SubmitOrderActivity extends BaseActivity implements IRequestListene
         }
         else if (v == btnSubmit)
         {
-//            showProgressDialog();
-//            Map<String, String> valuePairs = new HashMap<>();
-//            valuePairs.put("order_id", mSubOrderInfo.getOrder_id());
-//            valuePairs.put("sale_uid", getSaleUid());
-//            valuePairs.put("remark", etMark.getText().toString());
-//            DataRequest.instance().request(SubmitOrderActivity.this, Urls.getSelectSaleUrl(), this, HttpRequest.POST, SUB_ORDER, valuePairs,
-//                    new ResultHandler());
+            //            showProgressDialog();
+            //            Map<String, String> valuePairs = new HashMap<>();
+            //            valuePairs.put("order_id", mSubOrderInfo.getOrder_id());
+            //            valuePairs.put("sale_uid", getSaleUid());
+            //            valuePairs.put("remark", etMark.getText().toString());
+            //            DataRequest.instance().request(SubmitOrderActivity.this, Urls.getSelectSaleUrl(), this, HttpRequest.POST, SUB_ORDER, valuePairs,
+            //                    new ResultHandler());
+        }
+        else if (v == tvPriceDetail)
+        {
+            showProgressDialog();
+            Map<String, String> valuePairs = new HashMap<>();
+            valuePairs.put("order_id", mSubOrderInfo.getOrder_id());
+            DataRequest.instance().request(SubmitOrderActivity.this, Urls.getOrderDetailedUrl(), this, HttpRequest.POST, GET_ORDER_DETAIL, valuePairs,
+                    new OrderListHandler());
         }
     }
 
@@ -247,6 +264,18 @@ public class SubmitOrderActivity extends BaseActivity implements IRequestListene
             if (ConstantUtil.RESULT_SUCCESS.equals(resultCode))
             {
                 mHandler.sendMessage(mHandler.obtainMessage(GET_SALE_SUCCESS, obj));
+            }
+
+            else
+            {
+                mHandler.sendMessage(mHandler.obtainMessage(REQUEST_FAIL, resultMsg));
+            }
+        }
+        else if (GET_ORDER_DETAIL.equals(action))
+        {
+            if (ConstantUtil.RESULT_SUCCESS.equals(resultCode))
+            {
+                mHandler.sendMessage(mHandler.obtainMessage(GET_ORDER_DETAIL_SUCCESS, obj));
             }
 
             else

@@ -24,6 +24,7 @@ import com.twlrg.slbl.json.ResultHandler;
 import com.twlrg.slbl.utils.APPUtils;
 import com.twlrg.slbl.utils.ConfigManager;
 import com.twlrg.slbl.utils.ConstantUtil;
+import com.twlrg.slbl.utils.DialogUtils;
 import com.twlrg.slbl.utils.StringUtils;
 import com.twlrg.slbl.utils.ToastUtil;
 import com.twlrg.slbl.utils.Urls;
@@ -89,13 +90,13 @@ public class OrderDetailActivity extends BaseActivity implements IRequestListene
     private String    order_id;
     private OrderInfo mOrderInfo;
 
-    private static final int REQUEST_LOGIN_SUCCESS = 0x01;
-    public static final  int REQUEST_FAIL          = 0x02;
-    private static final int ORDER_CANCEL_SUCCESS  = 0x03;
-    private static final int GET_ORDER_DETAIL_SUCCESS  = 0x04;
-    private static final String GET_ORDER_INFO = "get_order_info";
-    private static final String ORDER_CANCEL   = "order_cancel";
-    private static final String GET_ORDER_DETAIL = "get_order_detail";
+    private static final int    REQUEST_LOGIN_SUCCESS    = 0x01;
+    public static final  int    REQUEST_FAIL             = 0x02;
+    private static final int    ORDER_CANCEL_SUCCESS     = 0x03;
+    private static final int    GET_ORDER_DETAIL_SUCCESS = 0x04;
+    private static final String GET_ORDER_INFO           = "get_order_info";
+    private static final String ORDER_CANCEL             = "order_cancel";
+    private static final String GET_ORDER_DETAIL         = "get_order_detail";
 
 
     private BaseHandler mHandler = new BaseHandler(this)
@@ -126,7 +127,7 @@ public class OrderDetailActivity extends BaseActivity implements IRequestListene
                         tvRoom.setText(mOrderInfo.getTitle() + "[" + zc + "]");
                         tvBuynum.setText(mOrderInfo.getBuynum() + "间");
                         tvDays.setText(mOrderInfo.getDays() + "晚");
-                        tvStatus.setText("0".equals(mOrderInfo.getStatus()) ? "未支付" : "已支付");
+                        tvStatus.setText("0".equals(mOrderInfo.getPayment_trade_status()) ? "未支付" : "已支付");
 
                         if (StringUtils.stringIsEmpty(mOrderInfo.getSalesperson()) || "-".equals(mOrderInfo.getSalesperson()))
                         {
@@ -194,8 +195,8 @@ public class OrderDetailActivity extends BaseActivity implements IRequestListene
                     break;
 
                 case GET_ORDER_DETAIL_SUCCESS:
-                    OrderListHandler mOrderListHandler=(OrderListHandler)msg.obj;
-
+                    OrderListHandler mOrderListHandler = (OrderListHandler) msg.obj;
+                    DialogUtils.showPriceDetailDialog(OrderDetailActivity.this, mOrderListHandler.getOrderInfoList());
                     break;
             }
         }
@@ -287,6 +288,7 @@ public class OrderDetailActivity extends BaseActivity implements IRequestListene
             mSubOrderInfo.setDays(mOrderInfo.getDays());
             mSubOrderInfo.setTotal_feel(mOrderInfo.getTotal_fee());
             mSubOrderInfo.setMerchant_id(mOrderInfo.getMerchant_id());
+            mSubOrderInfo.setOrder_id(mOrderInfo.getId());
             Bundle b = new Bundle();
             b.putSerializable("SubOrderInfo", mSubOrderInfo);
             startActivity(new Intent(OrderDetailActivity.this, SubmitOrderActivity.class).putExtras(b));
@@ -297,7 +299,7 @@ public class OrderDetailActivity extends BaseActivity implements IRequestListene
             Map<String, String> valuePairs = new HashMap<>();
             valuePairs.put("order_id", order_id);
             DataRequest.instance().request(OrderDetailActivity.this, Urls.getOrderDetailedUrl(), this, HttpRequest.POST, GET_ORDER_DETAIL, valuePairs,
-                    new OrderInfoHandler());
+                    new OrderListHandler());
         }
     }
 
