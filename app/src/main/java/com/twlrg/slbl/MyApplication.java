@@ -11,11 +11,7 @@ import com.twlrg.slbl.utils.APPUtils;
 import com.twlrg.slbl.utils.ConfigManager;
 import com.twlrg.slbl.utils.StringUtils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
-import cn.jpush.android.api.JPushInterface;
 
 /**
  * 作者：王先云 on 2016/8/5 14:46
