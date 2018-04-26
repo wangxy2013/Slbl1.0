@@ -13,15 +13,22 @@ import org.json.JSONObject;
 public class ResultHandler extends JsonHandler
 {
     private String content;
-
     public String getContent()
     {
         return content;
+    }
+    private String data;
+
+    public String getData()
+    {
+        return data;
     }
 
     @Override
     protected void parseJson(JSONObject obj) throws Exception
     {
         content = obj.optString("content");
+
+        data= obj.optString("data");
     }
 }

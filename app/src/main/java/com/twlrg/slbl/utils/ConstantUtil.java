@@ -22,11 +22,8 @@ public class ConstantUtil
 
 
 
-    private String TIANQI_DAILY_WEATHER_URL = "https://api.seniverse.com/v3/weather/daily.json";
+    public static final  String WX_APPID = "wx17e33484aba9fcc2";
 
-    private String TIANQI_API_SECRET_KEY = "4eyjkglnnszar4gh"; //
-
-    private String TIANQI_API_USER_ID = "UE8AEB0638"; //
 
 
 }

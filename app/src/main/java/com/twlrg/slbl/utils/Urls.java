@@ -149,4 +149,17 @@ public class Urls
     }
 
 
+    //获取支付宝支付
+    public static String getAlipayUrl()
+    {
+        return BASE_URL + "alipay/pay";
+    }
+
+    //获取微信支付
+    public static String getWxpayUrl()
+    {
+        return BASE_URL + "wxpay/pay";
+    }
+
+
 }

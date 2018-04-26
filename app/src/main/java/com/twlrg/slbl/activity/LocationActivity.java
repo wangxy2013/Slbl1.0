@@ -51,7 +51,7 @@ public class LocationActivity extends BaseActivity
 
 
     private String hotelName;
-    private String  lat, lng;
+    private String lat, lng;
 
     @Override
     protected void initData()
@@ -60,7 +60,7 @@ public class LocationActivity extends BaseActivity
         lat = getIntent().getStringExtra("LAT");
         lng = getIntent().getStringExtra("LNG");
 
-        LogUtil.e("TAG",lat+"、"+lng);
+        LogUtil.e("TAG", lat + "、" + lng);
     }
 
     @Override
@@ -73,7 +73,14 @@ public class LocationActivity extends BaseActivity
     @Override
     protected void initEvent()
     {
-
+        ivBack.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                finish();
+            }
+        });
     }
 
     @Override
@@ -104,11 +111,11 @@ public class LocationActivity extends BaseActivity
                     {
                         public void onInfoWindowClick()
                         {
-//                            LatLng ll = marker.getPosition();
-//                            LatLng llNew = new LatLng(ll.latitude + 0.005,
-//                                    ll.longitude + 0.005);
-//                            marker.setPosition(llNew);
-//                            mBaiduMap.hideInfoWindow();
+                            //                            LatLng ll = marker.getPosition();
+                            //                            LatLng llNew = new LatLng(ll.latitude + 0.005,
+                            //                                    ll.longitude + 0.005);
+                            //                            marker.setPosition(llNew);
+                            //                            mBaiduMap.hideInfoWindow();
                         }
                     };
                     LatLng ll = marker.getPosition();
@@ -125,10 +132,10 @@ public class LocationActivity extends BaseActivity
     {
         LatLng llA = new LatLng(Double.parseDouble(lat), Double.parseDouble(lng));
         MarkerOptions ooA = new MarkerOptions().position(llA).icon(bdA).zIndex(9).draggable(true);
-//        if (animationBox.isChecked()) {
-//            // 掉下动画
-//            ooA.animateType(MarkerOptions.MarkerAnimateType.drop);
-//        }
+        //        if (animationBox.isChecked()) {
+        //            // 掉下动画
+        //            ooA.animateType(MarkerOptions.MarkerAnimateType.drop);
+        //        }
         mMarkerA = (Marker) (mBaiduMap.addOverlay(ooA));
         MapStatus mMapStatus = new MapStatus.Builder()
                 //要移动的点

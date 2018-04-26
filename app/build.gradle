@@ -59,4 +59,6 @@ dependencies {
     compile 'com.github.zcweng:switch-button:0.0.3@aar'
     compile files('libs/BaiduLBS_Android.jar')
     compile files('libs/okhttp-3.2.0.jar')
+    compile files('libs/alipaySdk-20180403.jar')
+    compile 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'
 }

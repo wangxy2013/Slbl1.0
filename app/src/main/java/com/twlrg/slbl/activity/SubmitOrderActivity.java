@@ -217,6 +217,27 @@ public class SubmitOrderActivity extends BaseActivity implements IRequestListene
             //            valuePairs.put("remark", etMark.getText().toString());
             //            DataRequest.instance().request(SubmitOrderActivity.this, Urls.getSelectSaleUrl(), this, HttpRequest.POST, SUB_ORDER, valuePairs,
             //                    new ResultHandler());
+
+
+            DialogUtils.showPayDialog(SubmitOrderActivity.this, new MyItemClickListener()
+            {
+                @Override
+                public void onItemClick(View view, int position)
+                {
+                    if (position == 0)
+                    {
+
+                    }
+                    else
+                    {
+
+                    }
+
+
+
+
+                }
+            });
         }
         else if (v == tvPriceDetail)
         {

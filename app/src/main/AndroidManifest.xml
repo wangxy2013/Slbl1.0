@@ -158,17 +158,21 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden"/>
 
+        <activity
+            android:name=".wxapi.WXPayEntryActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden"/>
 
 
-
-
-        <service android:name="com.baidu.location.f"
-                 android:enabled="true"
-                 android:process=":remote">
+        <service
+            android:name="com.baidu.location.f"
+            android:enabled="true"
+            android:process=":remote">
         </service>
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="kS7T5g5aCAguBkmvCHSqZtwWvlVoURWW" >
+            android:value="kS7T5g5aCAguBkmvCHSqZtwWvlVoURWW">
         </meta-data>
     </application>
 

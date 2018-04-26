@@ -43,7 +43,7 @@ public class SaleHolder extends RecyclerView.ViewHolder
     {
         ImageLoader.getInstance().displayImage(Urls.getImgUrl(mSaleInfo.getPortrait()), mUserPicIv);
         mUserNameTv.setText(mSaleInfo.getNickname());
-        mPositionTv.setText(mSaleInfo.getNickname());
+        mPositionTv.setText(mSaleInfo.getPosition());
         if (mSaleInfo.isSelected())
         {
             mSelectedIv.setImageResource(R.drawable.ic_single_selection_on);
