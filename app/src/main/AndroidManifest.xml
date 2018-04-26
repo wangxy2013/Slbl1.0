@@ -159,11 +159,22 @@
             android:windowSoftInputMode="stateHidden"/>
 
         <activity
-            android:name=".wxapi.WXPayEntryActivity"
+            android:name=".activity.DateSelectionActivity"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden"/>
 
+
+
+
+
+
+
+        <activity
+            android:name=".wxapi.WXPayEntryActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden"/>
 
         <service
             android:name="com.baidu.location.f"

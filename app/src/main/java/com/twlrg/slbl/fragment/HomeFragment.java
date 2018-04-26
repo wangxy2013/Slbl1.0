@@ -19,6 +19,7 @@ import com.baidu.location.Poi;
 import com.twlrg.slbl.MyApplication;
 import com.twlrg.slbl.R;
 import com.twlrg.slbl.activity.BaseHandler;
+import com.twlrg.slbl.activity.DateSelectionActivity;
 import com.twlrg.slbl.activity.HotelDetailActivity;
 import com.twlrg.slbl.activity.MainActivity;
 import com.twlrg.slbl.adapter.HotelAdapter;
@@ -252,7 +253,8 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
         rlDistance.setOnClickListener(this);
         rlPrice.setOnClickListener(this);
         rlMore.setOnClickListener(this);
-
+        tvCheck.setOnClickListener(this);
+        tvLeave.setOnClickListener(this);
     }
 
 
@@ -433,6 +435,10 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
 
             }
             mPriceFilterPopupWindow.showAsDropDown(llTopLayout);
+        }
+        else if(v == tvCheck || v == tvCheck)
+        {
+            startActivity(new Intent(getActivity(), DateSelectionActivity.class));
         }
     }
 
