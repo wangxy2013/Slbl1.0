@@ -476,7 +476,7 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
     {
         Map<String, String> valuePairs = new HashMap<>();
         valuePairs.put("city_value", city_value);
-        DataRequest.instance().request(getActivity(), Urls.getHotelByKeywordUrl(), this, HttpRequest.POST, GET_REGION_LIST, valuePairs,
+        DataRequest.instance().request(getActivity(), Urls.getRegionListUrl(), this, HttpRequest.POST, GET_REGION_LIST, valuePairs,
                 new RegionListHandler());
     }
 
@@ -901,6 +901,7 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
                     public void onItemClick(View view, int position)
                     {
                         getHotelList();
+                        mHandler.sendEmptyMessageDelayed(GET_REGION_REQUEST, 1 * 1000);
                     }
                 });
             }
@@ -919,7 +920,6 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
             {
                 index = i;
                 city_value = cityInfoList.get(i).getId();
-                mHandler.sendEmptyMessageDelayed(GET_REGION_REQUEST, 1 * 1000);
                 break;
             }
         }
