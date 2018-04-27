@@ -1,5 +1,6 @@
 package com.twlrg.slbl.fragment;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,9 +8,14 @@ import android.os.Message;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -28,11 +34,13 @@ import com.twlrg.slbl.adapter.HotelAdapter;
 import com.twlrg.slbl.entity.CityInfo;
 import com.twlrg.slbl.entity.FilterInfo;
 import com.twlrg.slbl.entity.HotelInfo;
+import com.twlrg.slbl.entity.RegionInfo;
 import com.twlrg.slbl.http.DataRequest;
 import com.twlrg.slbl.http.HttpRequest;
 import com.twlrg.slbl.http.IRequestListener;
 import com.twlrg.slbl.json.CityListHandler;
 import com.twlrg.slbl.json.HotelInfoListHandler;
+import com.twlrg.slbl.json.RegionListHandler;
 import com.twlrg.slbl.listener.MyItemClickListener;
 import com.twlrg.slbl.service.LocationService;
 import com.twlrg.slbl.utils.APPUtils;
@@ -99,6 +107,10 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
     @BindView(R.id.ll_date)
     LinearLayout llDateLayout;
 
+
+    @BindView(R.id.et_keyword)
+    EditText mEtKeyword;
+
     private RecyclerView mRecyclerView;
     private View rootView = null;
     private Unbinder unbinder;
@@ -123,8 +135,8 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
     private List<FilterInfo> moreFilterInfos     = new ArrayList<>();
 
 
-    private String          mStartDate  ;
-    private String          mEndDate   ;
+    private String mStartDate;
+    private String mEndDate;
     private String          mCityValue    = "2158";
     private List<HotelInfo> hotelInfoList = new ArrayList<>();
     private List<CityInfo>  cityInfoList  = new ArrayList<>();
@@ -133,14 +145,20 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
     private HotelAdapter    mHotelAdapter;
     private LocationService locationService;
 
-    private static final int         REQUEST_SUCCESS  = 0x01;
-    private static final int         REQUEST_FAIL     = 0x02;
-    private static final int         GET_CITY_SUCCESS = 0x03;
-    private static final int         GET_DATE_CODE    = 0x99;
-    private static final int         GET_CITY_CODE    = 0x98;
-    private static final String      GET_HOTEL_LIST   = "GET_HOTEL_LIST";
-    private static final String      GET_CITY_LIST    = "GET_CITY_LIST";
-    private              BaseHandler mHandler         = new BaseHandler(getActivity())
+    private static final int REQUEST_SUCCESS    = 0x01;
+    private static final int REQUEST_FAIL       = 0x02;
+    private static final int GET_CITY_SUCCESS   = 0x03;
+    private static final int GET_REGION_SUCCESS = 0x04;
+    private static final int GET_REGION_REQUEST = 0X05;
+
+    private static final int    GET_DATE_CODE   = 0x99;
+    private static final int    GET_CITY_CODE   = 0x98;
+    private static final String GET_HOTEL_LIST  = "GET_HOTEL_LIST";
+    private static final String GET_CITY_LIST   = "GET_CITY_LIST";
+    private static final String GET_REGION_LIST = "GET_REGION_LIST";
+
+    @SuppressLint("HandlerLeak")
+    private BaseHandler mHandler = new BaseHandler(getActivity())
     {
         @Override
         public void handleMessage(Message msg)
@@ -166,6 +184,22 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
 
                     break;
 
+                case GET_REGION_SUCCESS:
+                    RegionListHandler mRegionListHandler = (RegionListHandler) msg.obj;
+                    moreFilterInfos.clear();
+                    mMoreFilterPopupWindow = null;
+                    List<RegionInfo> regionInfoList = mRegionListHandler.getRegionInfoList();
+                    for (int i = 0; i < regionInfoList.size(); i++)
+                    {
+                        FilterInfo mFilterInfo = new FilterInfo();
+                        mFilterInfo.setTitle(regionInfoList.get(i).getName());
+                        moreFilterInfos.add(mFilterInfo);
+                    }
+                    break;
+
+                case GET_REGION_REQUEST:
+                    getRegionList();
+                    break;
             }
         }
     };
@@ -264,6 +298,65 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
         rlMore.setOnClickListener(this);
         llDateLayout.setOnClickListener(this);
         rlCity.setOnClickListener(this);
+
+        mEtKeyword.setOnEditorActionListener(new TextView.OnEditorActionListener()
+        {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event)
+            {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH)
+                {
+                    hotelInfoList.clear();
+                    pn = 1;
+                    mRefreshStatus = 0;
+
+                    String mKeyword = mEtKeyword.getText().toString();
+
+                    if (StringUtils.stringIsEmpty(mKeyword))
+                    {
+                        getHotelList();
+
+                    }
+                    else
+                    {
+                        getHotelByKeyword(mKeyword);
+                    }
+
+
+                    return true;
+                }
+                return false;
+            }
+        });
+
+
+        mEtKeyword.addTextChangedListener(new TextWatcher()
+        {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after)
+            {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count)
+            {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s)
+            {
+                if (s.length() == 0)
+                {
+                    hotelInfoList.clear();
+                    pn = 1;
+                    mRefreshStatus = 0;
+                    getHotelList();
+                }
+            }
+        });
+
     }
 
 
@@ -348,6 +441,7 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
     //price 价格（0代表不限；1代表150元以下；2代表150-300元；3代表301-450元；4代表451-600元；5代表600元以上）
     private void getHotelList()
     {
+
         Map<String, String> valuePairs = new HashMap<>();
         valuePairs.put("lat", lat + "");
         valuePairs.put("lng", lng + "");
@@ -362,21 +456,61 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
                 new HotelInfoListHandler());
     }
 
+
+    private void getHotelByKeyword(String keyword)
+    {
+        Map<String, String> valuePairs = new HashMap<>();
+        valuePairs.put("lat", lat + "");
+        valuePairs.put("lng", lng + "");
+        valuePairs.put("city_value", city_value);
+        valuePairs.put("s_date", mStartDate);
+        valuePairs.put("e_date", mEndDate);
+        valuePairs.put("page", "99");
+        valuePairs.put("keyword", keyword);
+        DataRequest.instance().request(getActivity(), Urls.getHotelByKeywordUrl(), this, HttpRequest.POST, GET_HOTEL_LIST, valuePairs,
+                new HotelInfoListHandler());
+    }
+
+
+    private void getRegionList()
+    {
+        Map<String, String> valuePairs = new HashMap<>();
+        valuePairs.put("city_value", city_value);
+        DataRequest.instance().request(getActivity(), Urls.getHotelByKeywordUrl(), this, HttpRequest.POST, GET_REGION_LIST, valuePairs,
+                new RegionListHandler());
+    }
+
     @Override
     public void onPullDownToRefresh(PullToRefreshBase<RecyclerView> refreshView)
     {
-        hotelInfoList.clear();
-        pn = 1;
-        mRefreshStatus = 0;
-        getHotelList();
+
+        if (StringUtils.stringIsEmpty(mEtKeyword.getText().toString()))
+        {
+            hotelInfoList.clear();
+            pn = 1;
+            mRefreshStatus = 0;
+            getHotelList();
+        }
+        else
+        {
+            //getHotelByKeyword(mEtKeyword.getText().toString());
+        }
     }
 
     @Override
     public void onPullUpToRefresh(PullToRefreshBase<RecyclerView> refreshView)
     {
-        pn += 1;
-        mRefreshStatus = 1;
-        getHotelList();
+
+        if (StringUtils.stringIsEmpty(mEtKeyword.getText().toString()))
+        {
+            pn += 1;
+            mRefreshStatus = 1;
+            getHotelList();
+        }
+        else
+        {
+            // getHotelByKeyword(mEtKeyword.getText().toString());
+        }
     }
 
     private FilterPopupWindow mStarFilterPopupWindow;
@@ -449,6 +583,26 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
             }
             mPriceFilterPopupWindow.showAsDropDown(llTopLayout);
         }
+        else if (v == rlMore)
+        {
+            if (null == mMoreFilterPopupWindow)
+            {
+                mMoreFilterPopupWindow = new FilterPopupWindow(getActivity(), moreFilterInfos, new MyItemClickListener()
+                {
+                    @Override
+                    public void onItemClick(View view, int position)
+                    {
+                        tvMore.setText(moreFilterInfos.get(position).getTitle());
+                        tvMore.setTextColor(ContextCompat.getColor(getActivity(), R.color.green));
+                        mMoreFilterPopupWindow.dismiss();
+                    }
+                });
+
+            }
+            mMoreFilterPopupWindow.showAsDropDown(llTopLayout);
+        }
+
+
         else if (v == llDateLayout)
         {
             startActivityForResult(new Intent(getActivity(), HotelTimeActivity.class), GET_DATE_CODE);
@@ -495,6 +649,17 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
             else
             {
                 mHandler.sendMessage(mHandler.obtainMessage(REQUEST_FAIL, resultMsg));
+            }
+        }
+        else if (GET_REGION_LIST.equals(action))
+        {
+            if (ConstantUtil.RESULT_SUCCESS.equals(resultCode))
+            {
+                mHandler.sendMessage(mHandler.obtainMessage(GET_REGION_SUCCESS, obj));
+            }
+            else
+            {
+                // mHandler.sendMessage(mHandler.obtainMessage(REQUEST_FAIL, resultMsg));
             }
         }
     }
@@ -545,6 +710,9 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
                     pn = 1;
                     mRefreshStatus = 0;
                     getHotelList();
+
+                    mHandler.sendEmptyMessageDelayed(GET_REGION_REQUEST, 1 * 1000);
+
                 }
 
 
@@ -751,6 +919,7 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
             {
                 index = i;
                 city_value = cityInfoList.get(i).getId();
+                mHandler.sendEmptyMessageDelayed(GET_REGION_REQUEST, 1 * 1000);
                 break;
             }
         }

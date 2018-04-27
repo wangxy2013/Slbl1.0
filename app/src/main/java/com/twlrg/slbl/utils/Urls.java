@@ -37,6 +37,14 @@ public class Urls
         return BASE_URL + "merchant/search";
     }
 
+    //首页酒店列表
+    public static String getHotelByKeywordUrl()
+    {
+        return BASE_URL + "merchant/keyword_title";
+    }
+
+
+
     //酒店详细
     public static String getHotelDetailUrl()
     {
@@ -146,6 +154,12 @@ public class Urls
     public static String getCityListUrl()
     {
         return BASE_URL + "city/list_info";
+    }
+
+    //获取城市信息
+    public static String getRegionListUrl()
+    {
+        return BASE_URL + "city/list_region";
     }
 
 
