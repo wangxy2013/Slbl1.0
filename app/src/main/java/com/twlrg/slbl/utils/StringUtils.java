@@ -3,6 +3,7 @@ package com.twlrg.slbl.utils;
 import org.json.JSONObject;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -125,10 +126,24 @@ public class StringUtils
         return getCurrentTime("yyyy-MM-dd HH:mm:ss");
     }
 
-    public static String getCurrentTime1()
+
+    public static String toMonthAndDay(String time)
     {
-        return getCurrentTime("yyyy-MM");
+        DateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
+
+        Date date = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("MM-dd", Locale.getDefault());
+        String currentTime = null;
+        try
+        {
+            currentTime = sdf.format(format1.parse(time));
+        } catch (ParseException e)
+        {
+            e.printStackTrace();
+        }
+        return currentTime;
     }
+
 
     public static int getIndex(String str, String[] codeArr)
     {
@@ -146,6 +161,35 @@ public class StringUtils
         }
 
         return mIndex;
+    }
+
+
+    public static int compare_date(String str1, String str2)
+    {
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        try
+        {
+            Date dt1 = df.parse(str1);
+            Date dt2 = df.parse(str2);
+            if (dt1.getTime() > dt2.getTime())
+            {
+                System.out.println("dt1 在dt2前");
+                return 1;
+            }
+            else if (dt1.getTime() < dt2.getTime())
+            {
+                System.out.println("dt1在dt2后");
+                return -1;
+            }
+            else
+            {
+                return 0;
+            }
+        } catch (Exception exception)
+        {
+            exception.printStackTrace();
+        }
+        return 0;
     }
 
     /**
@@ -336,7 +380,7 @@ public class StringUtils
         Date date = new Date();// 取时间
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
-        calendar.add(calendar.DAY_OF_MONTH, day-1);
+        calendar.add(calendar.DAY_OF_MONTH, day - 1);
         date = calendar.getTime(); // 这个时间就是日期增加过后的结果
         String dateString = sdf.format(date);
 
@@ -814,9 +858,9 @@ public class StringUtils
 
     public static boolean isNumber(String str)
     {
-        java.util.regex.Pattern pattern=java.util.regex.Pattern.compile("^(([1-9]{1}\\d*)|([0]{1}))(\\.(\\d){0,2})?$"); // 判断小数点后一位的数字的正则表达式
-        java.util.regex.Matcher match=pattern.matcher(str);
-        if(match.matches()==false)
+        java.util.regex.Pattern pattern = java.util.regex.Pattern.compile("^(([1-9]{1}\\d*)|([0]{1}))(\\.(\\d){0,2})?$"); // 判断小数点后一位的数字的正则表达式
+        java.util.regex.Matcher match = pattern.matcher(str);
+        if (match.matches() == false)
         {
             return false;
         }

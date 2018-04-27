@@ -1,5 +1,6 @@
 package com.twlrg.slbl.fragment;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
@@ -19,8 +20,8 @@ import com.baidu.location.Poi;
 import com.twlrg.slbl.MyApplication;
 import com.twlrg.slbl.R;
 import com.twlrg.slbl.activity.BaseHandler;
-import com.twlrg.slbl.activity.DateSelectionActivity;
 import com.twlrg.slbl.activity.HotelDetailActivity;
+import com.twlrg.slbl.activity.HotelTimeActivity;
 import com.twlrg.slbl.activity.MainActivity;
 import com.twlrg.slbl.adapter.HotelAdapter;
 import com.twlrg.slbl.entity.CityInfo;
@@ -93,6 +94,8 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
     @BindView(R.id.ll_top)
     LinearLayout              llTopLayout;
 
+    @BindView(R.id.ll_date)
+    LinearLayout llDateLayout;
 
     private RecyclerView mRecyclerView;
     private View rootView = null;
@@ -128,10 +131,10 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
     private HotelAdapter    mHotelAdapter;
     private LocationService locationService;
 
-    private static final int REQUEST_SUCCESS  = 0x01;
-    private static final int REQUEST_FAIL     = 0x02;
-    private static final int GET_CITY_SUCCESS = 0x03;
-
+    private static final int REQUEST_SUCCESS   = 0x01;
+    private static final int REQUEST_FAIL      = 0x02;
+    private static final int GET_CITY_SUCCESS  = 0x03;
+    private static final int GET_DATE_SELECTET = 0x99;
 
     private static final String      GET_HOTEL_LIST = "GET_HOTEL_LIST";
     private static final String      GET_CITY_LIST  = "GET_CITY_LIST";
@@ -190,6 +193,10 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
     @Override
     protected void initData()
     {
+
+        mStartDate = StringUtils.getCurrentTime();
+        mEndDate = StringUtils.getTomorrowTime();
+
         String[] starArr = getActivity().getResources().getStringArray(R.array.home_star);
         String[] distanceArr = getActivity().getResources().getStringArray(R.array.home_distance);
         String[] priceArr = getActivity().getResources().getStringArray(R.array.home_price);
@@ -253,8 +260,7 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
         rlDistance.setOnClickListener(this);
         rlPrice.setOnClickListener(this);
         rlMore.setOnClickListener(this);
-        tvCheck.setOnClickListener(this);
-        tvLeave.setOnClickListener(this);
+        llDateLayout.setOnClickListener(this);
     }
 
 
@@ -316,7 +322,10 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
         }
 
 
-        //getHotelList();
+        tvCheck.setText(StringUtils.toMonthAndDay(mStartDate));
+        tvLeave.setText(StringUtils.toMonthAndDay(mEndDate));
+
+
     }
 
     @Override
@@ -436,9 +445,9 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
             }
             mPriceFilterPopupWindow.showAsDropDown(llTopLayout);
         }
-        else if(v == tvCheck || v == tvCheck)
+        else if (v == llDateLayout)
         {
-            startActivity(new Intent(getActivity(), DateSelectionActivity.class));
+            startActivityForResult(new Intent(getActivity(), HotelTimeActivity.class), GET_DATE_SELECTET);
         }
     }
 
@@ -492,6 +501,26 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
         }
     }
 
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == GET_DATE_SELECTET)
+        {
+            if (resultCode == Activity.RESULT_OK && null != data)
+            {
+                mStartDate = data.getStringExtra("CHEK_IN");
+                mEndDate = data.getStringExtra("CHEK_OUT");
+
+                if (!StringUtils.stringIsEmpty(mStartDate) && !StringUtils.stringIsEmpty(mEndDate))
+                {
+                    tvCheck.setText(StringUtils.toMonthAndDay(mStartDate));
+                    tvLeave.setText(StringUtils.toMonthAndDay(mEndDate));
+                }
+            }
+        }
+    }
 
     /*****
      *

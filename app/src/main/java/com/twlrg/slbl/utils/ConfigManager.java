@@ -36,11 +36,20 @@ public class ConfigManager
     private static final String GUEST_ID          = "guest_id";
     private static final String USER_NICK_NAME    = "user_nick_name";
     private static final String USER_EMAIL   = "user_email";
-    private static final String SEARCH_GROUP      = "SEARCH_GROUP";
-    private static final String SEARCH_VIDEO      = "SEARCH_VIDEO";
+    private static final String CHEK_IN_DATE      = "chek_in_date";
+    private static final String CHEK_OUT_DATE      = "chek_out_date";
     private static final String TOKEN             = "TOKEN";
     private static final String USER_PIC         = "useer_pic";
     private static final String USER_SEX = "user_sex";
+
+
+
+
+
+
+
+
+
 
     /**
      * 返回实例
@@ -222,6 +231,29 @@ public class ConfigManager
     public String getUserEmail()
     {
         return mSharedPreferences.getString(USER_EMAIL, "");
+    }
+
+
+
+    public void setChekInDate(String chek_in_date)
+    {
+        mSharedPreferences.edit().putString(CHEK_IN_DATE, chek_in_date).commit();
+    }
+
+    public String getChekInDate()
+    {
+        return mSharedPreferences.getString(CHEK_IN_DATE, "");
+    }
+
+
+    public void setChekOutDate(String chek_out_date)
+    {
+        mSharedPreferences.edit().putString(CHEK_OUT_DATE, chek_out_date).commit();
+    }
+
+    public String getChekOutDate()
+    {
+        return mSharedPreferences.getString(CHEK_OUT_DATE, "");
     }
 
 }

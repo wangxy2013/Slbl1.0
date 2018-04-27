@@ -159,13 +159,10 @@
             android:windowSoftInputMode="stateHidden"/>
 
         <activity
-            android:name=".activity.DateSelectionActivity"
+            android:name=".activity.HotelTimeActivity"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden"/>
-
-
-
 
 
 
