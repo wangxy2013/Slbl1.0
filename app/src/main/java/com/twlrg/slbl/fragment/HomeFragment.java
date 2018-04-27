@@ -20,6 +20,7 @@ import com.baidu.location.Poi;
 import com.twlrg.slbl.MyApplication;
 import com.twlrg.slbl.R;
 import com.twlrg.slbl.activity.BaseHandler;
+import com.twlrg.slbl.activity.CityListActivity;
 import com.twlrg.slbl.activity.HotelDetailActivity;
 import com.twlrg.slbl.activity.HotelTimeActivity;
 import com.twlrg.slbl.activity.MainActivity;
@@ -46,6 +47,7 @@ import com.twlrg.slbl.widget.FilterPopupWindow;
 import com.twlrg.slbl.widget.list.refresh.PullToRefreshBase;
 import com.twlrg.slbl.widget.list.refresh.PullToRefreshRecyclerView;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -121,8 +123,8 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
     private List<FilterInfo> moreFilterInfos     = new ArrayList<>();
 
 
-    private String          mStartDate    = "2018-04-24";
-    private String          mEndDate      = "2018-04-28";
+    private String          mStartDate  ;
+    private String          mEndDate   ;
     private String          mCityValue    = "2158";
     private List<HotelInfo> hotelInfoList = new ArrayList<>();
     private List<CityInfo>  cityInfoList  = new ArrayList<>();
@@ -131,14 +133,14 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
     private HotelAdapter    mHotelAdapter;
     private LocationService locationService;
 
-    private static final int REQUEST_SUCCESS   = 0x01;
-    private static final int REQUEST_FAIL      = 0x02;
-    private static final int GET_CITY_SUCCESS  = 0x03;
-    private static final int GET_DATE_SELECTET = 0x99;
-
-    private static final String      GET_HOTEL_LIST = "GET_HOTEL_LIST";
-    private static final String      GET_CITY_LIST  = "GET_CITY_LIST";
-    private              BaseHandler mHandler       = new BaseHandler(getActivity())
+    private static final int         REQUEST_SUCCESS  = 0x01;
+    private static final int         REQUEST_FAIL     = 0x02;
+    private static final int         GET_CITY_SUCCESS = 0x03;
+    private static final int         GET_DATE_CODE    = 0x99;
+    private static final int         GET_CITY_CODE    = 0x98;
+    private static final String      GET_HOTEL_LIST   = "GET_HOTEL_LIST";
+    private static final String      GET_CITY_LIST    = "GET_CITY_LIST";
+    private              BaseHandler mHandler         = new BaseHandler(getActivity())
     {
         @Override
         public void handleMessage(Message msg)
@@ -261,6 +263,7 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
         rlPrice.setOnClickListener(this);
         rlMore.setOnClickListener(this);
         llDateLayout.setOnClickListener(this);
+        rlCity.setOnClickListener(this);
     }
 
 
@@ -274,6 +277,7 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
     @Override
     protected void initViewData()
     {
+        topView.setVisibility(View.VISIBLE);
         topView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, APPUtils.getStatusBarHeight(getActivity())));
         mPullToRefreshRecyclerView.setPullLoadEnabled(true);
         mRecyclerView = mPullToRefreshRecyclerView.getRefreshableView();
@@ -351,8 +355,8 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
         valuePairs.put("star", star + "");
         valuePairs.put("range", range + "");
         valuePairs.put("price", price + "");
-        valuePairs.put("s_date", "2018-04-17");
-        valuePairs.put("e_date", "2018-04-18");
+        valuePairs.put("s_date", mStartDate);
+        valuePairs.put("e_date", mEndDate);
         valuePairs.put("page", pn + "");
         DataRequest.instance().request(getActivity(), Urls.getHotelListUrl(), this, HttpRequest.POST, GET_HOTEL_LIST, valuePairs,
                 new HotelInfoListHandler());
@@ -447,7 +451,13 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
         }
         else if (v == llDateLayout)
         {
-            startActivityForResult(new Intent(getActivity(), HotelTimeActivity.class), GET_DATE_SELECTET);
+            startActivityForResult(new Intent(getActivity(), HotelTimeActivity.class), GET_DATE_CODE);
+        }
+        else if (v == rlCity)
+        {
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("CITY_LIST", (Serializable) cityInfoList);
+            startActivityForResult(new Intent(getActivity(), CityListActivity.class).putExtras(bundle), GET_CITY_CODE);
         }
     }
 
@@ -506,7 +516,7 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
     public void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == GET_DATE_SELECTET)
+        if (requestCode == GET_DATE_CODE)
         {
             if (resultCode == Activity.RESULT_OK && null != data)
             {
@@ -519,8 +529,47 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
                     tvLeave.setText(StringUtils.toMonthAndDay(mEndDate));
                 }
             }
+
+        }
+        else if (requestCode == GET_CITY_CODE)
+        {
+            if (resultCode == Activity.RESULT_OK && null != data)
+            {
+                String city_id = data.getStringExtra("city_id");
+                tvCity.setText(getCityById(city_id));
+
+                if (!StringUtils.stringIsEmpty(getCityById(city_id)))
+                {
+                    city_value = city_id;
+                    hotelInfoList.clear();
+                    pn = 1;
+                    mRefreshStatus = 0;
+                    getHotelList();
+                }
+
+
+            }
         }
     }
+
+
+    private String getCityById(String city_id)
+    {
+        String city = "深圳市";
+
+
+        for (int i = 0; i < cityInfoList.size(); i++)
+        {
+            if (city_id.equals(cityInfoList.get(i).getId()))
+            {
+                city = cityInfoList.get(i).getName();
+                break;
+            }
+        }
+
+        return city;
+    }
+
 
     /*****
      *
@@ -698,7 +747,7 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
 
         for (int i = 0; i < cityInfoList.size(); i++)
         {
-            if (cityInfoList.get(i).getName().contains("city"))
+            if (cityInfoList.get(i).getName().contains(city))
             {
                 index = i;
                 city_value = cityInfoList.get(i).getId();
