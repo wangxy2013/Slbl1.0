@@ -143,12 +143,12 @@ public class BookRoomActivity extends BaseActivity implements IRequestListener
 
     private int buynum = 1;
     private boolean isShowRoom;
-    private boolean isAllName = true;//判断房间姓名是否全部填写完整
-    private String  zc        = "无早餐";
-
-    private static final int    REQUEST_LOGIN_SUCCESS = 0x01;
-    public static final  int    REQUEST_FAIL          = 0x02;
-    private static final String CREATE_ORDER          = "create_order";
+    private              boolean isAllName             = true;//判断房间姓名是否全部填写完整
+    private              String  zc                    = "无早餐";
+    private              int     show_mobile           = 0;
+    private static final int     REQUEST_LOGIN_SUCCESS = 0x01;
+    public static final  int     REQUEST_FAIL          = 0x02;
+    private static final String  CREATE_ORDER          = "create_order";
 
     private BaseHandler mHandler = new BaseHandler(this)
     {
@@ -255,6 +255,15 @@ public class BookRoomActivity extends BaseActivity implements IRequestListener
             public void onCheckedChanged(SwitchButton view, boolean isChecked)
             {
                 switchButton.setChecked(isChecked);
+
+                if (isChecked)
+                {
+                    show_mobile = 1;
+                }
+                else
+                {
+                    show_mobile = 0;
+                }
             }
         });
     }
@@ -394,6 +403,7 @@ public class BookRoomActivity extends BaseActivity implements IRequestListener
             valuePairs.put("city_value", city_value);
             valuePairs.put("name", etName1.getText().toString());
             valuePairs.put("occupant", occupant.substring(0, occupant.length() - 1));
+            valuePairs.put("show_mobile", show_mobile + "");
             DataRequest.instance().request(BookRoomActivity.this, Urls.getCreatOrderUrl(), this, HttpRequest.POST, CREATE_ORDER, valuePairs,
                     new SubOrderInfoHandler());
         }

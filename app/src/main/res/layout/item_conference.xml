@@ -21,7 +21,13 @@
             android:id="@+id/conferenc_banner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:indicatorStyle="NONE"/>
+            app:indicatorGravity="CENTER"
+            app:indicatorInterval="5dp"
+            app:indicatorSelectRes="@drawable/shape_point_unselect"
+            app:indicatorStyle="ORDINARY"
+            app:indicatorUnSelectRes="@drawable/shape_point_select"
+
+            />
         <TextView
             android:id="@+id/tv_price"
             android:layout_width="wrap_content"

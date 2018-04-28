@@ -39,9 +39,9 @@
                     android:layout_height="wrap_content"
                     app:indicatorGravity="CENTER"
                     app:indicatorInterval="5dp"
-                    app:indicatorSelectRes="@drawable/shape_point_select"
+                    app:indicatorSelectRes="@drawable/shape_point_unselect"
                     app:indicatorStyle="ORDINARY"
-                    app:indicatorUnSelectRes="@drawable/shape_point_unselect"
+                    app:indicatorUnSelectRes="@drawable/shape_point_select"
                     />
 
                 <RelativeLayout
