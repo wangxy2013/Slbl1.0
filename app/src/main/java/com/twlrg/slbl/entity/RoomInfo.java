@@ -1,8 +1,12 @@
 package com.twlrg.slbl.entity;
 
+import com.twlrg.slbl.utils.StringUtils;
+
 import org.json.JSONObject;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 作者：王先云 on 2018/4/17 20:24
@@ -33,7 +37,7 @@ public class RoomInfo implements Serializable
     private String isdelete;//0,
     private double price;//200,
     private String price_type;//wz
-
+    private List<String> picList = new ArrayList<>();
     public RoomInfo(JSONObject obj)
     {
         this.id = obj.optString("id");
@@ -59,6 +63,36 @@ public class RoomInfo implements Serializable
         this.price_type = obj.optString("price_type");
         this.price=obj.optDouble("price");
 
+    }
+
+    public List<String> getPicList()
+    {
+        if(!StringUtils.stringIsEmpty(pic1))
+        {
+            picList.add(pic1);
+        }
+        if(!StringUtils.stringIsEmpty(pic2))
+        {
+            picList.add(pic2);
+        }
+        if(!StringUtils.stringIsEmpty(pic3))
+        {
+            picList.add(pic3);
+        }
+        if(!StringUtils.stringIsEmpty(pic4))
+        {
+            picList.add(pic4);
+        }
+        if(!StringUtils.stringIsEmpty(pic5))
+        {
+            picList.add(pic5);
+        }
+        if(!StringUtils.stringIsEmpty(pic6))
+        {
+            picList.add(pic6);
+        }
+
+        return picList;
     }
 
     public String getId()

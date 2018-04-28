@@ -18,7 +18,7 @@ android {
         release {
             keyAlias 'slbl'
             keyPassword 'slbl2018'
-            storeFile file('F:/pro/sztw/Slbl1.0/app/slbl.jks')
+            storeFile file('E:/AndroidPorject/Slbl1.0/app/slbl.jks')
             storePassword 'slbl2018'
         }
     }
@@ -62,4 +62,5 @@ dependencies {
     compile 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'
     compile 'de.greenrobot:eventbus:2.4.0'
     compile files('libs/pinyin4j-2.5.0.jar')
+    compile 'com.github.donkingliang:CustomBanner:1.1.2'
 }

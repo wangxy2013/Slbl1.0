@@ -1,5 +1,6 @@
 package com.twlrg.slbl.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
@@ -13,6 +14,7 @@ import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.donkingliang.banner.CustomBanner;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.twlrg.slbl.MyApplication;
 import com.twlrg.slbl.R;
@@ -120,7 +122,8 @@ public class HotelDetailActivity extends BaseActivity implements IRequestListene
     TextView     tvBreakfastType44;
     @BindView(R.id.tv_conference)
     TextView     tvConference;
-
+    @BindView(R.id.hotel_banner)
+    CustomBanner hotelBanner;
 
     private String id, city_value, s_date, e_date, lng, lat, title;
     private boolean summary_is_open;
@@ -136,6 +139,8 @@ public class HotelDetailActivity extends BaseActivity implements IRequestListene
     private List<ConferenceInfo> conferenceInfoList = new ArrayList<>();
 
     private List<RoomInfo> roomInfoListBreakfast = new ArrayList<>();
+
+    private List<String> picList = new ArrayList<>();
 
 
     private String  mBreakfastType; //wz dz sz
@@ -159,10 +164,13 @@ public class HotelDetailActivity extends BaseActivity implements IRequestListene
                     mHotelInfo = mHotelDetailHandler.getHotelInfo();
                     if (null != mHotelInfo)
                     {
-                        int width = APPUtils.getScreenWidth(HotelDetailActivity.this);
-                        int height = (int) (width * 0.66);
-                        ivHotelImg.setLayoutParams(new LinearLayout.LayoutParams(width, height));
-                        ImageLoader.getInstance().displayImage(Urls.getImgUrl(mHotelInfo.getHotel_img()), ivHotelImg);
+                        //                        int width = APPUtils.getScreenWidth(HotelDetailActivity.this);
+                        //                        int height = (int) (width * 0.66);
+                        //                        ivHotelImg.setLayoutParams(new LinearLayout.LayoutParams(width, height));
+                        //                        ImageLoader.getInstance().displayImage(Urls.getImgUrl(mHotelInfo.getHotel_img()), ivHotelImg);
+
+                        picList.add(mHotelInfo.getHotel_img());
+
                         rbStar.setRating(Float.parseFloat(mHotelInfo.getStar() + ""));
                         tvAddress.setText("地址:" + mHotelInfo.getAddress());
                         tvDistance.setText(mHotelInfo.getJl() + "公里");
@@ -172,6 +180,35 @@ public class HotelDetailActivity extends BaseActivity implements IRequestListene
                         tvEndDate.setText(e_date);
                         tvSummary.setText(mHotelInfo.getSummary());
                         tvSummary.setLines(3);
+
+                        int width = APPUtils.getScreenWidth(HotelDetailActivity.this);
+                        int height = (int) (width * 0.66);
+                        hotelBanner.setLayoutParams(new LinearLayout.LayoutParams(width, height));
+
+                        hotelBanner.setPages(new CustomBanner.ViewCreator<String>()
+                        {
+                            @Override
+                            public View createView(Context context, int position)
+                            {
+                                //这里返回的是轮播图的项的布局 支持任何的布局
+                                //position 轮播图的第几个项
+                                ImageView imageView = new ImageView(context);
+                                imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                                return imageView;
+                            }
+
+                            @Override
+                            public void updateUI(Context context, View view, int position, String data)
+                            {
+                                //在这里更新轮播图的UI
+                                //position 轮播图的第几个项
+                                //view 轮播图当前项的布局 它是createView方法的返回值
+                                //data 轮播图当前项对应的数据
+                                //   Glide.with(context).load(data).into((ImageView) view);
+                                ImageLoader.getInstance().displayImage(Urls.getImgUrl(picList.get(position)), (ImageView) view);
+                            }
+                        }, picList);
+
                     }
                     roomInfoListAll.addAll(mHotelDetailHandler.getRoomInfoList());
                     conferenceInfoListAll.addAll(mHotelDetailHandler.getConferenceInfoList());
@@ -305,7 +342,6 @@ public class HotelDetailActivity extends BaseActivity implements IRequestListene
             }
         });
         rvRoom.setAdapter(mRoomAdapter);
-
 
         rvConference.setLayoutManager(new FullyLinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         rvConference.addItemDecoration(new EmptyDecoration(HotelDetailActivity.this, ""));

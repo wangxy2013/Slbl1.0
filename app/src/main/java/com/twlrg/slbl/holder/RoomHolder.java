@@ -9,8 +9,10 @@ import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.donkingliang.banner.CustomBanner;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.twlrg.slbl.R;
+import com.twlrg.slbl.activity.HotelDetailActivity;
 import com.twlrg.slbl.entity.HotelInfo;
 import com.twlrg.slbl.entity.RoomInfo;
 import com.twlrg.slbl.listener.MyItemClickListener;
@@ -18,6 +20,9 @@ import com.twlrg.slbl.utils.APPUtils;
 import com.twlrg.slbl.utils.StringUtils;
 import com.twlrg.slbl.utils.Urls;
 import com.twlrg.slbl.widget.AutoFitTextView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -33,9 +38,9 @@ public class RoomHolder extends RecyclerView.ViewHolder
     private TextView        mAreaTv;
     private TextView        mBedTypeTv;
     private TextView        mReserveTv;
-
+    private CustomBanner   mRoombanner;
     private MyItemClickListener listener1;
-
+    private List<String> picList = new ArrayList<>();
     public RoomHolder(View rootView, MyItemClickListener listener1)
     {
         super(rootView);
@@ -45,18 +50,42 @@ public class RoomHolder extends RecyclerView.ViewHolder
         mAreaTv = (TextView) rootView.findViewById(R.id.tv_area);
         mBedTypeTv = (TextView) rootView.findViewById(R.id.tv_bed_type);
         mReserveTv = (TextView) rootView.findViewById(R.id.tv_reserve);
-
+        mRoombanner= (CustomBanner) rootView.findViewById(R.id.room_banner);
         this.listener1 = listener1;
     }
 
 
     public void setRoomInfo(RoomInfo mRoomInfo, Context mContext, final int p)
     {
+        picList.clear();
+        picList.addAll(mRoomInfo.getPicList());
+
 
         int width = APPUtils.getScreenWidth(mContext);
         int height = (int) (width * 0.66);
-        mRoomImgIv.setLayoutParams(new FrameLayout.LayoutParams(width, height));
-        ImageLoader.getInstance().displayImage(Urls.getImgUrl(mRoomInfo.getPic1()), mRoomImgIv);
+//        mRoomImgIv.setLayoutParams(new FrameLayout.LayoutParams(width, height));
+//        ImageLoader.getInstance().displayImage(Urls.getImgUrl(mRoomInfo.getPic1()), mRoomImgIv);
+        mRoombanner.setLayoutParams(new FrameLayout.LayoutParams(width, height));
+        mRoombanner.setPages(new CustomBanner.ViewCreator<String>()
+        {
+            @Override
+            public View createView(Context context, int position)
+            {
+                //这里返回的是轮播图的项的布局 支持任何的布局
+                //position 轮播图的第几个项
+                ImageView imageView = new ImageView(context);
+                imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                return imageView;
+            }
+
+            @Override
+            public void updateUI(Context context, View view, int position, String data)
+            {
+                ImageLoader.getInstance().displayImage(Urls.getImgUrl(picList.get(position)), (ImageView) view);
+            }
+        }, picList);
+
+
         mTitleNameTv.setText(mRoomInfo.getTitle());
         mPriceTv.setText("￥" + mRoomInfo.getPrice() + "起");
 

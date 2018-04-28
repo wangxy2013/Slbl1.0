@@ -27,8 +27,21 @@
                 <ImageView
                     android:id="@+id/iv_hotel_img"
                     android:layout_width="match_parent"
+                    android:visibility="gone"
                     android:layout_height="wrap_content"
                     android:scaleType="centerCrop"
+                    />
+
+                <com.donkingliang.banner.CustomBanner
+                    android:id="@+id/hotel_banner"
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:indicatorGravity="CENTER"
+                    app:indicatorInterval="5dp"
+                    app:indicatorSelectRes="@drawable/shape_point_select"
+                    app:indicatorStyle="ORDINARY"
+                    app:indicatorUnSelectRes="@drawable/shape_point_unselect"
                     />
 
                 <RelativeLayout

@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.donkingliang.banner.CustomBanner;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.twlrg.slbl.R;
 import com.twlrg.slbl.entity.ConferenceInfo;
@@ -17,6 +18,9 @@ import com.twlrg.slbl.listener.MyItemClickListener;
 import com.twlrg.slbl.utils.APPUtils;
 import com.twlrg.slbl.utils.Urls;
 import com.twlrg.slbl.widget.AutoFitTextView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -34,7 +38,8 @@ public class ConferenceHolder extends RecyclerView.ViewHolder
     private TextView        mTheatreTv;
     private TextView        mDeskTv;
     private TextView        mBanquetTv;
-
+    private List<String> picList = new ArrayList<>();
+    private CustomBanner customBanner;
 
     public ConferenceHolder(View rootView)
     {
@@ -47,6 +52,7 @@ public class ConferenceHolder extends RecyclerView.ViewHolder
         mTheatreTv = (TextView) rootView.findViewById(R.id.tv_theatre);
         mDeskTv = (TextView) rootView.findViewById(R.id.tv_desk);
         mBanquetTv = (TextView) rootView.findViewById(R.id.tv_banquet);
+        customBanner = (CustomBanner) rootView.findViewById(R.id.conferenc_banner);
     }
 
 
@@ -55,8 +61,33 @@ public class ConferenceHolder extends RecyclerView.ViewHolder
 
         int width = APPUtils.getScreenWidth(mContext);
         int height = (int) (width * 0.66);
-        mRoomImgIv.setLayoutParams(new FrameLayout.LayoutParams(width, height));
-        ImageLoader.getInstance().displayImage(Urls.getImgUrl(mConference.getPic1()), mRoomImgIv);
+        //        mRoomImgIv.setLayoutParams(new FrameLayout.LayoutParams(width, height));
+        //        ImageLoader.getInstance().displayImage(Urls.getImgUrl(mConference.getPic1()), mRoomImgIv);
+
+
+        picList.clear();
+        picList.addAll(mConference.getPicList());
+
+        customBanner.setLayoutParams(new FrameLayout.LayoutParams(width, height));
+        customBanner.setPages(new CustomBanner.ViewCreator<String>()
+        {
+            @Override
+            public View createView(Context context, int position)
+            {
+                //这里返回的是轮播图的项的布局 支持任何的布局
+                //position 轮播图的第几个项
+                ImageView imageView = new ImageView(context);
+                imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                return imageView;
+            }
+
+            @Override
+            public void updateUI(Context context, View view, int position, String data)
+            {
+                ImageLoader.getInstance().displayImage(Urls.getImgUrl(picList.get(position)), (ImageView) view);
+            }
+        }, picList);
+
         mtTitleTv.setText(mConference.getTitle());
         mPriceTv.setText("￥" + mConference.getPrice() + "起");
         mAreaTv.setText(mConference.getArea() + "㎡");

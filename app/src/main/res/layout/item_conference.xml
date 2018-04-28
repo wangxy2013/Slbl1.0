@@ -16,7 +16,12 @@
             android:layout_height="200dp"
             android:scaleType="centerCrop"
             android:src="@drawable/gray_frame_5dp"/>
-
+        <com.donkingliang.banner.CustomBanner
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/conferenc_banner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:indicatorStyle="NONE"/>
         <TextView
             android:id="@+id/tv_price"
             android:layout_width="wrap_content"
