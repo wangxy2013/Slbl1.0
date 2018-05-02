@@ -31,6 +31,13 @@ public class Urls
     }
 
 
+    //用戶头像上传
+    public static String getUploadPicUrl()
+    {
+        return BASE_URL + "user/update_portrait";
+    }
+
+
     //首页酒店列表
     public static String getHotelListUrl()
     {
@@ -42,7 +49,6 @@ public class Urls
     {
         return BASE_URL + "merchant/keyword_title";
     }
-
 
 
     //酒店详细

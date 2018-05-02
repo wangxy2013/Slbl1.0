@@ -176,7 +176,7 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
      * 如果权限被拒绝过，则提示用户需要权限
      */
     @TargetApi(Build.VERSION_CODES.M)
-    protected void requestPermission(final String permission, String rationale, final int requestCode)
+    public void requestPermission(final String permission, String rationale, final int requestCode)
     {
         if (shouldShowRequestPermissionRationale(permission))
         {
@@ -229,7 +229,7 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
      * @throws [异常类型] [异常说明]
      * @see
      */
-    protected void showProgressDialog()
+    public void showProgressDialog()
     {
 
         if (isFinishing())
@@ -244,7 +244,7 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
         mProgressDialog.show();
     }
 
-    protected void hideProgressDialog()
+    public void hideProgressDialog()
     {
         if (isFinishing())
         {

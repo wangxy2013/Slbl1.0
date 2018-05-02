@@ -13,7 +13,9 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.FormBody;
+import okhttp3.Headers;
 import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -62,10 +64,10 @@ public class HttpRequest implements Runnable
         }
     }
 
-    public HttpRequest(int action, String type, String url, File mFile,
+    public HttpRequest(Context mContext,int action, String type, String url,  Map<String, String> valuePairs, File mFile,
                        IRequestListener listener, JsonHandler handler)
     {
-        this(action, type, url, listener, handler);
+        this(mContext,action, type, url,valuePairs, listener, handler);
         this.mFile = mFile;
     }
 
@@ -211,6 +213,24 @@ public class HttpRequest implements Runnable
 
     private String doUpload() throws Exception
     {
+
+        OkHttpClient client = new OkHttpClient();
+        RequestBody fileBody = RequestBody.create(MediaType.parse("application/octet-stream"), mFile);
+
+        RequestBody multipartBody = new MultipartBody.Builder()
+                .setType(MultipartBody.ALTERNATIVE)
+                .addFormDataPart("uid", valuePair.get("uid"))
+                .addFormDataPart("role", valuePair.get("role"))
+                .addFormDataPart("token", valuePair.get("token"))
+                .addFormDataPart("data", "plans.xml", fileBody).build();
+
+
+        Request request = new Request.Builder().url(urlRequest)
+                .addHeader("User-Agent", "android")
+                .header("Content-Type", "text/html; charset=utf-8;")
+                .post(multipartBody)//传参数、文件或者混合，改一下就行请求体就行
+                .build();
+
         //        OkHttpClient mOkHttpClient = new OkHttpClient();
         //        mOkHttpClient.setConnectTimeout(60, TimeUnit.SECONDS);
         //        MultipartBuilder multipartBuilder = new MultipartBuilder().type(MultipartBuilder.FORM);
@@ -221,14 +241,14 @@ public class HttpRequest implements Runnable
         //        LogUtil.d("TAG", "upfacepic:" + mFile.getName());
         //        //构造文件上传时的请求对象Request
         //        Request request = new Request.Builder().url(urlRequest).post(multipartBuilder.build()).build();
-        //        Response response = mOkHttpClient.newCall(request).execute();// execute
-        //        if (response.isSuccessful())
-        //        {
-        //            System.out.println(response.code());
-        //            String body = response.body().string();
-        //            return body;
-        //
-        //        }
+        Response response = client.newCall(request).execute();// execute
+        if (response.isSuccessful())
+        {
+            System.out.println(response.code());
+            String body = response.body().string();
+            return body;
+
+        }
         return null;
     }
 

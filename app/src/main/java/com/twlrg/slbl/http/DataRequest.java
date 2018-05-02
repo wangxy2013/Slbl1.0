@@ -44,10 +44,10 @@ public class DataRequest
     }
 
 
-    public void request(String url, IRequestListener listener, int httpType, String reqType,
-                        File mFile, JsonHandler handler)
+    public void request(Context mContext, String url, IRequestListener listener, int httpType, String reqType,
+                        Map<String, String> valuePairs, File mFile, JsonHandler handler)
     {
-        HttpRequest request = new HttpRequest(httpType, reqType, url, mFile, listener, handler);
+        HttpRequest request = new HttpRequest(mContext, httpType, reqType, url, valuePairs, mFile, listener, handler);
         ThreadPoolFactory.execute(request);
     }
 

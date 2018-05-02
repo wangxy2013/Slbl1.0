@@ -2,6 +2,7 @@ package com.twlrg.slbl.json;
 
 
 import com.twlrg.slbl.utils.ConfigManager;
+import com.twlrg.slbl.utils.StringUtils;
 
 import org.json.JSONObject;
 
@@ -25,7 +26,13 @@ public class LoginHandler extends JsonHandler
             ConfigManager.instance().setToken(obj.optString("token"));
             ConfigManager.instance().setUserNickName(obj.optString("nickname"));
             ConfigManager.instance().setMobile(obj.optString("mobile"));
-            ConfigManager.instance().setUserPic(obj.optString("portrait"));
+
+            String portrait = obj.optString("portrait");
+            if (StringUtils.stringIsEmpty(portrait))
+            {
+                portrait = portrait.replace("./", "/");
+            }
+            ConfigManager.instance().setUserPic(portrait);
             ConfigManager.instance().setUserSex(obj.optInt("sex"));
             ConfigManager.instance().setUserEmail(obj.optString("email"));
         } catch (Exception e)

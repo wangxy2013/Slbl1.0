@@ -1,5 +1,8 @@
 package com.twlrg.slbl.activity;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTabHost;
 import android.support.v4.content.ContextCompat;
@@ -12,6 +15,7 @@ import android.widget.TextView;
 import com.baidu.location.BDAbstractLocationListener;
 import com.baidu.location.BDLocation;
 import com.baidu.location.Poi;
+import com.kevin.crop.UCrop;
 import com.twlrg.slbl.MyApplication;
 import com.twlrg.slbl.R;
 import com.twlrg.slbl.fragment.HomeFragment;
@@ -22,6 +26,8 @@ import com.twlrg.slbl.service.LocationService;
 import com.twlrg.slbl.utils.ConfigManager;
 import com.twlrg.slbl.utils.LogUtil;
 import com.twlrg.slbl.utils.StatusBarUtil;
+
+import java.io.File;
 
 import butterknife.BindView;
 
@@ -35,7 +41,10 @@ public class MainActivity extends BaseActivity
     private int    imageButton[]   = {
             R.drawable.ic_home_selector, R.drawable.ic_message_selector,
             R.drawable.ic_order_selector, R.drawable.ic_user_center_selector};
-    private Class  fragmentArray[] = {HomeFragment.class, MessageFragment.class, OrderFragment.class, UserCenterFragment.class};
+
+    UserCenterFragment mUserCenterFragment = new UserCenterFragment();
+
+    private Class  fragmentArray[] = {HomeFragment.class, MessageFragment.class, OrderFragment.class, mUserCenterFragment.getClass()};
 
 
     @Override
@@ -103,6 +112,11 @@ public class MainActivity extends BaseActivity
         }
     }
 
-
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+        mUserCenterFragment.onActivityResult(requestCode, resultCode, data);
+    }
 
 }

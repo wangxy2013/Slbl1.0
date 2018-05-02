@@ -1,8 +1,21 @@
 package com.twlrg.slbl.fragment;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Message;
+import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,10 +24,12 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.kevin.crop.UCrop;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.twlrg.slbl.MyApplication;
 import com.twlrg.slbl.R;
 import com.twlrg.slbl.activity.BaseHandler;
+import com.twlrg.slbl.activity.CropActivity;
 import com.twlrg.slbl.activity.LoginActivity;
 import com.twlrg.slbl.activity.MainActivity;
 import com.twlrg.slbl.activity.ModifyPwdActivity;
@@ -33,7 +48,13 @@ import com.twlrg.slbl.utils.StringUtils;
 import com.twlrg.slbl.utils.ToastUtil;
 import com.twlrg.slbl.utils.Urls;
 import com.twlrg.slbl.widget.CircleImageView;
+import com.twlrg.slbl.widget.SelectPicturePopupWindow;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.URI;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -82,11 +103,25 @@ public class UserCenterFragment extends BaseFragment implements View.OnClickList
     private int mEditStatus;
     private int sexType;
 
-    private static final int    REQUEST_SUCCESS  = 0x01;
-    public static final  int    REQUEST_FAIL     = 0x02;
+    private static final int REQUEST_SUCCESS    = 0x01;
+    public static final  int REQUEST_FAIL       = 0x02;
+    private static final int UPLOAD_PIC_SUCCESS = 0x03;
+
+    private static final String UPLOAD_USER_PIC  = "upload_user_pic";
     private static final String UPDATE_USER_INFO = "update_user_info";
+    private SelectPicturePopupWindow mSelectPicturePopupWindow;
+    private                Bitmap bitmap                                  = null;
+    protected static final int    REQUEST_STORAGE_READ_ACCESS_PERMISSION  = 101;
+    protected static final int    REQUEST_STORAGE_WRITE_ACCESS_PERMISSION = 102;
+    private static final   int    GALLERY_REQUEST_CODE                    = 9001;    // 相册选图标记
+    private static final   int    CAMERA_REQUEST_CODE                     = 9002;    // 相机拍照标记
 
+    // 拍照临时图片
+    private String mTempPhotoPath;
+    // 剪切后图像文件
+    private Uri    mDestinationUri;
 
+    @SuppressLint("HandlerLeak")
     private BaseHandler mHandler = new BaseHandler(getActivity())
     {
         @Override
@@ -113,7 +148,9 @@ public class UserCenterFragment extends BaseFragment implements View.OnClickList
                     ToastUtil.show(getActivity(), msg.obj.toString());
                     break;
 
-
+                case UPLOAD_PIC_SUCCESS:
+                    ToastUtil.show(getActivity(), "保存成功");
+                    break;
             }
         }
     };
@@ -202,6 +239,7 @@ public class UserCenterFragment extends BaseFragment implements View.OnClickList
         tvModifyPwd.setOnClickListener(this);
         btnLogout.setOnClickListener(this);
         tvUserSex.setOnClickListener(this);
+        ivUserHead.setOnClickListener(this);
     }
 
     @Override
@@ -209,8 +247,32 @@ public class UserCenterFragment extends BaseFragment implements View.OnClickList
     {
         showEditStatus(false);
         topView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, APPUtils.getStatusBarHeight(getActivity())));
+        mSelectPicturePopupWindow = new SelectPicturePopupWindow(getActivity());
+        mSelectPicturePopupWindow.setOnSelectedListener(new SelectPicturePopupWindow.OnSelectedListener()
+        {
+            @Override
+            public void OnSelected(View v, int position)
+            {
+                switch (position)
+                {
+                    case 0:
+                        // "拍照"按钮被点击了
+                        takePhoto();
+                        break;
+                    case 1:
+                        // "从相册选择"按钮被点击了
+                        pickFromGallery();
+                        break;
+                    case 2:
+                        // "取消"按钮被点击了
+                        mSelectPicturePopupWindow.dismissPopupWindow();
+                        break;
+                }
+            }
+        });
 
-
+        mDestinationUri = Uri.fromFile(new File(getActivity().getCacheDir(), "cropImage.jpeg"));
+        mTempPhotoPath = Environment.getExternalStorageDirectory() + File.separator + "photo.jpeg";
     }
 
     @Override
@@ -289,6 +351,7 @@ public class UserCenterFragment extends BaseFragment implements View.OnClickList
                     ToastUtil.show(getActivity(), "请输入正确的邮箱");
                     return;
                 }
+                ((MainActivity) getActivity()).showProgressDialog();
                 Map<String, String> valuePairs = new HashMap<>();
                 valuePairs.put("uid", ConfigManager.instance().getUserID());
                 valuePairs.put("token", ConfigManager.instance().getToken());
@@ -336,12 +399,17 @@ public class UserCenterFragment extends BaseFragment implements View.OnClickList
                 }
             });
         }
+        else if (v == ivUserHead)
+        {
+            mSelectPicturePopupWindow.showPopupWindow(getActivity());
+        }
 
     }
 
     @Override
     public void notify(String action, String resultCode, String resultMsg, Object obj)
     {
+        ((MainActivity) getActivity()).hideProgressDialog();
         if (UPDATE_USER_INFO.equals(action))
         {
             if (ConstantUtil.RESULT_SUCCESS.equals(resultCode))
@@ -354,5 +422,230 @@ public class UserCenterFragment extends BaseFragment implements View.OnClickList
                 mHandler.sendMessage(mHandler.obtainMessage(REQUEST_FAIL, resultMsg));
             }
         }
+        else if (UPLOAD_USER_PIC.equals(action))
+        {
+            if (ConstantUtil.RESULT_SUCCESS.equals(resultCode))
+            {
+                mHandler.sendMessage(mHandler.obtainMessage(UPLOAD_PIC_SUCCESS, obj));
+            }
+
+            else
+            {
+                mHandler.sendMessage(mHandler.obtainMessage(REQUEST_FAIL, resultMsg));
+            }
+        }
     }
+
+
+    private void takePhoto()
+    {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN // Permission was added in API Level 16
+                && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED)
+        {
+            ((MainActivity) getActivity()).requestPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    getString(R.string.permission_write_storage_rationale),
+                    REQUEST_STORAGE_WRITE_ACCESS_PERMISSION);
+        }
+        else
+        {
+            mSelectPicturePopupWindow.dismissPopupWindow();
+            Intent takeIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            //下面这句指定调用相机拍照后的照片存储的路径
+            takeIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(mTempPhotoPath)));
+            startActivityForResult(takeIntent, CAMERA_REQUEST_CODE);
+        }
+    }
+
+    private void pickFromGallery()
+    {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN // Permission was added in API Level 16
+                && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED)
+        {
+            ((MainActivity) getActivity()).requestPermission(Manifest.permission.READ_EXTERNAL_STORAGE,
+                    getString(R.string.permission_read_storage_rationale),
+                    REQUEST_STORAGE_READ_ACCESS_PERMISSION);
+        }
+        else
+        {
+            mSelectPicturePopupWindow.dismissPopupWindow();
+            Intent pickIntent = new Intent(Intent.ACTION_PICK, null);
+            // 如果限制上传到服务器的图片类型时可以直接写如："image/jpeg 、 image/png等的类型"
+            pickIntent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+            startActivityForResult(pickIntent, GALLERY_REQUEST_CODE);
+        }
+    }
+
+    /**
+     * 裁剪图片方法实现
+     *
+     * @param uri
+     */
+    public void startCropActivity(Uri uri)
+    {
+        UCrop.of(uri, mDestinationUri)
+                .withAspectRatio(1, 1)
+                .withMaxResultSize(200, 200)
+                .withTargetActivity(CropActivity.class)
+                .start(getActivity());
+    }
+
+    //将URI文件转化为FILE文件
+    public String getRealPathFromURI(Uri uri)
+    {
+        if (null == uri) return null;
+        final String scheme = uri.getScheme();
+        String data = null;
+        if (scheme == null)
+            data = uri.getPath();
+        else if (ContentResolver.SCHEME_FILE.equals(scheme))
+        {
+            data = uri.getPath();
+        }
+        else if (ContentResolver.SCHEME_CONTENT.equals(scheme))
+        {
+            Cursor cursor = getActivity().getContentResolver().query(uri, new String[]{MediaStore.Images.ImageColumns.DATA}, null, null, null);
+            if (null != cursor)
+            {
+                if (cursor.moveToFirst())
+                {
+                    int index = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+                    if (index > -1)
+                    {
+                        data = cursor.getString(index);
+                    }
+                }
+                cursor.close();
+            }
+        }
+        return data;
+    }
+
+    /**
+     * 处理剪切成功的返回值
+     *
+     * @param result
+     */
+    private void handleCropResult(Intent result)
+    {
+        //  deleteTempPhotoFile();
+        final Uri resultUri = UCrop.getOutput(result);
+        if (null != resultUri)
+        {
+            //            try
+            //            {
+            //               bitmap = MediaStore.Images.Media.getBitmap(((MainActivity) getActivity()).getContentResolver(), resultUri);
+            //            } catch (FileNotFoundException e)
+            //            {
+            //                e.printStackTrace();
+            //            } catch (IOException e)
+            //            {
+            //                e.printStackTrace();
+            //            }
+            //TODO 这个地方处理图片上传操作
+            try
+            {
+
+                File mFile =     new File(new URI(resultUri.toString()));
+                Map<String, String> valuePairs = new HashMap<>();
+                valuePairs.put("uid", ConfigManager.instance().getUserID());
+                valuePairs.put("token", ConfigManager.instance().getToken());
+                valuePairs.put("role", "1");
+                valuePairs.put("submit", "Submit");
+                DataRequest.instance().request(getActivity(), Urls.getUploadPicUrl(), this, HttpRequest.UPLOAD, UPLOAD_USER_PIC, valuePairs,mFile,
+                        new ResultHandler());
+            } catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+        else
+        {
+            ToastUtil.show(getActivity(), "无法剪切选择图片");
+        }
+    }
+
+
+    /**
+     * Callback received when a permissions request has been completed.
+     */
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults)
+    {
+        switch (requestCode)
+        {
+            case REQUEST_STORAGE_READ_ACCESS_PERMISSION:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                {
+                    pickFromGallery();
+                }
+                break;
+            case REQUEST_STORAGE_WRITE_ACCESS_PERMISSION:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                {
+                    takePhoto();
+                }
+                break;
+            default:
+                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+    }
+
+
+    /**
+     * 删除拍照临时文件
+     */
+    private void deleteTempPhotoFile()
+    {
+        File tempFile = new File(mTempPhotoPath);
+        if (tempFile.exists() && tempFile.isFile())
+        {
+            tempFile.delete();
+        }
+    }
+
+    /**
+     * 处理剪切失败的返回值
+     *
+     * @param result
+     */
+    private void handleCropError(Intent result)
+    {
+        //  deleteTempPhotoFile();
+        final Throwable cropError = UCrop.getError(result);
+        if (cropError != null)
+        {
+            ToastUtil.show(getActivity(), cropError.getMessage());
+        }
+        else
+        {
+            ToastUtil.show(getActivity(), "无法剪切选择图片");
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK)
+        {
+            switch (requestCode)
+            {
+                case CAMERA_REQUEST_CODE:   // 调用相机拍照
+                    File temp = new File(mTempPhotoPath);
+                    startCropActivity(Uri.fromFile(temp));
+                    break;
+                case GALLERY_REQUEST_CODE:  // 直接从相册获取
+                    startCropActivity(data.getData());
+                    break;
+                case UCrop.REQUEST_CROP:    // 裁剪图片结果
+                    handleCropResult(data);
+                    break;
+                case UCrop.RESULT_ERROR:    // 裁剪图片错误
+                    handleCropError(data);
+            }
+        }
+    }
+
 }
