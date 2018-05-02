@@ -174,7 +174,7 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
                     break;
 
                 case REQUEST_FAIL:
-                    ToastUtil.show(getActivity(), msg.obj.toString());
+                   // ToastUtil.show(getActivity(), msg.obj.toString());
 
                     break;
 

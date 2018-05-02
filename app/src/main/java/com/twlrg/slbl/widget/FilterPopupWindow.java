@@ -29,7 +29,7 @@ import java.util.List;
 public class FilterPopupWindow extends PopupWindow implements PopupWindow.OnDismissListener
 {
     View rootView;
-    private ListView mListView;
+    private NoScrollListView mListView;
 
     private Activity mContext;
 
@@ -69,7 +69,7 @@ public class FilterPopupWindow extends PopupWindow implements PopupWindow.OnDism
 
     private void initView()
     {
-        mListView = (ListView) rootView.findViewById(R.id.lv_choice);
+        mListView = (NoScrollListView) rootView.findViewById(R.id.lv_choice);
 
     }
 
