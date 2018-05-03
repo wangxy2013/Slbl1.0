@@ -167,6 +167,7 @@ public class RegisterActivity extends BaseActivity implements IRequestListener
             valuePairs.put("pwd",pwd);
             valuePairs.put("role","1");
             valuePairs.put("sex","0");
+            valuePairs.put("email", "");
             valuePairs.put("verifycode",code);
             DataRequest.instance().request(RegisterActivity.this, Urls.getRegisterUrl(), this, HttpRequest.POST, USER_REGISTER, valuePairs,
                     new ResultHandler());

@@ -282,7 +282,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:text="手机"
+            android:text="密码"
             android:textColor="@color/black"
             android:textSize="@dimen/t16"/>
 
