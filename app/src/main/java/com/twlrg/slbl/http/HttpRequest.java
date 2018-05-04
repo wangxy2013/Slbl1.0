@@ -64,10 +64,10 @@ public class HttpRequest implements Runnable
         }
     }
 
-    public HttpRequest(Context mContext,int action, String type, String url,  Map<String, String> valuePairs, File mFile,
+    public HttpRequest(Context mContext, int action, String type, String url, Map<String, String> valuePairs, File mFile,
                        IRequestListener listener, JsonHandler handler)
     {
-        this(mContext,action, type, url,valuePairs, listener, handler);
+        this(mContext, action, type, url, valuePairs, listener, handler);
         this.mFile = mFile;
     }
 
@@ -215,15 +215,15 @@ public class HttpRequest implements Runnable
     {
 
         OkHttpClient client = new OkHttpClient();
-        RequestBody fileBody = RequestBody.create(MediaType.parse("application/octet-stream"), mFile);
 
+        RequestBody fileBody = RequestBody.create(MediaType.parse("image/jpeg"), mFile);
         RequestBody multipartBody = new MultipartBody.Builder()
-                .setType(MultipartBody.ALTERNATIVE)
+                .setType(MultipartBody.FORM)
                 .addFormDataPart("uid", valuePair.get("uid"))
                 .addFormDataPart("role", valuePair.get("role"))
                 .addFormDataPart("token", valuePair.get("token"))
-                .addFormDataPart("data", "plans.xml", fileBody).build();
-
+                .addFormDataPart("submit", "Submit")
+                .addFormDataPart("file", mFile.getName(), fileBody).build();
 
         Request request = new Request.Builder().url(urlRequest)
                 .addHeader("User-Agent", "android")
@@ -231,16 +231,6 @@ public class HttpRequest implements Runnable
                 .post(multipartBody)//传参数、文件或者混合，改一下就行请求体就行
                 .build();
 
-        //        OkHttpClient mOkHttpClient = new OkHttpClient();
-        //        mOkHttpClient.setConnectTimeout(60, TimeUnit.SECONDS);
-        //        MultipartBuilder multipartBuilder = new MultipartBuilder().type(MultipartBuilder.FORM);
-        //        //添加一个文本表单参数
-        //        multipartBuilder.addFormDataPart("filename", mFile.getName());
-        //        LogUtil.d("TAG", "filename:" + mFile.getName());
-        //        multipartBuilder.addFormDataPart("face", mFile.getName(), RequestBody.create(MediaType.parse("image/png"), mFile));
-        //        LogUtil.d("TAG", "upfacepic:" + mFile.getName());
-        //        //构造文件上传时的请求对象Request
-        //        Request request = new Request.Builder().url(urlRequest).post(multipartBuilder.build()).build();
         Response response = client.newCall(request).execute();// execute
         if (response.isSuccessful())
         {

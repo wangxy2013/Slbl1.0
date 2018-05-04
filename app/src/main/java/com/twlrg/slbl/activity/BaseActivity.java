@@ -239,7 +239,7 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
         LogUtil.e("TAG", "showProgressDialog");
         if (mProgressDialog == null)
         {
-            mProgressDialog = DialogUtils.createLoadingDialog(this,"加载中...");
+            mProgressDialog = DialogUtils.createLoadingDialog(this, "加载中...");
         }
         mProgressDialog.show();
     }
@@ -251,7 +251,7 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
             return;
         }
         LogUtil.e("TAG", "hideProgressDialog");
-        if (mProgressDialog != null)
+        if (null != mProgressDialog)
         {
             mProgressDialog.dismiss();
             mProgressDialog = null;

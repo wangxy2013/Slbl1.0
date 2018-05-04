@@ -4,6 +4,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -121,6 +122,8 @@ public class UserCenterFragment extends BaseFragment implements View.OnClickList
     // 剪切后图像文件
     private Uri    mDestinationUri;
 
+    private Context mContext;
+
     @SuppressLint("HandlerLeak")
     private BaseHandler mHandler = new BaseHandler(getActivity())
     {
@@ -139,17 +142,25 @@ public class UserCenterFragment extends BaseFragment implements View.OnClickList
                     ConfigManager.instance().setUserName(etUserName.getText().toString());
                     ConfigManager.instance().setUserNickName(etNickName.getText().toString());
                     showEditStatus(false);
-                    ToastUtil.show(getActivity(), "保存成功");
+                    ToastUtil.show(mContext, "保存成功");
 
                     break;
 
 
                 case REQUEST_FAIL:
-                    ToastUtil.show(getActivity(), msg.obj.toString());
+                    ToastUtil.show(mContext, msg.obj.toString());
                     break;
 
                 case UPLOAD_PIC_SUCCESS:
-                    ToastUtil.show(getActivity(), "保存成功");
+                    ToastUtil.show(mContext, "保存成功");
+                    ResultHandler mResultHandler = (ResultHandler) msg.obj;
+
+                    String data = mResultHandler.getData();
+                    if (!StringUtils.stringIsEmpty(data))
+                    {
+                        ImageLoader.getInstance().displayImage(Urls.getImgUrl(data), ivUserHead);
+                        ConfigManager.instance().setUserPic(data);
+                    }
                     break;
             }
         }
@@ -243,8 +254,16 @@ public class UserCenterFragment extends BaseFragment implements View.OnClickList
     }
 
     @Override
+    public void onAttach(Context context)
+    {
+        super.onAttach(context);
+        mContext = context;
+    }
+
+    @Override
     protected void initViewData()
     {
+        mContext = getActivity();
         showEditStatus(false);
         topView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, APPUtils.getStatusBarHeight(getActivity())));
         mSelectPicturePopupWindow = new SelectPicturePopupWindow(getActivity());
@@ -328,12 +347,9 @@ public class UserCenterFragment extends BaseFragment implements View.OnClickList
             }
             else
             {
-                //TODO 执行保存操作  保存成功后 调用  showEditStatus(false);
-
                 String nickname = etNickName.getText().toString();
                 String name = etUserName.getText().toString();
                 String email = etUserEmail.getText().toString();
-
 
                 if (StringUtils.stringIsEmpty(nickname))
                 {
@@ -409,9 +425,9 @@ public class UserCenterFragment extends BaseFragment implements View.OnClickList
     @Override
     public void notify(String action, String resultCode, String resultMsg, Object obj)
     {
-        ((MainActivity) getActivity()).hideProgressDialog();
         if (UPDATE_USER_INFO.equals(action))
         {
+            ((MainActivity) getActivity()).hideProgressDialog();
             if (ConstantUtil.RESULT_SUCCESS.equals(resultCode))
             {
                 mHandler.sendMessage(mHandler.obtainMessage(REQUEST_SUCCESS, obj));
@@ -547,13 +563,13 @@ public class UserCenterFragment extends BaseFragment implements View.OnClickList
             try
             {
 
-                File mFile =     new File(new URI(resultUri.toString()));
+                File mFile = new File(new URI(resultUri.toString()));
                 Map<String, String> valuePairs = new HashMap<>();
                 valuePairs.put("uid", ConfigManager.instance().getUserID());
                 valuePairs.put("token", ConfigManager.instance().getToken());
                 valuePairs.put("role", "1");
                 valuePairs.put("submit", "Submit");
-                DataRequest.instance().request(getActivity(), Urls.getUploadPicUrl(), this, HttpRequest.UPLOAD, UPLOAD_USER_PIC, valuePairs,mFile,
+                DataRequest.instance().request(getActivity(), Urls.getUploadPicUrl(), this, HttpRequest.UPLOAD, UPLOAD_USER_PIC, valuePairs, mFile,
                         new ResultHandler());
             } catch (Exception e)
             {
