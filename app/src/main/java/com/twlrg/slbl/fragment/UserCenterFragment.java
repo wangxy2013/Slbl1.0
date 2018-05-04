@@ -152,13 +152,14 @@ public class UserCenterFragment extends BaseFragment implements View.OnClickList
                     break;
 
                 case UPLOAD_PIC_SUCCESS:
-                    ToastUtil.show(mContext, "保存成功");
+                    ToastUtil.show(MyApplication.getInstance().getBaseContext(), "保存成功");
+
                     ResultHandler mResultHandler = (ResultHandler) msg.obj;
 
                     String data = mResultHandler.getData();
                     if (!StringUtils.stringIsEmpty(data))
                     {
-                        ImageLoader.getInstance().displayImage(Urls.getImgUrl(data), ivUserHead);
+                        //ImageLoader.getInstance().displayImage(Urls.getImgUrl(data), ivUserHead);
                         ConfigManager.instance().setUserPic(data);
                     }
                     break;
@@ -254,13 +255,6 @@ public class UserCenterFragment extends BaseFragment implements View.OnClickList
     }
 
     @Override
-    public void onAttach(Context context)
-    {
-        super.onAttach(context);
-        mContext = context;
-    }
-
-    @Override
     protected void initViewData()
     {
         mContext = getActivity();
@@ -347,9 +341,12 @@ public class UserCenterFragment extends BaseFragment implements View.OnClickList
             }
             else
             {
+                //TODO 执行保存操作  保存成功后 调用  showEditStatus(false);
+
                 String nickname = etNickName.getText().toString();
                 String name = etUserName.getText().toString();
                 String email = etUserEmail.getText().toString();
+
 
                 if (StringUtils.stringIsEmpty(nickname))
                 {
