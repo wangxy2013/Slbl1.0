@@ -50,7 +50,7 @@ public class OrderInfo
     private String notify_time;//"
     private String   occupant;
 
-
+    private String   cancel_policy;
     private String  date;
     private String status;
     private String  price_type;
@@ -113,7 +113,18 @@ public class OrderInfo
         this.payment_trade_no = obj.optString("payment_trade_no");
         this.buyer_email = obj.optString("buyer_email");
         this.notify_time = obj.optString("notify_time");
+        this.cancel_policy = obj.optString("cancel_policy");
 
+    }
+
+    public String getCancel_policy()
+    {
+        return cancel_policy;
+    }
+
+    public void setCancel_policy(String cancel_policy)
+    {
+        this.cancel_policy = cancel_policy;
     }
 
     public String getMerchant()

@@ -385,7 +385,6 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
             public void onItemClick(View view, int position)
             {
                 HotelInfo mHotelInfo = hotelInfoList.get(position);
-
                 startActivity(new Intent(getActivity(), HotelDetailActivity.class)
                         .putExtra("ID", mHotelInfo.getId())
                         .putExtra("TITLE", mHotelInfo.getTitle())

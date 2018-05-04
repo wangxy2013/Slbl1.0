@@ -1,5 +1,6 @@
 package com.twlrg.slbl.activity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
@@ -150,6 +151,7 @@ public class BookRoomActivity extends BaseActivity implements IRequestListener
     public static final  int     REQUEST_FAIL          = 0x02;
     private static final String  CREATE_ORDER          = "create_order";
 
+    @SuppressLint("HandlerLeak")
     private BaseHandler mHandler = new BaseHandler(this)
     {
         @Override
@@ -168,22 +170,24 @@ public class BookRoomActivity extends BaseActivity implements IRequestListener
 
                     if (null != mSubOrderInfo)
                     {
-                        mSubOrderInfo.setBuynum(buynum + "");
-                        if (!StringUtils.stringIsEmpty(occupant))
-                        {
-                            mSubOrderInfo.setOccupant(occupant.substring(0, occupant.length() - 1));
-                        }
-                        mSubOrderInfo.setHotelName(hotel_name);
-                        mSubOrderInfo.setRoomTitle(room_name + "(" + zc + ")");
-                        mSubOrderInfo.setS_data(check_in);
-                        mSubOrderInfo.setE_data(check_out);
-                        mSubOrderInfo.setPhone(etPhone.getText().toString());
-                        mSubOrderInfo.setMerchant_id(merchant_id);
+//                        mSubOrderInfo.setBuynum(buynum + "");
+//                        if (!StringUtils.stringIsEmpty(occupant))
+//                        {
+//                            mSubOrderInfo.setOccupant(occupant.substring(0, occupant.length() - 1));
+//                        }
+//                        mSubOrderInfo.setHotelName(hotel_name);
+//                        mSubOrderInfo.setRoomTitle(room_name + "(" + zc + ")");
+//                        mSubOrderInfo.setS_data(check_in);
+//                        mSubOrderInfo.setE_data(check_out);
+//                        mSubOrderInfo.setPhone(etPhone.getText().toString());
+//                        mSubOrderInfo.setMerchant_id(merchant_id);
+//
+//                        Bundle b = new Bundle();
+//                        b.putSerializable("SubOrderInfo", mSubOrderInfo);
+                        startActivity(new Intent(BookRoomActivity.this, SubmitOrderActivity.class).putExtra("ORDER_ID",mSubOrderInfo.getOrder_id()));
+                        finish();
                     }
-                    Bundle b = new Bundle();
-                    b.putSerializable("SubOrderInfo", mSubOrderInfo);
-                    startActivity(new Intent(BookRoomActivity.this, SubmitOrderActivity.class).putExtras(b));
-                    finish();
+
                     break;
 
 

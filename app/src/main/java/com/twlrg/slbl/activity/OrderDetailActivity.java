@@ -1,5 +1,6 @@
 package com.twlrg.slbl.activity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
@@ -104,7 +105,7 @@ public class OrderDetailActivity extends BaseActivity implements IRequestListene
 
     private IWXAPI api;
 
-    private static final int REQUEST_LOGIN_SUCCESS    = 0x01;
+    private static final int REQUEST_SUCCESS          = 0x01;
     public static final  int REQUEST_FAIL             = 0x02;
     private static final int ORDER_CANCEL_SUCCESS     = 0x03;
     private static final int GET_ORDER_DETAIL_SUCCESS = 0x04;
@@ -119,6 +120,7 @@ public class OrderDetailActivity extends BaseActivity implements IRequestListene
     private static final String GET_WX_APY       = "get_wx_apy";
 
 
+    @SuppressLint("HandlerLeak")
     private BaseHandler mHandler = new BaseHandler(this)
     {
         @Override
@@ -127,7 +129,7 @@ public class OrderDetailActivity extends BaseActivity implements IRequestListene
             super.handleMessage(msg);
             switch (msg.what)
             {
-                case REQUEST_LOGIN_SUCCESS:
+                case REQUEST_SUCCESS:
                     OrderInfoHandler mOrderInfoHandler = (OrderInfoHandler) msg.obj;
                     mOrderInfo = mOrderInfoHandler.getOrderInfo();
 
@@ -393,24 +395,30 @@ public class OrderDetailActivity extends BaseActivity implements IRequestListene
             //            b.putSerializable("SubOrderInfo", mSubOrderInfo);
             //            startActivity(new Intent(OrderDetailActivity.this, SubmitOrderActivity.class).putExtras(b));
 
-
-            DialogUtils.showPayDialog(OrderDetailActivity.this, new MyItemClickListener()
+            if (StringUtils.stringIsEmpty(mOrderInfo.getSalesperson()) || "-".equals(mOrderInfo.getSalesperson()))
             {
-                @Override
-                public void onItemClick(View view, int position)
+                startActivity(new Intent(OrderDetailActivity.this, SubmitOrderActivity.class).putExtra("ORDER_ID", order_id));
+            }
+            else
+            {
+                DialogUtils.showPayDialog(OrderDetailActivity.this, new MyItemClickListener()
                 {
-                    if (position == 0)
+                    @Override
+                    public void onItemClick(View view, int position)
                     {
-                        toWxpay();
-                    }
-                    else
-                    {
-                        toAlipay();
-                    }
+                        if (position == 0)
+                        {
+                            toWxpay();
+                        }
+                        else
+                        {
+                            toAlipay();
+                        }
 
 
-                }
-            });
+                    }
+                });
+            }
 
 
         }
@@ -433,8 +441,8 @@ public class OrderDetailActivity extends BaseActivity implements IRequestListene
         valuePairs.put("ordcode", mOrderInfo.getOrdcode());
         valuePairs.put("payment_type", "ali");
         valuePairs.put("product", mOrderInfo.getTitle());
-        // valuePairs.put("total_fee", mOrderInfo.getTotal_fee());
-        valuePairs.put("total_fee", "0.01");
+        valuePairs.put("total_fee", mOrderInfo.getTotal_fee());
+        //valuePairs.put("total_fee", "0.01");
         DataRequest.instance().request(OrderDetailActivity.this, Urls.getAlipayUrl(), OrderDetailActivity.this, HttpRequest.POST, GET_ALI_APY, valuePairs,
                 new ResultHandler());
     }
@@ -479,7 +487,7 @@ public class OrderDetailActivity extends BaseActivity implements IRequestListene
         {
             if (ConstantUtil.RESULT_SUCCESS.equals(resultCode))
             {
-                mHandler.sendMessage(mHandler.obtainMessage(REQUEST_LOGIN_SUCCESS, obj));
+                mHandler.sendMessage(mHandler.obtainMessage(REQUEST_SUCCESS, obj));
             }
 
             else

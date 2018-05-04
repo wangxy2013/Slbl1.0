@@ -34,14 +34,14 @@ public class SaleInfoListHandler extends JsonHandler
                 for (int i = 0; i < arr.length(); i++)
                 {
                     SaleInfo saleInfo = new SaleInfo(arr.optJSONObject(i));
-                    if(i == 0)
-                    {
-                        saleInfo.setSelected(true);
-                    }
-                    else
-                    {
-                        saleInfo.setSelected(false);
-                    }
+                    //                    if(i == 0)
+                    //                    {
+                    //                        saleInfo.setSelected(true);
+                    //                    }
+                    //                    else
+                    //                    {
+                    //                        saleInfo.setSelected(false);
+                    //                    }
                     saleInfoList.add(saleInfo);
                 }
             }
