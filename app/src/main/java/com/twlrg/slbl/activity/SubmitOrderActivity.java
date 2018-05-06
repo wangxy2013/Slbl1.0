@@ -1,8 +1,11 @@
 package com.twlrg.slbl.activity;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Message;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -11,20 +14,30 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.alipay.sdk.app.PayTask;
+import com.tencent.mm.opensdk.modelpay.PayReq;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.twlrg.slbl.R;
 import com.twlrg.slbl.adapter.SaleAdapter;
+import com.twlrg.slbl.entity.OrderInfo;
 import com.twlrg.slbl.entity.SaleInfo;
 import com.twlrg.slbl.entity.SubOrderInfo;
+import com.twlrg.slbl.entity.WxPayInfo;
 import com.twlrg.slbl.http.DataRequest;
 import com.twlrg.slbl.http.HttpRequest;
 import com.twlrg.slbl.http.IRequestListener;
+import com.twlrg.slbl.json.OrderInfoHandler;
 import com.twlrg.slbl.json.OrderListHandler;
 import com.twlrg.slbl.json.ResultHandler;
 import com.twlrg.slbl.json.SaleInfoListHandler;
+import com.twlrg.slbl.json.WxpayHandler;
 import com.twlrg.slbl.listener.MyItemClickListener;
 import com.twlrg.slbl.utils.APPUtils;
 import com.twlrg.slbl.utils.ConstantUtil;
 import com.twlrg.slbl.utils.DialogUtils;
+import com.twlrg.slbl.utils.PayResult;
+import com.twlrg.slbl.utils.StringUtils;
 import com.twlrg.slbl.utils.ToastUtil;
 import com.twlrg.slbl.utils.Urls;
 import com.twlrg.slbl.widget.AutoFitTextView;
@@ -75,17 +88,32 @@ public class SubmitOrderActivity extends BaseActivity implements IRequestListene
     Button          btnSubmit;
     @BindView(R.id.et_mark)
     EditText        etMark;
-    private SubOrderInfo mSubOrderInfo;
-    private SaleAdapter  mSaleAdapter;
-    private              List<SaleInfo> saleInfoList             = new ArrayList<>();
-    private static final int            REQUEST_LOGIN_SUCCESS    = 0x01;
-    public static final  int            REQUEST_FAIL             = 0x02;
-    private static final int            GET_SALE_SUCCESS         = 0x03;
-    private static final int            GET_ORDER_DETAIL_SUCCESS = 0x04;
-    private static final String         GET_ORDER_DETAIL         = "get_order_detail";
-    private static final String         SUB_ORDER                = "sub_order";
-    private static final String         GET_SALE                 = "get_sale";
-    private              BaseHandler    mHandler                 = new BaseHandler(this)
+    //private SubOrderInfo mSubOrderInfo;
+    private SaleAdapter mSaleAdapter;
+    private List<SaleInfo> saleInfoList = new ArrayList<>();
+    private IWXAPI    api;
+    private String    orderId;
+    private OrderInfo mOrderInfo;
+
+    private static final int REQUEST_SUCCESS    = 0x01;
+    public static final  int REQUEST_FAIL             = 0x02;
+    private static final int GET_SALE_SUCCESS         = 0x03;
+    private static final int GET_ORDER_DETAIL_SUCCESS = 0x04;
+    private static final int GET_ALI_SUCCESS          = 0x05;
+    private static final int GET_WX_SUCCESS           = 0x06;
+    private static final int SDK_PAY_FLAG             = 0x07;
+    private static final int GET_ORDER_INFO_SUCCESS   = 0x08;
+
+    private static final String GET_ORDER_DETAIL = "get_order_detail";
+    private static final String SUB_ORDER        = "sub_order";
+    private static final String GET_SALE         = "get_sale";
+    private static final String GET_ALI_APY      = "get_ali_apy";
+    private static final String GET_WX_APY       = "get_wx_apy";
+    private static final String GET_ORDER_INFO   = "get_order_info";
+
+
+    @SuppressLint("HandlerLeak")
+    private BaseHandler mHandler = new BaseHandler(this)
     {
         @Override
         public void handleMessage(Message msg)
@@ -95,9 +123,9 @@ public class SubmitOrderActivity extends BaseActivity implements IRequestListene
             {
 
 
-                case REQUEST_LOGIN_SUCCESS:
+                case REQUEST_SUCCESS:
                     ToastUtil.show(SubmitOrderActivity.this, "操作成功!");
-                    finish();
+                    //finish();
                     break;
 
 
@@ -116,6 +144,107 @@ public class SubmitOrderActivity extends BaseActivity implements IRequestListene
                     OrderListHandler mOrderListHandler = (OrderListHandler) msg.obj;
                     DialogUtils.showPriceDetailDialog(SubmitOrderActivity.this, mOrderListHandler.getOrderInfoList());
                     break;
+
+                case GET_ALI_SUCCESS:
+
+                    ResultHandler mResultHandler = (ResultHandler) msg.obj;
+                    final String orderInfo = mResultHandler.getData();
+
+                    if (!StringUtils.stringIsEmpty(orderInfo))
+                    {
+
+                        Runnable payRunnable = new Runnable()
+                        {
+
+                            @Override
+                            public void run()
+                            {
+                                PayTask alipay = new PayTask(SubmitOrderActivity.this);
+                                Map<String, String> result = alipay.payV2(orderInfo, true);
+                                Log.i("msp", result.toString());
+                                Message msg = new Message();
+                                msg.what = SDK_PAY_FLAG;
+                                msg.obj = result;
+                                mHandler.sendMessage(msg);
+                            }
+                        };
+
+                        Thread payThread = new Thread(payRunnable);
+                        payThread.start();
+
+                    }
+
+                    break;
+
+                case GET_WX_SUCCESS:
+                    WxpayHandler mWxpayHandler = (WxpayHandler) msg.obj;
+                    WxPayInfo mWxPayInfo = mWxpayHandler.getWxPayInfo();
+
+                    if (null != mWxPayInfo)
+                    {
+                        PayReq req = new PayReq();
+                        req.appId = mWxPayInfo.getAppid();
+                        req.partnerId = mWxPayInfo.getPartnerid();
+                        req.prepayId = mWxPayInfo.getPrepayid();
+                        req.nonceStr = mWxPayInfo.getNoncestr();
+                        req.timeStamp = mWxPayInfo.getTimestamp();
+                        req.packageValue = mWxPayInfo.getPackage1();
+                        req.sign = mWxPayInfo.getSign();
+                        req.extData = "app data"; // optional
+                        api.sendReq(req);
+                    }
+                    break;
+
+
+                case SDK_PAY_FLAG:
+                    PayResult payResult = new PayResult((Map<String, String>) msg.obj);
+                    /**
+                     对于支付结果，请商户依赖服务端的异步通知结果。同步通知结果，仅作为支付结束的通知。
+                     */
+                    String resultInfo = payResult.getResult();// 同步返回需要验证的信息
+                    String resultStatus = payResult.getResultStatus();
+                    // 判断resultStatus 为9000则代表支付成功
+                    if (TextUtils.equals(resultStatus, "9000"))
+                    {
+                        // 该笔订单是否真实支付成功，需要依赖服务端的异步通知。
+                        ToastUtil.show(SubmitOrderActivity.this, "支付成功");
+                    }
+                    else
+                    {
+                        // 该笔订单真实的支付结果，需要依赖服务端的异步通知。
+                        ToastUtil.show(SubmitOrderActivity.this, "支付失败");
+                    }
+                    break;
+
+                case GET_ORDER_INFO_SUCCESS:
+                    OrderInfoHandler mOrderInfoHandler = (OrderInfoHandler) msg.obj;
+                    mOrderInfo = mOrderInfoHandler.getOrderInfo();
+
+                    if (null != mOrderInfo)
+                    {
+                        tvHotelName.setText(mOrderInfo.getMerchant());
+                        tvOccupant.setText(mOrderInfo.getOccupant());
+                        tvPhone.setText(mOrderInfo.getMobile());
+                        tvRoomTitle.setText(mOrderInfo.getTitle());
+                        tvDays.setText(mOrderInfo.getDays() + "晚  " + mOrderInfo.getBuynum() + "间");
+                        tvTime.setText(mOrderInfo.getCheck_in() + " 至 " + mOrderInfo.getCheck_out());
+                        tvCancelPolicy.setText(mOrderInfo.getCancel_policy());
+                        tvTotalFee.setText("￥" + mOrderInfo.getTotal_fee());
+
+                        if (saleInfoList.isEmpty())
+                        {
+                            showProgressDialog();
+                            Map<String, String> valuePairs = new HashMap<>();
+                            valuePairs.put("merchant_id", mOrderInfo.getMerchant_id());
+                            DataRequest.instance().request(SubmitOrderActivity.this, Urls.getSaleListUrl(), SubmitOrderActivity
+                                            .this, HttpRequest.POST,
+                                    GET_SALE, valuePairs,
+                                    new SaleInfoListHandler());
+                        }
+                    }
+
+
+                    break;
             }
         }
     };
@@ -123,7 +252,7 @@ public class SubmitOrderActivity extends BaseActivity implements IRequestListene
     @Override
     protected void initData()
     {
-        mSubOrderInfo = (SubOrderInfo) getIntent().getSerializableExtra("SubOrderInfo");
+        orderId = getIntent().getStringExtra("ORDER_ID");
     }
 
     @Override
@@ -145,23 +274,11 @@ public class SubmitOrderActivity extends BaseActivity implements IRequestListene
     @Override
     protected void initViewData()
     {
+        api = WXAPIFactory.createWXAPI(this, ConstantUtil.WX_APPID);
         tvTitle.setText("订单确认");
         setStatusBarTextDeep(true);
         topView.setVisibility(View.VISIBLE);
         topView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, APPUtils.getStatusBarHeight(this)));
-        if (null != mSubOrderInfo)
-        {
-            saleInfoList.addAll(mSubOrderInfo.getSaleInfoList());
-            tvHotelName.setText(mSubOrderInfo.getHotelName());
-            tvOccupant.setText(mSubOrderInfo.getOccupant());
-            tvPhone.setText(mSubOrderInfo.getPhone());
-            tvRoomTitle.setText(mSubOrderInfo.getRoomTitle());
-            tvDays.setText(mSubOrderInfo.getDays() + "晚  " + mSubOrderInfo.getBuynum() + "间");
-            tvTime.setText(mSubOrderInfo.getS_data() + " 至 " + mSubOrderInfo.getE_data());
-            tvCancelPolicy.setText(mSubOrderInfo.getCancel_policy());
-            tvTotalFee.setText("￥" + mSubOrderInfo.getTotal_feel());
-        }
-
         recyclerView.setLayoutManager(new FullyLinearLayoutManager(SubmitOrderActivity.this));
         recyclerView.addItemDecoration(new DividerDecoration(SubmitOrderActivity.this));
 
@@ -170,6 +287,7 @@ public class SubmitOrderActivity extends BaseActivity implements IRequestListene
             @Override
             public void onItemClick(View view, int position)
             {
+
                 for (int i = 0; i < saleInfoList.size(); i++)
                 {
                     if (i == position)
@@ -181,20 +299,26 @@ public class SubmitOrderActivity extends BaseActivity implements IRequestListene
                         saleInfoList.get(i).setSelected(false);
                     }
                 }
-
                 mSaleAdapter.notifyDataSetChanged();
+
+                showProgressDialog();
+                Map<String, String> valuePairs = new HashMap<>();
+                valuePairs.put("order_id", orderId);
+                valuePairs.put("sale_uid", getSaleUid());
+                valuePairs.put("remark", etMark.getText().toString());
+                DataRequest.instance().request(SubmitOrderActivity.this, Urls.getSelectSaleUrl(), SubmitOrderActivity.this, HttpRequest.POST, SUB_ORDER,
+                        valuePairs,
+                        new ResultHandler());
             }
         });
         recyclerView.setAdapter(mSaleAdapter);
 
-        if (saleInfoList.isEmpty())
-        {
-            showProgressDialog();
-            Map<String, String> valuePairs = new HashMap<>();
-            valuePairs.put("merchant_id", mSubOrderInfo.getMerchant_id());
-            DataRequest.instance().request(SubmitOrderActivity.this, Urls.getSaleListUrl(), this, HttpRequest.POST, GET_SALE, valuePairs,
-                    new SaleInfoListHandler());
-        }
+
+        showProgressDialog();
+        Map<String, String> valuePairs = new HashMap<>();
+        valuePairs.put("order_id", orderId);
+        DataRequest.instance().request(SubmitOrderActivity.this, Urls.getOrderDetailUrl(), this, HttpRequest.POST, GET_ORDER_INFO, valuePairs,
+                new OrderInfoHandler());
 
 
     }
@@ -219,36 +343,69 @@ public class SubmitOrderActivity extends BaseActivity implements IRequestListene
             //                    new ResultHandler());
 
 
-            DialogUtils.showPayDialog(SubmitOrderActivity.this, new MyItemClickListener()
+            if (StringUtils.stringIsEmpty(getSaleUid()))
             {
-                @Override
-                public void onItemClick(View view, int position)
+                ToastUtil.show(SubmitOrderActivity.this, "请选择销售人员");
+            }
+            else
+            {
+                DialogUtils.showPayDialog(SubmitOrderActivity.this, new MyItemClickListener()
                 {
-                    if (position == 0)
+                    @Override
+                    public void onItemClick(View view, int position)
                     {
-
+                        if (position == 0)
+                        {
+                            toWxpay();
+                        }
+                        else
+                        {
+                            toAlipay();
+                        }
                     }
-                    else
-                    {
-
-                    }
+                });
+            }
 
 
-
-
-                }
-            });
         }
         else if (v == tvPriceDetail)
         {
             showProgressDialog();
             Map<String, String> valuePairs = new HashMap<>();
-            valuePairs.put("order_id", mSubOrderInfo.getOrder_id());
-            DataRequest.instance().request(SubmitOrderActivity.this, Urls.getOrderDetailedUrl(), this, HttpRequest.POST, GET_ORDER_DETAIL, valuePairs,
-                    new OrderListHandler());
+            valuePairs.put("order_id", orderId);
+            DataRequest.instance().request(SubmitOrderActivity.this, Urls.getOrderDetailedUrl(), this, HttpRequest.POST, GET_ORDER_DETAIL, valuePairs, new
+                    OrderListHandler());
         }
     }
 
+    private void toAlipay()
+    {
+        showProgressDialog();
+        Map<String, String> valuePairs = new HashMap<>();
+        valuePairs.put("order_id", orderId);
+        valuePairs.put("ordcode", mOrderInfo.getOrdcode());
+        valuePairs.put("payment_type", "ali");
+        valuePairs.put("product", mOrderInfo.getTitle());
+        valuePairs.put("total_fee", mOrderInfo.getTotal_fee());
+        // valuePairs.put("total_fee", "0.01");
+        DataRequest.instance().request(SubmitOrderActivity.this, Urls.getAlipayUrl(), SubmitOrderActivity.this, HttpRequest.POST, GET_ALI_APY,
+                valuePairs,
+                new ResultHandler());
+    }
+
+    private void toWxpay()
+    {
+        showProgressDialog();
+        Map<String, String> valuePairs = new HashMap<>();
+        valuePairs.put("order_id", orderId);
+        valuePairs.put("ordcode", mOrderInfo.getOrdcode());
+        valuePairs.put("payment_type", "wx");
+        valuePairs.put("product", mOrderInfo.getTitle());
+        valuePairs.put("total_fee", mOrderInfo.getTotal_fee());
+        DataRequest.instance().request(SubmitOrderActivity.this, Urls.getWxpayUrl(), SubmitOrderActivity.this, HttpRequest.POST, GET_WX_APY,
+                valuePairs,
+                new WxpayHandler());
+    }
 
     private String getSaleUid()
     {
@@ -272,7 +429,7 @@ public class SubmitOrderActivity extends BaseActivity implements IRequestListene
         {
             if (ConstantUtil.RESULT_SUCCESS.equals(resultCode))
             {
-                mHandler.sendMessage(mHandler.obtainMessage(REQUEST_LOGIN_SUCCESS, obj));
+                mHandler.sendMessage(mHandler.obtainMessage(REQUEST_SUCCESS, obj));
             }
 
             else
@@ -304,6 +461,44 @@ public class SubmitOrderActivity extends BaseActivity implements IRequestListene
                 mHandler.sendMessage(mHandler.obtainMessage(REQUEST_FAIL, resultMsg));
             }
         }
+        else if (GET_ALI_APY.equals(action))
+        {
+            if (ConstantUtil.RESULT_SUCCESS.equals(resultCode))
+            {
+                mHandler.sendMessage(mHandler.obtainMessage(GET_ALI_SUCCESS, obj));
+            }
+
+            else
+            {
+                mHandler.sendMessage(mHandler.obtainMessage(REQUEST_FAIL, resultMsg));
+            }
+        }
+        else if (GET_WX_APY.equals(action))
+        {
+            if (ConstantUtil.RESULT_SUCCESS.equals(resultCode))
+            {
+                mHandler.sendMessage(mHandler.obtainMessage(GET_WX_SUCCESS, obj));
+            }
+
+            else
+            {
+                mHandler.sendMessage(mHandler.obtainMessage(REQUEST_FAIL, resultMsg));
+            }
+        }
+
+        else if (GET_ORDER_INFO.equals(action))
+        {
+            if (ConstantUtil.RESULT_SUCCESS.equals(resultCode))
+            {
+                mHandler.sendMessage(mHandler.obtainMessage(GET_ORDER_INFO_SUCCESS, obj));
+            }
+
+            else
+            {
+                mHandler.sendMessage(mHandler.obtainMessage(REQUEST_FAIL, resultMsg));
+            }
+        }
+
     }
 
 
