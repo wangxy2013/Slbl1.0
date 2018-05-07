@@ -410,8 +410,8 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
             initCity();//init为定位方法
         }
 
-        tvCheck.setText(StringUtils.toMonthAndDay(mStartDate));
-        tvLeave.setText(StringUtils.toMonthAndDay(mEndDate));
+        tvCheck.setText("住 "+StringUtils.toMonthAndDay(mStartDate));
+        tvLeave.setText("离 "+StringUtils.toMonthAndDay(mEndDate));
 
 
     }
