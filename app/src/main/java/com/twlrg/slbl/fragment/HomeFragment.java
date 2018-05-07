@@ -306,6 +306,7 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
             {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH)
                 {
+                    ((MainActivity) getActivity()).showProgressDialog();
                     hotelInfoList.clear();
                     pn = 1;
                     mRefreshStatus = 0;
@@ -349,6 +350,7 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
             {
                 if (s.length() == 0)
                 {
+                    ((MainActivity) getActivity()).showProgressDialog();
                     hotelInfoList.clear();
                     pn = 1;
                     mRefreshStatus = 0;
@@ -410,8 +412,8 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
             initCity();//init为定位方法
         }
 
-        tvCheck.setText("住 "+StringUtils.toMonthAndDay(mStartDate));
-        tvLeave.setText("离 "+StringUtils.toMonthAndDay(mEndDate));
+        tvCheck.setText("住 " + StringUtils.toMonthAndDay(mStartDate));
+        tvLeave.setText("离 " + StringUtils.toMonthAndDay(mEndDate));
 
 
     }
@@ -551,7 +553,11 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
                         tvStar.setText(starFilterInfos.get(position).getTitle());
                         tvStar.setTextColor(ContextCompat.getColor(getActivity(), R.color.green));
                         mStarFilterPopupWindow.dismiss();
-
+                        if (star > 0)
+                        {
+                            star += 1;
+                        }
+                        ((MainActivity) getActivity()).showProgressDialog();
                         hotelInfoList.clear();
                         pn = 1;
                         mRefreshStatus = 0;
@@ -576,6 +582,7 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
                         tvDistance.setText(distanceFilterInfos.get(position).getTitle());
                         tvDistance.setTextColor(ContextCompat.getColor(getActivity(), R.color.green));
                         mDistanceFilterPopupWindow.dismiss();
+                        ((MainActivity) getActivity()).showProgressDialog();
                         hotelInfoList.clear();
                         pn = 1;
                         mRefreshStatus = 0;
@@ -599,6 +606,7 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
                         tvPrice.setText(priceFilterInfos.get(position).getTitle());
                         tvPrice.setTextColor(ContextCompat.getColor(getActivity(), R.color.green));
                         mPriceFilterPopupWindow.dismiss();
+                        ((MainActivity) getActivity()).showProgressDialog();
                         hotelInfoList.clear();
                         pn = 1;
                         mRefreshStatus = 0;
@@ -621,7 +629,7 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
                         tvMore.setText(moreFilterInfos.get(position).getTitle());
                         tvMore.setTextColor(ContextCompat.getColor(getActivity(), R.color.green));
                         mMoreFilterPopupWindow.dismiss();
-
+                        ((MainActivity) getActivity()).showProgressDialog();
                         hotelInfoList.clear();
                         pn = 1;
                         mRefreshStatus = 0;
@@ -650,6 +658,7 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
     @Override
     public void notify(String action, String resultCode, String resultMsg, Object obj)
     {
+        ((MainActivity) getActivity()).hideProgressDialog();
         if (mRefreshStatus == 1)
         {
             mPullToRefreshRecyclerView.onPullUpRefreshComplete();
@@ -721,8 +730,8 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
 
                 if (!StringUtils.stringIsEmpty(mStartDate) && !StringUtils.stringIsEmpty(mEndDate))
                 {
-                    tvCheck.setText(StringUtils.toMonthAndDay(mStartDate));
-                    tvLeave.setText(StringUtils.toMonthAndDay(mEndDate));
+                    tvCheck.setText("住 "+StringUtils.toMonthAndDay(mStartDate));
+                    tvLeave.setText("离 "+StringUtils.toMonthAndDay(mEndDate));
                 }
             }
 
@@ -736,6 +745,7 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
 
                 if (!StringUtils.stringIsEmpty(getCityById(city_id)))
                 {
+                    ((MainActivity) getActivity()).showProgressDialog();
                     city_value = city_id;
                     hotelInfoList.clear();
                     pn = 1;
@@ -933,6 +943,7 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
                     @Override
                     public void onItemClick(View view, int position)
                     {
+                        ((MainActivity) getActivity()).showProgressDialog();
                         getHotelList();
                         mHandler.sendEmptyMessageDelayed(GET_REGION_REQUEST, 1 * 1000);
                     }
@@ -948,6 +959,7 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
                     @Override
                     public void onItemClick(View view, int position)
                     {
+                        ((MainActivity) getActivity()).showProgressDialog();
                         getHotelList();
                         mHandler.sendEmptyMessageDelayed(GET_REGION_REQUEST, 1 * 1000);
                     }
