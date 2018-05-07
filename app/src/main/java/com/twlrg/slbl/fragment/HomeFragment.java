@@ -1,10 +1,14 @@
 package com.twlrg.slbl.fragment;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Message;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,6 +23,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.baidu.location.BDAbstractLocationListener;
 import com.baidu.location.BDLocation;
@@ -174,7 +179,7 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
                     break;
 
                 case REQUEST_FAIL:
-                   // ToastUtil.show(getActivity(), msg.obj.toString());
+                    // ToastUtil.show(getActivity(), msg.obj.toString());
 
                     break;
 
@@ -275,11 +280,6 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
 
             distanceFilterInfos.add(mFilterInfo);
         }
-
-
-        Map<String, String> valuePairs = new HashMap<>();
-        DataRequest.instance().request(getActivity(), Urls.getCityListUrl(), this, HttpRequest.POST, GET_CITY_LIST, valuePairs,
-                new CityListHandler());
 
     }
 
@@ -401,8 +401,31 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
         );
         mRecyclerView.setAdapter(mHotelAdapter);
 
+        if (Build.VERSION.SDK_INT >= 23)
+        {
+            showContacts();
+        }
+        else
+        {
+            initCity();//init为定位方法
+        }
 
-        // -----------location config ------------
+        tvCheck.setText(StringUtils.toMonthAndDay(mStartDate));
+        tvLeave.setText(StringUtils.toMonthAndDay(mEndDate));
+
+
+    }
+
+    private void initCity()
+    {
+        Map<String, String> valuePairs = new HashMap<>();
+        DataRequest.instance().request(getActivity(), Urls.getCityListUrl(), this, HttpRequest.POST, GET_CITY_LIST, valuePairs,
+                new CityListHandler());
+    }
+
+
+    private void initLocation()
+    {
         locationService = ((MyApplication) getActivity().getApplication()).locationService;
         //获取locationservice实例，建议应用中只初始化1个location实例，然后使用，可以参考其他示例的activity，都是通过此种方式获取locationservice实例的
         locationService.registerListener(mListener);
@@ -416,12 +439,7 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
         {
             locationService.setLocationOption(locationService.getOption());
         }
-
-
-        tvCheck.setText(StringUtils.toMonthAndDay(mStartDate));
-        tvLeave.setText(StringUtils.toMonthAndDay(mEndDate));
-
-
+        locationService.start();// 定位SDK
     }
 
     @Override
@@ -533,6 +551,11 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
                         tvStar.setText(starFilterInfos.get(position).getTitle());
                         tvStar.setTextColor(ContextCompat.getColor(getActivity(), R.color.green));
                         mStarFilterPopupWindow.dismiss();
+
+                        hotelInfoList.clear();
+                        pn = 1;
+                        mRefreshStatus = 0;
+                        getHotelList();
                     }
                 });
 
@@ -554,6 +577,8 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
                         tvDistance.setTextColor(ContextCompat.getColor(getActivity(), R.color.green));
                         mDistanceFilterPopupWindow.dismiss();
                         hotelInfoList.clear();
+                        pn = 1;
+                        mRefreshStatus = 0;
                         getHotelList();
                     }
                 });
@@ -575,6 +600,8 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
                         tvPrice.setTextColor(ContextCompat.getColor(getActivity(), R.color.green));
                         mPriceFilterPopupWindow.dismiss();
                         hotelInfoList.clear();
+                        pn = 1;
+                        mRefreshStatus = 0;
                         getHotelList();
                     }
                 });
@@ -594,6 +621,11 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
                         tvMore.setText(moreFilterInfos.get(position).getTitle());
                         tvMore.setTextColor(ContextCompat.getColor(getActivity(), R.color.green));
                         mMoreFilterPopupWindow.dismiss();
+
+                        hotelInfoList.clear();
+                        pn = 1;
+                        mRefreshStatus = 0;
+                        getHotelList();
                     }
                 });
 
@@ -640,7 +672,7 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
         }
         else if (GET_CITY_LIST.equals(action))
         {
-            locationService.start();// 定位SDK
+            initLocation();
             if (ConstantUtil.RESULT_SUCCESS.equals(resultCode))
             {
                 mHandler.sendMessage(mHandler.obtainMessage(GET_CITY_SUCCESS, obj));
@@ -749,9 +781,11 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
         @Override
         public void onReceiveLocation(BDLocation location)
         {
-            // TODO Auto-generated method stub
+            LogUtil.e("TAG", "1111111111111111111111111");
+
             if (null != location && location.getLocType() != BDLocation.TypeServerError)
             {
+                LogUtil.e("TAG", "22222222222222222222222");
                 StringBuffer sb = new StringBuffer(256);
                 sb.append("time : ");
                 /**
@@ -904,6 +938,21 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
                     }
                 });
             }
+            else
+            {
+                LogUtil.e("TAG", "33333333333333");
+                String title = "定位失败,已为您自动切换到深圳市";
+                tvCity.setText("深圳市");
+                DialogUtils.showPromptDialog(getActivity(), title, new MyItemClickListener()
+                {
+                    @Override
+                    public void onItemClick(View view, int position)
+                    {
+                        getHotelList();
+                        mHandler.sendEmptyMessageDelayed(GET_REGION_REQUEST, 1 * 1000);
+                    }
+                });
+            }
         }
 
     };
@@ -926,4 +975,56 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
 
         return index;
     }
+
+
+    private static final int BAIDU_READ_PHONE_STATE = 100;
+
+    public void showContacts()
+    {
+        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED
+                || ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED
+                || ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_PHONE_STATE)
+                != PackageManager.PERMISSION_GRANTED)
+        {
+            ToastUtil.show(getActivity(), "没有权限,请手动开启定位权限");
+
+            // 申请一个（或多个）权限，并提供用于回调返回的获取码（用户定义）
+            ActivityCompat.requestPermissions(getActivity(), new String[]{
+                    Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission
+                    .ACCESS_FINE_LOCATION, Manifest.permission.READ_PHONE_STATE}, BAIDU_READ_PHONE_STATE);
+        }
+        else
+        {
+            initCity();
+        }
+    }
+
+
+    //Android6.0申请权限的回调方法
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults)
+    {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode)
+        {
+            // requestCode即所声明的权限获取码，在checkSelfPermission时传入
+            case BAIDU_READ_PHONE_STATE:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                {
+                    // 获取到权限，作相应处理（调用定位SDK应当确保相关权限均被授权，否则可能引起定位失败）
+                    initCity();
+                }
+                else
+                {
+                    // 没有获取到权限，做特殊处理
+                    ToastUtil.show(getActivity(), "没有权限,请手动开启定位权限");
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
 }

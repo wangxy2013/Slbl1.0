@@ -15,6 +15,7 @@ import com.twlrg.slbl.R;
 import com.twlrg.slbl.utils.APPUtils;
 import com.twlrg.slbl.utils.ConfigManager;
 import com.twlrg.slbl.utils.StringUtils;
+import com.twlrg.slbl.utils.ToastUtil;
 import com.twlrg.slbl.widget.AutoFitTextView;
 import com.twlrg.slbl.widget.calendar.DayTimeEntity;
 import com.twlrg.slbl.widget.calendar.MonthTimeAdapter;
@@ -99,18 +100,24 @@ public class HotelTimeActivity extends BaseActivity
         stopDay = new DayTimeEntity(-1, -1, -1, -1);
         datas = new ArrayList<>();
 
-        Calendar c = Calendar.getInstance();
-        int year = c.get(Calendar.YEAR);
-        int month = c.get(Calendar.MONTH) + 1;
+        //        Calendar c = Calendar.getInstance();
+        //        int year = c.get(Calendar.YEAR);
+        //        int month = c.get(Calendar.MONTH) + 1;
+        //
+        //        c.add(Calendar.MONTH, 1);
+        //        int nextYear = c.get(Calendar.YEAR);
+        //        int nextMonth = c.get(Calendar.MONTH) + 1;
+        //
+        //              //当前月份
+        //        datas.add(new MonthTimeEntity(nextYear, nextMonth));        //下个月
+        //        datas.add(new MonthTimeEntity(nextYear, nextMonth + 1));
 
-        c.add(Calendar.MONTH, 1);
-        int nextYear = c.get(Calendar.YEAR);
-        int nextMonth = c.get(Calendar.MONTH) + 1;
 
-        datas.add(new MonthTimeEntity(year, month));                //当前月份
-        datas.add(new MonthTimeEntity(nextYear, nextMonth));        //下个月
-        datas.add(new MonthTimeEntity(nextYear, nextMonth + 1));
-
+        for (int i = 0; i < 12; i++)
+        {
+            String[] time = StringUtils.getMonthAndYear(i);
+            datas.add(new MonthTimeEntity(Integer.parseInt(time[0]), Integer.parseInt(time[1])));
+        }
 
         adapter = new MonthTimeAdapter(datas, HotelTimeActivity.this);
         mReycycler.setAdapter(adapter);
@@ -147,6 +154,7 @@ public class HotelTimeActivity extends BaseActivity
         {
             if (StringUtils.stringIsEmpty(chek_out))
             {
+                ToastUtil.show(this, "请选择正确的时间段");
                 return;
             }
             else

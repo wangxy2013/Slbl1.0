@@ -896,4 +896,17 @@ public class StringUtils
     }
 
 
+    public static String[] getMonthAndYear(int month)
+    {
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.MONTH, month);
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM");
+        String time = df.format(calendar.getTime());
+
+        return time.split("-");
+
+
+    }
+
+
 }

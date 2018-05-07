@@ -25,7 +25,7 @@ public class ConferenceInfo
     private String desk;//300,//课桌式容纳人数
     private String banquet;//240,//宴会式容纳人数
     private String fishbone;//200,//鱼骨式容纳人数
-    private double price;//30000,//参考价
+    private int    price;//30000,//参考价
     private String pic1;///Uploads/place/7/59094aac24d65.jpg
     private String pic2;///Uploads/place/7/59094ab43bb6a.jpg
     private String pic3;///Uploads/place/7/59094abc88590.jpg
@@ -35,6 +35,7 @@ public class ConferenceInfo
     private String status;//0,
     private String isdelete;//0
     private List<String> picList = new ArrayList<>();
+
     public ConferenceInfo(JSONObject obj)
     {
         this.id = obj.optString("id");
@@ -49,7 +50,7 @@ public class ConferenceInfo
         this.banquet = obj.optString("banquet");
         this.fishbone = obj.optString("fishbone");
         this.fishbone = obj.optString("fishbone");
-        this.price = obj.optDouble("price");
+        this.price = obj.optInt("price");
         this.pic1 = obj.optString("pic1");
         this.pic2 = obj.optString("pic2");
         this.pic3 = obj.optString("pic3");
@@ -59,35 +60,37 @@ public class ConferenceInfo
         this.status = obj.optString("status");
         this.isdelete = obj.optString("isdelete");
     }
+
     public List<String> getPicList()
     {
-        if(!StringUtils.stringIsEmpty(pic1))
+        if (!StringUtils.stringIsEmpty(pic1))
         {
             picList.add(pic1);
         }
-        if(!StringUtils.stringIsEmpty(pic2))
+        if (!StringUtils.stringIsEmpty(pic2))
         {
             picList.add(pic2);
         }
-        if(!StringUtils.stringIsEmpty(pic3))
+        if (!StringUtils.stringIsEmpty(pic3))
         {
             picList.add(pic3);
         }
-        if(!StringUtils.stringIsEmpty(pic4))
+        if (!StringUtils.stringIsEmpty(pic4))
         {
             picList.add(pic4);
         }
-        if(!StringUtils.stringIsEmpty(pic5))
+        if (!StringUtils.stringIsEmpty(pic5))
         {
             picList.add(pic5);
         }
-        if(!StringUtils.stringIsEmpty(pic6))
+        if (!StringUtils.stringIsEmpty(pic6))
         {
             picList.add(pic6);
         }
 
         return picList;
     }
+
     public String getId()
     {
         return id;
@@ -198,12 +201,12 @@ public class ConferenceInfo
         this.fishbone = fishbone;
     }
 
-    public double getPrice()
+    public int getPrice()
     {
         return price;
     }
 
-    public void setPrice(double price)
+    public void setPrice(int price)
     {
         this.price = price;
     }
@@ -211,6 +214,11 @@ public class ConferenceInfo
     public String getPic1()
     {
         return pic1;
+    }
+
+    public void setPicList(List<String> picList)
+    {
+        this.picList = picList;
     }
 
     public void setPic1(String pic1)

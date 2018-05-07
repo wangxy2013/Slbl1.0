@@ -60,7 +60,7 @@ public class ConferenceHolder extends RecyclerView.ViewHolder
     {
 
         int width = APPUtils.getScreenWidth(mContext);
-        int height = (int) (width * 0.66);
+        int height = (int) (width * 0.75);
         //        mRoomImgIv.setLayoutParams(new FrameLayout.LayoutParams(width, height));
         //        ImageLoader.getInstance().displayImage(Urls.getImgUrl(mConference.getPic1()), mRoomImgIv);
 
