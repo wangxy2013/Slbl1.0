@@ -1,5 +1,6 @@
 package com.twlrg.slbl.activity;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -151,6 +152,7 @@ public class HotelDetailActivity extends BaseActivity implements IRequestListene
     private static final String GET_HOTEL_DETAIL = "GET_HOTEL_DETAIL";
 
 
+    @SuppressLint("HandlerLeak")
     private BaseHandler mHandler = new BaseHandler(this)
     {
         @Override
@@ -164,11 +166,6 @@ public class HotelDetailActivity extends BaseActivity implements IRequestListene
                     mHotelInfo = mHotelDetailHandler.getHotelInfo();
                     if (null != mHotelInfo)
                     {
-                        //                        int width = APPUtils.getScreenWidth(HotelDetailActivity.this);
-                        //                        int height = (int) (width * 0.66);
-                        //                        ivHotelImg.setLayoutParams(new LinearLayout.LayoutParams(width, height));
-                        //                        ImageLoader.getInstance().displayImage(Urls.getImgUrl(mHotelInfo.getHotel_img()), ivHotelImg);
-
                         picList.add(mHotelInfo.getHotel_img());
 
                         rbStar.setRating(Float.parseFloat(mHotelInfo.getStar() + ""));

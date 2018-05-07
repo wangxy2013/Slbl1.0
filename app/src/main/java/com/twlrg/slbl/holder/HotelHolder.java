@@ -58,7 +58,7 @@ public class HotelHolder extends RecyclerView.ViewHolder
     {
 
         int width = APPUtils.getScreenWidth(mContext);
-        int height = (int) (width * 0.66);
+        int height = (int) (width * 0.75);
         mHotelImgIv.setLayoutParams(new FrameLayout.LayoutParams(width, height));
         ImageLoader.getInstance().displayImage(Urls.getImgUrl(mHotelInfo.getHotel_img()), mHotelImgIv);
         mStarRb.setRating(Float.parseFloat(mHotelInfo.getStar() + ""));
