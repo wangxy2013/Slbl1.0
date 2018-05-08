@@ -53,34 +53,43 @@
         android:layout_marginTop="@dimen/dm_5"
         android:background="@color/white"/>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerView"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dm_10">
-
-        <TextView
-            android:id="@+id/tv_total_price"
-            android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="@dimen/dm_15"
-            android:text="111111"
-            android:textColor="@color/orange"
-            android:textSize="@dimen/t16"/>
-        <TextView
+            android:orientation="vertical">
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
 
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toLeftOf="@+id/tv_total_price"
-            android:text="总额:"
-            android:textColor="@color/white"
-            android:textSize="@dimen/t16"/>
 
-    </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dm_10">
+
+                <TextView
+                    android:id="@+id/tv_total_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/dm_15"
+                    android:text="111111"
+                    android:textColor="@color/orange"
+                    android:textSize="@dimen/t16"/>
+                <TextView
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@+id/tv_total_price"
+                    android:text="总额:"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/t16"/>
+
+            </RelativeLayout>
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>
