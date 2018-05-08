@@ -13,7 +13,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.alipay.sdk.app.PayTask;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -22,7 +21,6 @@ import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.twlrg.slbl.R;
 import com.twlrg.slbl.entity.OrderInfo;
-import com.twlrg.slbl.entity.SubOrderInfo;
 import com.twlrg.slbl.entity.WxPayInfo;
 import com.twlrg.slbl.http.DataRequest;
 import com.twlrg.slbl.http.HttpRequest;
@@ -47,6 +45,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * 作者：王先云 on 2018/4/23 13:47
@@ -99,6 +98,16 @@ public class OrderDetailActivity extends BaseActivity implements IRequestListene
     Button          btnCancel;
     @BindView(R.id.btn_status)
     Button          btnStatus;
+    @BindView(R.id.tv_fwf)
+    TextView        tvFwf;
+    @BindView(R.id.tv_cancel_policy)
+    TextView        tvCancelPolicy;
+    @BindView(R.id.tv_requirement)
+    TextView        tvRequirement;
+    @BindView(R.id.tv_invoice)
+    TextView        tvInvoice;
+    @BindView(R.id.ll_bottom)
+    LinearLayout    llBottom;
     private String    order_id;
     private OrderInfo mOrderInfo;
 
@@ -145,7 +154,7 @@ public class OrderDetailActivity extends BaseActivity implements IRequestListene
 
                         String zc = getZc(mOrderInfo.getPrice_type());
 
-
+                        tvCancelPolicy.setText(mOrderInfo.getCancel_policy());
                         tvRoom.setText(mOrderInfo.getTitle() + "[" + zc + "]");
                         tvBuynum.setText(mOrderInfo.getBuynum() + "间");
                         tvDays.setText(mOrderInfo.getDays() + "晚");
