@@ -21,7 +21,7 @@ public class OrderInfo
     private String create_time;//2017-05-12 16:05
     private String ordcode;//120520173923164211,
     private String payment_trade_status;//0    //0为未支付，1为已支付
-    private int is_used;//0 //0待确认，1已留房，2客满  3.取消确认中 4.已取消 5.酒店拒绝取消
+    private int    is_used;//0 //0待确认，1已留房，2客满  3.取消确认中 4.已取消 5.酒店拒绝取消
     private String id;//222,
     private String microweb_id;//0,
     private String merchant_id;//4,
@@ -48,12 +48,13 @@ public class OrderInfo
     private String payment_trade_no;//
     private String buyer_email;//
     private String notify_time;//"
-    private String   occupant;
-
-    private String   cancel_policy;
-    private String  date;
+    private String occupant;
+    private String invoice;
+    private String remark;
+    private String cancel_policy;
+    private String date;
     private String status;
-    private String  price_type;
+    private String price_type;
     //酒店销售人员信息
     private String salesperson;
     private String portrait;
@@ -65,13 +66,15 @@ public class OrderInfo
     public OrderInfo(JSONObject obj)
     {
         this.status = obj.optString("status");
-        this.price_type=obj.optString("price_type");
-        this.salesperson=obj.optString("salesperson");
-        this.portrait=obj.optString("portrait");
-        this.position=obj.optString("position");
-        this.nickname=obj.optString("nickname");
-        this.sale_mobile=obj.optString("sale_mobile");
+        this.price_type = obj.optString("price_type");
+        this.salesperson = obj.optString("salesperson");
+        this.portrait = obj.optString("portrait");
+        this.position = obj.optString("position");
+        this.nickname = obj.optString("nickname");
+        this.sale_mobile = obj.optString("sale_mobile");
         this.date = obj.optString("date");
+        this.invoice = obj.optString("invoice");
+        this.remark = obj.optString("remark");
 
         this.occupant = obj.optString("occupant");
         this.order_id = obj.optString("order_id");
@@ -605,5 +608,25 @@ public class OrderInfo
     public void setDate(String date)
     {
         this.date = date;
+    }
+
+    public String getInvoice()
+    {
+        return invoice;
+    }
+
+    public void setInvoice(String invoice)
+    {
+        this.invoice = invoice;
+    }
+
+    public String getRemark()
+    {
+        return remark;
+    }
+
+    public void setRemark(String remark)
+    {
+        this.remark = remark;
     }
 }

@@ -153,8 +153,9 @@ public class OrderDetailActivity extends BaseActivity implements IRequestListene
                         tvTime.setText(mOrderInfo.getCheck_in() + "至" + mOrderInfo.getCheck_out());
 
                         String zc = getZc(mOrderInfo.getPrice_type());
-
+                        tvInvoice.setText(mOrderInfo.getInvoice());
                         tvCancelPolicy.setText(mOrderInfo.getCancel_policy());
+                        tvRequirement.setText(mOrderInfo.getRemark());
                         tvRoom.setText(mOrderInfo.getTitle() + "[" + zc + "]");
                         tvBuynum.setText(mOrderInfo.getBuynum() + "间");
                         tvDays.setText(mOrderInfo.getDays() + "晚");
