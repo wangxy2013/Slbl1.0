@@ -375,7 +375,7 @@ public class OrderDetailActivity extends BaseActivity implements IRequestListene
         }
         else if (v == ivMessage)
         {
-            ChatActivity.navToChat(this,mOrderInfo.getSale_uid(), TIMConversationType.C2C);
+            ChatActivity.navToChat(this, "slbl_serve_" + mOrderInfo.getSale_uid(), TIMConversationType.C2C);
         }
         else if (v == btnCancel)//取消订单
         {
