@@ -140,7 +140,7 @@ public class AddCommentActivity extends BaseActivity implements IRequestListener
             }
             else
             {
-                startActivity(new Intent(AddCommentActivity.this, LoginActivity.class));
+                LoginActivity.start(AddCommentActivity.this,true);
             }
 
         }

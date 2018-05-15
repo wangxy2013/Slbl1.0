@@ -3,6 +3,8 @@ package com.twlrg.slbl.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.twlrg.slbl.im.TencentCloud;
+
 /**
  * @author
  */
@@ -29,6 +31,7 @@ public class ConfigManager
     private static final String USER_PWD          = "user_pwd";//密码
     private static final String USER_NAME         = "user_name";// 用户名
     private static final String USER_ID           = "user_id";
+    private static final String IDENTIFIER           = "identifier";
     private static final String PREF_UUID         = "miei";
     private static final String UNIQUE_CODE       = "unique_code";
     private static final String USER_MOBILE       = "mobile";
@@ -110,8 +113,11 @@ public class ConfigManager
 
     public void setUserId(String userId)
     {
-        mSharedPreferences.edit().putString(USER_ID, userId).commit();
-        return;
+        mSharedPreferences.edit().putString(IDENTIFIER, TencentCloud.UID_PREFIX+userId).putString(USER_ID, userId).apply();
+    }
+
+    public String getIdentifier(){
+        return mSharedPreferences.getString(IDENTIFIER,"");
     }
 
     public void setUUID(String uuid)

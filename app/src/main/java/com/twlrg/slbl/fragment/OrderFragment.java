@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 
 import com.twlrg.slbl.MyApplication;
 import com.twlrg.slbl.R;
+import com.twlrg.slbl.activity.AddCommentActivity;
 import com.twlrg.slbl.activity.BaseHandler;
 import com.twlrg.slbl.activity.HotelDetailActivity;
 import com.twlrg.slbl.activity.LoginActivity;
@@ -136,7 +137,7 @@ public class OrderFragment extends BaseFragment implements PullToRefreshBase.OnR
         }
         else
         {
-            startActivity(new Intent(getActivity(), LoginActivity.class));
+            LoginActivity.start(getActivity(),true);
         }
 
     }

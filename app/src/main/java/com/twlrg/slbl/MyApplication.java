@@ -6,9 +6,11 @@ import android.os.Vibrator;
 
 
 import com.baidu.mapapi.SDKInitializer;
+import com.twlrg.slbl.im.TencentCloud;
 import com.twlrg.slbl.service.LocationService;
 import com.twlrg.slbl.utils.APPUtils;
 import com.twlrg.slbl.utils.ConfigManager;
+import com.twlrg.slbl.utils.LogUtil;
 import com.twlrg.slbl.utils.StringUtils;
 
 
@@ -40,6 +42,7 @@ public class MyApplication extends Application
         locationService = new LocationService(getApplicationContext());
         mVibrator = (Vibrator) getApplicationContext().getSystemService(Service.VIBRATOR_SERVICE);
         SDKInitializer.initialize(getApplicationContext());
+        TencentCloud.init(this);
     }
 
 
@@ -53,6 +56,10 @@ public class MyApplication extends Application
         {
             return true;
         }
+    }
+
+    public static MyApplication getContext(){
+        return instance;
     }
 
 }

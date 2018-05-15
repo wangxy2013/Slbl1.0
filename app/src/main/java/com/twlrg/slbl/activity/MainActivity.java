@@ -16,12 +16,15 @@ import com.baidu.location.BDAbstractLocationListener;
 import com.baidu.location.BDLocation;
 import com.baidu.location.Poi;
 import com.kevin.crop.UCrop;
+import com.tencent.imsdk.TIMConversationType;
 import com.twlrg.slbl.MyApplication;
 import com.twlrg.slbl.R;
 import com.twlrg.slbl.fragment.HomeFragment;
 import com.twlrg.slbl.fragment.MessageFragment;
 import com.twlrg.slbl.fragment.OrderFragment;
 import com.twlrg.slbl.fragment.UserCenterFragment;
+import com.twlrg.slbl.im.ui.ChatActivity;
+import com.twlrg.slbl.im.ui.ConversationFragment;
 import com.twlrg.slbl.service.LocationService;
 import com.twlrg.slbl.utils.ConfigManager;
 import com.twlrg.slbl.utils.LogUtil;
@@ -44,7 +47,7 @@ public class MainActivity extends BaseActivity
 
     UserCenterFragment mUserCenterFragment = new UserCenterFragment();
 
-    private Class  fragmentArray[] = {HomeFragment.class, MessageFragment.class, OrderFragment.class, mUserCenterFragment.getClass()};
+    private Class  fragmentArray[] = {HomeFragment.class, ConversationFragment.class, OrderFragment.class, mUserCenterFragment.getClass()};
 
 
     @Override

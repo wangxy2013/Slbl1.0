@@ -29,6 +29,7 @@ import com.kevin.crop.UCrop;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.twlrg.slbl.MyApplication;
 import com.twlrg.slbl.R;
+import com.twlrg.slbl.activity.AddCommentActivity;
 import com.twlrg.slbl.activity.BaseHandler;
 import com.twlrg.slbl.activity.CropActivity;
 import com.twlrg.slbl.activity.LoginActivity;
@@ -37,6 +38,7 @@ import com.twlrg.slbl.activity.ModifyPwdActivity;
 import com.twlrg.slbl.http.DataRequest;
 import com.twlrg.slbl.http.HttpRequest;
 import com.twlrg.slbl.http.IRequestListener;
+import com.twlrg.slbl.im.TencentCloud;
 import com.twlrg.slbl.json.LoginHandler;
 import com.twlrg.slbl.json.ResultHandler;
 import com.twlrg.slbl.listener.MyItemClickListener;
@@ -199,7 +201,7 @@ public class UserCenterFragment extends BaseFragment implements View.OnClickList
         ((MainActivity) getActivity()).changeTabStatusColor(3);
         if (!MyApplication.getInstance().isLogin())
         {
-            startActivity(new Intent(getActivity(), LoginActivity.class));
+            LoginActivity.start(getActivity(),true);
         }
         else
         {
@@ -380,8 +382,10 @@ public class UserCenterFragment extends BaseFragment implements View.OnClickList
         }
         else if (v == btnLogout)
         {
-            ConfigManager.instance().setUserId("");
-            startActivity(new Intent(getActivity(), LoginActivity.class));
+            APPUtils.logout(getActivity());
+            TencentCloud.logout();
+            LoginActivity.start(getActivity(),true);
+
         }
         else if (v == tvModifyPwd)
         {

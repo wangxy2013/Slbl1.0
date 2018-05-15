@@ -332,7 +332,7 @@ public class HotelDetailActivity extends BaseActivity implements IRequestListene
                 }
                 else
                 {
-                    startActivity(new Intent(HotelDetailActivity.this, LoginActivity.class));
+                    LoginActivity.start(HotelDetailActivity.this,true);
                 }
 
 

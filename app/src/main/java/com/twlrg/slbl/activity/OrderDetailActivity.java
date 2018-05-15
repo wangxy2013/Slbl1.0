@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.alipay.sdk.app.PayTask;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.tencent.imsdk.TIMConversationType;
 import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
@@ -25,6 +26,7 @@ import com.twlrg.slbl.entity.WxPayInfo;
 import com.twlrg.slbl.http.DataRequest;
 import com.twlrg.slbl.http.HttpRequest;
 import com.twlrg.slbl.http.IRequestListener;
+import com.twlrg.slbl.im.ui.ChatActivity;
 import com.twlrg.slbl.json.OrderInfoHandler;
 import com.twlrg.slbl.json.OrderListHandler;
 import com.twlrg.slbl.json.ResultHandler;
@@ -373,7 +375,7 @@ public class OrderDetailActivity extends BaseActivity implements IRequestListene
         }
         else if (v == ivMessage)
         {
-
+            ChatActivity.navToChat(this,mOrderInfo.getSale_uid(), TIMConversationType.C2C);
         }
         else if (v == btnCancel)//取消订单
         {
