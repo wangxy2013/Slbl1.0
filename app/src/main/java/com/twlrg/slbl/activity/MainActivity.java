@@ -47,7 +47,7 @@ public class MainActivity extends BaseActivity
 
     UserCenterFragment mUserCenterFragment = new UserCenterFragment();
 
-    private Class  fragmentArray[] = {HomeFragment.class, ConversationFragment.class, OrderFragment.class, mUserCenterFragment.getClass()};
+    private Class  fragmentArray[] = {HomeFragment.class, MessageFragment.class, OrderFragment.class, mUserCenterFragment.getClass()};
 
 
     @Override

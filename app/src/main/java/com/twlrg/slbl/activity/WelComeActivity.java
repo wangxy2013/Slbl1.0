@@ -61,8 +61,6 @@ public class WelComeActivity extends BaseActivity implements SplashView, TIMCall
     private final int REQUEST_PHONE_PERMISSIONS = 0;
     private static final String TAG = WelComeActivity.class.getSimpleName();
 
-    private int TIME = 3000;
-
     @Override
     protected void initData() {
 
@@ -171,16 +169,6 @@ public class WelComeActivity extends BaseActivity implements SplashView, TIMCall
     }
 
     /**
-     * 跳转到登录界面
-     */
-    @Override
-    public void navToLogin() {
-        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-        intent.putExtra("loginIM",false);
-        startActivityForResult(intent, LOGIN_RESULT_CODE);
-    }
-
-    /**
      * 是否已有用户登录
      */
     @Override
@@ -228,13 +216,13 @@ public class WelComeActivity extends BaseActivity implements SplashView, TIMCall
                     }
                 });
                 break;
-            case 6200:
-                Toast.makeText(this, getString(R.string.login_error_timeout), Toast.LENGTH_SHORT).show();
-                navToLogin();
-                break;
+            //case 6200:
+            //    Toast.makeText(this, getString(R.string.login_error_timeout), Toast.LENGTH_SHORT).show();
+                //navToHome();
+            //    break;
             default:
-                Toast.makeText(this, getString(R.string.login_error), Toast.LENGTH_SHORT).show();
-                navToLogin();
+                //Toast.makeText(this, getString(R.string.login_error), Toast.LENGTH_SHORT).show();
+                onSuccess();
                 break;
         }
 

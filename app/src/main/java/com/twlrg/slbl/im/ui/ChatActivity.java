@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.view.ContextMenu;
 import android.view.Menu;
@@ -78,15 +79,21 @@ public class ChatActivity extends FragmentActivity implements ChatView {
 
 
     public static void navToChat(Context context, String identify, TIMConversationType type) {
-        Intent intent = new Intent(context, ChatActivity.class);
         LogUtil.d(TAG,"identify:"+identify);
         if (!identify.contains("sl")) {
             identify = TencentCloud.UID_PREFIX + identify;
         }
         LogUtil.d(TAG,"identify:"+identify);
+        Intent intent = getIntent(context, identify, type);
+        context.startActivity(intent);
+    }
+
+    @NonNull
+    public static Intent getIntent(Context context, String identify, TIMConversationType type) {
+        Intent intent = new Intent(context, ChatActivity.class);
         intent.putExtra("identify", identify);
         intent.putExtra("type", type);
-        context.startActivity(intent);
+        return intent;
     }
 
 

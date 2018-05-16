@@ -1,6 +1,7 @@
 package com.tencent.qcloud.presentation.presenter;
 
 import android.os.Handler;
+
 import com.tencent.qcloud.presentation.viewfeatures.SplashView;
 
 
@@ -24,16 +25,13 @@ public class SplashPresenter {
             @Override
             public void run() {
 
-                if (!view.isUserLogin()){
-                    view.navToLogin();
-                    return;
-                }
 
-                if (!view.isIMLogin()){
+
+                if (view.isUserLogin() && !view.isIMLogin()) {
                     view.imLogin();
-                    return;
+                }else{
+                    view.navToHome();
                 }
-                view.navToHome();
 
             }
         }, 1000);
