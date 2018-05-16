@@ -56,6 +56,7 @@ public class GuideActivity extends BaseActivity implements View.OnClickListener,
     @Override
     protected void initEvent()
     {
+
         mSubmitBtn.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -78,7 +79,7 @@ public class GuideActivity extends BaseActivity implements View.OnClickListener,
 
         if (!ConfigManager.instance().getIsFristLogin())
         {
-            startActivity(new Intent(GuideActivity.this, MainActivity.class));
+            startActivity(new Intent(GuideActivity.this, WelComeActivity.class));
             finish();
         }
         ConfigManager.instance().setIsFristLogin(false);
