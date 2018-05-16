@@ -1,7 +1,9 @@
 package com.twlrg.slbl.im.ui;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
@@ -32,6 +34,7 @@ import com.twlrg.slbl.R;
 import com.tencent.qcloud.ui.ChatInput;
 import com.tencent.qcloud.ui.TemplateTitle;
 import com.tencent.qcloud.ui.VoiceSendingView;
+import com.twlrg.slbl.activity.MainActivity;
 import com.twlrg.slbl.im.TencentCloud;
 import com.twlrg.slbl.im.adapters.ChatAdapter;
 import com.twlrg.slbl.im.model.CustomMessage;
@@ -55,41 +58,45 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ChatActivity extends FragmentActivity implements ChatView {
+public class ChatActivity extends FragmentActivity implements ChatView
+{
 
     private static final String TAG = "ChatActivity";
 
     private List<Message> messageList = new ArrayList<>();
-    private ChatAdapter adapter;
-    private ListView listView;
+    private ChatAdapter   adapter;
+    private ListView      listView;
     private ChatPresenter presenter;
-    private ChatInput input;
+    private ChatInput     input;
     private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
-    private static final int IMAGE_STORE = 200;
-    private static final int FILE_CODE = 300;
-    private static final int IMAGE_PREVIEW = 400;
-    private static final int VIDEO_RECORD = 500;
-    private Uri fileUri;
+    private static final int IMAGE_STORE                         = 200;
+    private static final int FILE_CODE                           = 300;
+    private static final int IMAGE_PREVIEW                       = 400;
+    private static final int VIDEO_RECORD                        = 500;
+    private Uri              fileUri;
     private VoiceSendingView voiceSendingView;
-    private String identify;
+    private String           identify;
     private RecorderUtil recorder = new RecorderUtil();
     private TIMConversationType type;
-    private String titleStr;
+    private String              titleStr;
     private Handler handler = new Handler();
 
 
-    public static void navToChat(Context context, String identify, TIMConversationType type) {
-        LogUtil.d(TAG,"identify:"+identify);
-        if (!identify.contains("sl")) {
+    public static void navToChat(Context context, String identify, TIMConversationType type)
+    {
+        LogUtil.d(TAG, "identify:" + identify);
+        if (!identify.contains("sl"))
+        {
             identify = TencentCloud.UID_PREFIX + identify;
         }
-        LogUtil.d(TAG,"identify:"+identify);
+        LogUtil.d(TAG, "identify:" + identify);
         Intent intent = getIntent(context, identify, type);
         context.startActivity(intent);
     }
 
     @NonNull
-    public static Intent getIntent(Context context, String identify, TIMConversationType type) {
+    public static Intent getIntent(Context context, String identify, TIMConversationType type)
+    {
         Intent intent = new Intent(context, ChatActivity.class);
         intent.putExtra("identify", identify);
         intent.putExtra("type", type);
@@ -98,10 +105,16 @@ public class ChatActivity extends FragmentActivity implements ChatView {
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(USER_LOGOUT);
+        registerReceiver(new MyBroadCastReceiver(), intentFilter);
+
         identify = getIntent().getStringExtra("identify");
         type = (TIMConversationType) getIntent().getSerializableExtra("type");
         presenter = new ChatPresenter(this, identify, type);
@@ -111,10 +124,13 @@ public class ChatActivity extends FragmentActivity implements ChatView {
         listView = (ListView) findViewById(R.id.list);
         listView.setAdapter(adapter);
         listView.setTranscriptMode(ListView.TRANSCRIPT_MODE_NORMAL);
-        listView.setOnTouchListener(new View.OnTouchListener() {
+        listView.setOnTouchListener(new View.OnTouchListener()
+        {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()) {
+            public boolean onTouch(View v, MotionEvent event)
+            {
+                switch (event.getAction())
+                {
                     case MotionEvent.ACTION_DOWN:
                         input.setInputMode(ChatInput.InputMode.NONE);
                         break;
@@ -122,13 +138,16 @@ public class ChatActivity extends FragmentActivity implements ChatView {
                 return false;
             }
         });
-        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
+        listView.setOnScrollListener(new AbsListView.OnScrollListener()
+        {
 
             private int firstItem;
 
             @Override
-            public void onScrollStateChanged(AbsListView view, int scrollState) {
-                if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE && firstItem == 0) {
+            public void onScrollStateChanged(AbsListView view, int scrollState)
+            {
+                if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE && firstItem == 0)
+                {
                     //如果拉到顶端读取更多消息
                     presenter.getMessage(messageList.size() > 0 ? messageList.get(0).getMessage() : null);
 
@@ -136,19 +155,24 @@ public class ChatActivity extends FragmentActivity implements ChatView {
             }
 
             @Override
-            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount)
+            {
                 firstItem = firstVisibleItem;
             }
         });
         registerForContextMenu(listView);
         TemplateTitle title = (TemplateTitle) findViewById(R.id.chat_title);
-        switch (type) {
+        switch (type)
+        {
             case C2C:
                 title.setMoreImg(R.drawable.btn_person);
-                if (FriendshipInfo.getInstance().isFriend(identify)) {
-                    title.setMoreImgAction(new View.OnClickListener() {
+                if (FriendshipInfo.getInstance().isFriend(identify))
+                {
+                    title.setMoreImgAction(new View.OnClickListener()
+                    {
                         @Override
-                        public void onClick(View v) {
+                        public void onClick(View v)
+                        {
                             Intent intent = new Intent(ChatActivity.this, ProfileActivity.class);
                             intent.putExtra("identify", identify);
                             startActivity(intent);
@@ -156,10 +180,14 @@ public class ChatActivity extends FragmentActivity implements ChatView {
                     });
                     FriendProfile profile = FriendshipInfo.getInstance().getProfile(identify);
                     title.setTitleText(titleStr = profile == null ? identify : profile.getName());
-                } else {
-                    title.setMoreImgAction(new View.OnClickListener() {
+                }
+                else
+                {
+                    title.setMoreImgAction(new View.OnClickListener()
+                    {
                         @Override
-                        public void onClick(View v) {
+                        public void onClick(View v)
+                        {
                             Intent person = new Intent(ChatActivity.this, AddFriendActivity.class);
                             person.putExtra("id", identify);
                             person.putExtra("name", identify);
@@ -171,9 +199,11 @@ public class ChatActivity extends FragmentActivity implements ChatView {
                 break;
             case Group:
                 title.setMoreImg(R.drawable.btn_group);
-                title.setMoreImgAction(new View.OnClickListener() {
+                title.setMoreImgAction(new View.OnClickListener()
+                {
                     @Override
-                    public void onClick(View v) {
+                    public void onClick(View v)
+                    {
                         Intent intent = new Intent(ChatActivity.this, GroupProfileActivity.class);
                         intent.putExtra("identify", identify);
                         startActivity(intent);
@@ -188,13 +218,17 @@ public class ChatActivity extends FragmentActivity implements ChatView {
     }
 
     @Override
-    protected void onPause() {
+    protected void onPause()
+    {
         super.onPause();
         //退出聊天界面时输入框有内容，保存草稿
-        if (input.getText().length() > 0) {
+        if (input.getText().length() > 0)
+        {
             TextMessage message = new TextMessage(input.getText());
             presenter.saveDraft(message.getMessage());
-        } else {
+        }
+        else
+        {
             presenter.saveDraft(null);
         }
         //        RefreshEvent.getInstance().onRefresh();
@@ -203,7 +237,8 @@ public class ChatActivity extends FragmentActivity implements ChatView {
     }
 
     @Override
-    protected void onDestroy() {
+    protected void onDestroy()
+    {
         super.onDestroy();
         presenter.stop();
     }
@@ -215,15 +250,22 @@ public class ChatActivity extends FragmentActivity implements ChatView {
      * @param message
      */
     @Override
-    public void showMessage(TIMMessage message) {
-        if (message == null) {
+    public void showMessage(TIMMessage message)
+    {
+        if (message == null)
+        {
             adapter.notifyDataSetChanged();
-        } else {
+        }
+        else
+        {
             Message mMessage = MessageFactory.getMessage(message);
-            if (mMessage != null) {
-                if (mMessage instanceof CustomMessage) {
+            if (mMessage != null)
+            {
+                if (mMessage instanceof CustomMessage)
+                {
                     CustomMessage.Type messageType = ((CustomMessage) mMessage).getType();
-                    switch (messageType) {
+                    switch (messageType)
+                    {
                         case TYPING:
                             TemplateTitle title = (TemplateTitle) findViewById(R.id.chat_title);
                             title.setTitleText(getString(R.string.chat_typing));
@@ -233,10 +275,15 @@ public class ChatActivity extends FragmentActivity implements ChatView {
                         default:
                             break;
                     }
-                } else {
-                    if (messageList.size() == 0) {
+                }
+                else
+                {
+                    if (messageList.size() == 0)
+                    {
                         mMessage.setHasTime(null);
-                    } else {
+                    }
+                    else
+                    {
                         mMessage.setHasTime(messageList.get(messageList.size() - 1).getMessage());
                     }
                     messageList.add(mMessage);
@@ -255,19 +302,24 @@ public class ChatActivity extends FragmentActivity implements ChatView {
      * @param messages
      */
     @Override
-    public void showMessage(List<TIMMessage> messages) {
+    public void showMessage(List<TIMMessage> messages)
+    {
         int newMsgNum = 0;
-        for (int i = 0; i < messages.size(); ++i) {
+        for (int i = 0; i < messages.size(); ++i)
+        {
             Message mMessage = MessageFactory.getMessage(messages.get(i));
             if (mMessage == null || messages.get(i).status() == TIMMessageStatus.HasDeleted)
                 continue;
             if (mMessage instanceof CustomMessage && (((CustomMessage) mMessage).getType() == CustomMessage.Type.TYPING ||
                     ((CustomMessage) mMessage).getType() == CustomMessage.Type.INVALID)) continue;
             ++newMsgNum;
-            if (i != messages.size() - 1) {
+            if (i != messages.size() - 1)
+            {
                 mMessage.setHasTime(messages.get(i + 1));
                 messageList.add(0, mMessage);
-            } else {
+            }
+            else
+            {
                 mMessage.setHasTime(null);
                 messageList.add(0, mMessage);
             }
@@ -277,10 +329,13 @@ public class ChatActivity extends FragmentActivity implements ChatView {
     }
 
     @Override
-    public void showRevokeMessage(TIMMessageLocator timMessageLocator) {
-        for (Message msg : messageList) {
+    public void showRevokeMessage(TIMMessageLocator timMessageLocator)
+    {
+        for (Message msg : messageList)
+        {
             TIMMessageExt ext = new TIMMessageExt(msg.getMessage());
-            if (ext.checkEquals(timMessageLocator)) {
+            if (ext.checkEquals(timMessageLocator))
+            {
                 adapter.notifyDataSetChanged();
             }
         }
@@ -290,7 +345,8 @@ public class ChatActivity extends FragmentActivity implements ChatView {
      * 清除所有消息，等待刷新
      */
     @Override
-    public void clearAllMessage() {
+    public void clearAllMessage()
+    {
         messageList.clear();
     }
 
@@ -300,7 +356,8 @@ public class ChatActivity extends FragmentActivity implements ChatView {
      * @param message 返回的消息
      */
     @Override
-    public void onSendMessageSuccess(TIMMessage message) {
+    public void onSendMessageSuccess(TIMMessage message)
+    {
         showMessage(message);
     }
 
@@ -311,12 +368,16 @@ public class ChatActivity extends FragmentActivity implements ChatView {
      * @param desc 返回描述
      */
     @Override
-    public void onSendMessageFail(int code, String desc, TIMMessage message) {
-        LogUtil.d(TAG,"onSendMessageFail:"+code+"."+desc+"."+message.getSender()+"-->"+message.getConversation().getPeer());
+    public void onSendMessageFail(int code, String desc, TIMMessage message)
+    {
+        LogUtil.d(TAG, "onSendMessageFail:" + code + "." + desc + "." + message.getSender() + "-->" + message.getConversation().getPeer());
         long id = message.getMsgUniqueId();
-        for (Message msg : messageList) {
-            if (msg.getMessage().getMsgUniqueId() == id) {
-                switch (code) {
+        for (Message msg : messageList)
+        {
+            if (msg.getMessage().getMsgUniqueId() == id)
+            {
+                switch (code)
+                {
                     case 80001:
                         //发送内容包含敏感词
                         msg.setDesc(getString(R.string.chat_content_bad));
@@ -334,7 +395,8 @@ public class ChatActivity extends FragmentActivity implements ChatView {
      * 发送图片消息
      */
     @Override
-    public void sendImage() {
+    public void sendImage()
+    {
         Intent intent_album = new Intent("android.intent.action.GET_CONTENT");
         intent_album.setType("image/*");
         startActivityForResult(intent_album, IMAGE_STORE);
@@ -344,11 +406,14 @@ public class ChatActivity extends FragmentActivity implements ChatView {
      * 发送照片消息
      */
     @Override
-    public void sendPhoto() {
+    public void sendPhoto()
+    {
         Intent intent_photo = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (intent_photo.resolveActivity(getPackageManager()) != null) {
+        if (intent_photo.resolveActivity(getPackageManager()) != null)
+        {
             File tempFile = FileUtil.getTempFile(FileUtil.FileType.IMG);
-            if (tempFile != null) {
+            if (tempFile != null)
+            {
                 fileUri = Uri.fromFile(tempFile);
             }
             intent_photo.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
@@ -360,7 +425,8 @@ public class ChatActivity extends FragmentActivity implements ChatView {
      * 发送文本消息
      */
     @Override
-    public void sendText() {
+    public void sendText()
+    {
         Message message = new TextMessage(input.getText());
         presenter.sendMessage(message.getMessage());
         input.setText("");
@@ -370,7 +436,8 @@ public class ChatActivity extends FragmentActivity implements ChatView {
      * 发送文件
      */
     @Override
-    public void sendFile() {
+    public void sendFile()
+    {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("*/*");
         startActivityForResult(intent, FILE_CODE);
@@ -381,7 +448,8 @@ public class ChatActivity extends FragmentActivity implements ChatView {
      * 开始发送语音消息
      */
     @Override
-    public void startSendVoice() {
+    public void startSendVoice()
+    {
         voiceSendingView.setVisibility(View.VISIBLE);
         voiceSendingView.showRecording();
         recorder.startRecording();
@@ -392,15 +460,21 @@ public class ChatActivity extends FragmentActivity implements ChatView {
      * 结束发送语音消息
      */
     @Override
-    public void endSendVoice() {
+    public void endSendVoice()
+    {
         voiceSendingView.release();
         voiceSendingView.setVisibility(View.GONE);
         recorder.stopRecording();
-        if (recorder.getTimeInterval() < 1) {
+        if (recorder.getTimeInterval() < 1)
+        {
             Toast.makeText(this, getResources().getString(R.string.chat_audio_too_short), Toast.LENGTH_SHORT).show();
-        } else if (recorder.getTimeInterval() > 60) {
+        }
+        else if (recorder.getTimeInterval() > 60)
+        {
             Toast.makeText(this, getResources().getString(R.string.chat_audio_too_long), Toast.LENGTH_SHORT).show();
-        } else {
+        }
+        else
+        {
             Message message = new VoiceMessage(recorder.getTimeInterval(), recorder.getFilePath());
             presenter.sendMessage(message.getMessage());
         }
@@ -412,7 +486,8 @@ public class ChatActivity extends FragmentActivity implements ChatView {
      * @param fileName 文件名
      */
     @Override
-    public void sendVideo(String fileName) {
+    public void sendVideo(String fileName)
+    {
         Message message = new VideoMessage(fileName);
         presenter.sendMessage(message.getMessage());
     }
@@ -422,7 +497,8 @@ public class ChatActivity extends FragmentActivity implements ChatView {
      * 结束发送语音消息
      */
     @Override
-    public void cancelSendVoice() {
+    public void cancelSendVoice()
+    {
 
     }
 
@@ -430,8 +506,10 @@ public class ChatActivity extends FragmentActivity implements ChatView {
      * 正在发送
      */
     @Override
-    public void sending() {
-        if (type == TIMConversationType.C2C) {
+    public void sending()
+    {
+        if (type == TIMConversationType.C2C)
+        {
             Message message = new CustomMessage(CustomMessage.Type.TYPING);
             presenter.sendOnlineMessage(message.getMessage());
         }
@@ -441,44 +519,54 @@ public class ChatActivity extends FragmentActivity implements ChatView {
      * 显示草稿
      */
     @Override
-    public void showDraft(TIMMessageDraft draft) {
+    public void showDraft(TIMMessageDraft draft)
+    {
         input.getText().append(TextMessage.getString(draft.getElems(), this));
     }
 
     @Override
-    public void videoAction() {
+    public void videoAction()
+    {
         Intent intent = new Intent(this, TCVideoRecordActivity.class);
         startActivityForResult(intent, VIDEO_RECORD);
     }
 
     @Override
-    public void showToast(String msg) {
+    public void showToast(String msg)
+    {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
 
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v,
-                                    ContextMenu.ContextMenuInfo menuInfo) {
+                                    ContextMenu.ContextMenuInfo menuInfo)
+    {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
         Message message = messageList.get(info.position);
         menu.add(0, 1, Menu.NONE, getString(R.string.chat_del));
-        if (message.isSendFail()) {
+        if (message.isSendFail())
+        {
             menu.add(0, 2, Menu.NONE, getString(R.string.chat_resend));
-        } else if (message.getMessage().isSelf()) {
+        }
+        else if (message.getMessage().isSelf())
+        {
             menu.add(0, 4, Menu.NONE, getString(R.string.chat_pullback));
         }
-        if (message instanceof ImageMessage || message instanceof FileMessage) {
+        if (message instanceof ImageMessage || message instanceof FileMessage)
+        {
             menu.add(0, 3, Menu.NONE, getString(R.string.chat_save));
         }
     }
 
 
     @Override
-    public boolean onContextItemSelected(MenuItem item) {
+    public boolean onContextItemSelected(MenuItem item)
+    {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         Message message = messageList.get(info.position);
-        switch (item.getItemId()) {
+        switch (item.getItemId())
+        {
             case 1:
                 message.remove();
                 messageList.remove(info.position);
@@ -502,45 +590,69 @@ public class ChatActivity extends FragmentActivity implements ChatView {
 
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
-            if (resultCode == RESULT_OK && fileUri != null) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE)
+        {
+            if (resultCode == RESULT_OK && fileUri != null)
+            {
                 showImagePreview(fileUri.getPath());
             }
-        } else if (requestCode == IMAGE_STORE) {
-            if (resultCode == RESULT_OK && data != null) {
+        }
+        else if (requestCode == IMAGE_STORE)
+        {
+            if (resultCode == RESULT_OK && data != null)
+            {
                 showImagePreview(FileUtil.getFilePath(this, data.getData()));
             }
 
-        } else if (requestCode == FILE_CODE) {
-            if (resultCode == RESULT_OK) {
+        }
+        else if (requestCode == FILE_CODE)
+        {
+            if (resultCode == RESULT_OK)
+            {
                 sendFile(FileUtil.getFilePath(this, data.getData()));
             }
-        } else if (requestCode == IMAGE_PREVIEW) {
-            if (resultCode == RESULT_OK) {
+        }
+        else if (requestCode == IMAGE_PREVIEW)
+        {
+            if (resultCode == RESULT_OK)
+            {
                 boolean isOri = data.getBooleanExtra("isOri", false);
                 String path = data.getStringExtra("path");
                 File file = new File(path);
-                if (file.exists()) {
+                if (file.exists())
+                {
                     final BitmapFactory.Options options = new BitmapFactory.Options();
                     options.inJustDecodeBounds = true;
                     BitmapFactory.decodeFile(path, options);
-                    if (file.length() == 0 && options.outWidth == 0) {
+                    if (file.length() == 0 && options.outWidth == 0)
+                    {
                         Toast.makeText(this, getString(R.string.chat_file_not_exist), Toast.LENGTH_SHORT).show();
-                    } else {
-                        if (file.length() > 1024 * 1024 * 10) {
+                    }
+                    else
+                    {
+                        if (file.length() > 1024 * 1024 * 10)
+                        {
                             Toast.makeText(this, getString(R.string.chat_file_too_large), Toast.LENGTH_SHORT).show();
-                        } else {
+                        }
+                        else
+                        {
                             Message message = new ImageMessage(path, isOri);
                             presenter.sendMessage(message.getMessage());
                         }
                     }
-                } else {
+                }
+                else
+                {
                     Toast.makeText(this, getString(R.string.chat_file_not_exist), Toast.LENGTH_SHORT).show();
                 }
             }
-        } else if (requestCode == VIDEO_RECORD) {
-            if (resultCode == RESULT_OK) {
+        }
+        else if (requestCode == VIDEO_RECORD)
+        {
+            if (resultCode == RESULT_OK)
+            {
                 String videoPath = data.getStringExtra("videoPath");
                 String coverPath = data.getStringExtra("coverPath");
                 long duration = data.getLongExtra("duration", 0);
@@ -552,24 +664,32 @@ public class ChatActivity extends FragmentActivity implements ChatView {
     }
 
 
-    private void showImagePreview(String path) {
+    private void showImagePreview(String path)
+    {
         if (path == null) return;
         Intent intent = new Intent(this, ImagePreviewActivity.class);
         intent.putExtra("path", path);
         startActivityForResult(intent, IMAGE_PREVIEW);
     }
 
-    private void sendFile(String path) {
+    private void sendFile(String path)
+    {
         if (path == null) return;
         File file = new File(path);
-        if (file.exists()) {
-            if (file.length() > 1024 * 1024 * 10) {
+        if (file.exists())
+        {
+            if (file.length() > 1024 * 1024 * 10)
+            {
                 Toast.makeText(this, getString(R.string.chat_file_too_large), Toast.LENGTH_SHORT).show();
-            } else {
+            }
+            else
+            {
                 Message message = new FileMessage(path);
                 presenter.sendMessage(message.getMessage());
             }
-        } else {
+        }
+        else
+        {
             Toast.makeText(this, getString(R.string.chat_file_not_exist), Toast.LENGTH_SHORT).show();
         }
 
@@ -578,13 +698,30 @@ public class ChatActivity extends FragmentActivity implements ChatView {
     /**
      * 将标题设置为对象名称
      */
-    private Runnable resetTitle = new Runnable() {
+    private Runnable resetTitle = new Runnable()
+    {
         @Override
-        public void run() {
+        public void run()
+        {
             TemplateTitle title = (TemplateTitle) findViewById(R.id.chat_title);
             title.setTitleText(titleStr);
         }
     };
 
+    private final String USER_LOGOUT = "USER_LOGOUT";
+    class MyBroadCastReceiver extends BroadcastReceiver
+    {
+        private static final String TAG = "TestBroadCastReceiver";
 
+        @Override
+        public void onReceive(Context context, Intent intent)
+        {
+
+            if (USER_LOGOUT.contentEquals(intent.getAction()))
+            {
+                finish();
+
+            }
+        }
+    }
 }

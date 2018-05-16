@@ -1,7 +1,10 @@
 package com.twlrg.slbl.activity;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTabHost;
@@ -40,20 +43,23 @@ public class MainActivity extends BaseActivity
     @BindView(android.R.id.tabhost)
     FragmentTabHost fragmentTabHost;
 
-    private String texts[]         = {"首页", "消息", "订单", "我的"};
-    private int    imageButton[]   = {
+    private String texts[]       = {"首页", "消息", "订单", "我的"};
+    private int    imageButton[] = {
             R.drawable.ic_home_selector, R.drawable.ic_message_selector,
             R.drawable.ic_order_selector, R.drawable.ic_user_center_selector};
 
     UserCenterFragment mUserCenterFragment = new UserCenterFragment();
 
-    private Class  fragmentArray[] = {HomeFragment.class, MessageFragment.class, OrderFragment.class, mUserCenterFragment.getClass()};
+    private Class fragmentArray[] = {HomeFragment.class, MessageFragment.class, OrderFragment.class, mUserCenterFragment.getClass()};
 
+    private final String USER_LOGOUT = "USER_LOGOUT";
 
     @Override
     protected void initData()
     {
-
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(USER_LOGOUT);
+        registerReceiver(new MyBroadCastReceiver(), intentFilter);
     }
 
     @Override
@@ -102,9 +108,9 @@ public class MainActivity extends BaseActivity
         return view;
     }
 
+
     public void changeTabStatusColor(int index)
     {
-
         if (index == 0)
         {
             setStatusBarTextDeep(false);
@@ -122,4 +128,28 @@ public class MainActivity extends BaseActivity
         mUserCenterFragment.onActivityResult(requestCode, resultCode, data);
     }
 
+
+    class MyBroadCastReceiver extends BroadcastReceiver
+    {
+        private static final String TAG = "TestBroadCastReceiver";
+
+        @Override
+        public void onReceive(Context context, Intent intent)
+        {
+
+            if (USER_LOGOUT.contentEquals(intent.getAction()))
+            {
+                fragmentTabHost.postDelayed(new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        fragmentTabHost.setCurrentTab(0);
+                        changeTabStatusColor(0);
+                    }
+                }, 100);
+
+            }
+        }
+    }
 }

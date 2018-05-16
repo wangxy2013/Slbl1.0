@@ -42,7 +42,9 @@ import com.twlrg.slbl.im.ui.HomeActivity;
 import com.twlrg.slbl.im.ui.customview.DialogActivity;
 import com.twlrg.slbl.im.utils.PushUtil;
 import com.twlrg.slbl.utils.ConfigManager;
+import com.twlrg.slbl.utils.DialogUtils;
 import com.twlrg.slbl.utils.LogUtil;
+import com.twlrg.slbl.widget.IMNotifyDialog;
 import com.xiaomi.mipush.sdk.MiPushClient;
 
 import java.util.ArrayList;
@@ -54,20 +56,23 @@ import java.util.List;
  * 邮箱：wangxianyun1@163.com
  * 描述：一句话简单描述
  */
-public class WelComeActivity extends BaseActivity implements SplashView, TIMCallBack {
+public class WelComeActivity extends BaseActivity implements SplashView, TIMCallBack
+{
     SplashPresenter presenter;
-    private int LOGIN_RESULT_CODE = 100;
-    private int GOOGLE_PLAY_RESULT_CODE = 200;
-    private final int REQUEST_PHONE_PERMISSIONS = 0;
-    private static final String TAG = WelComeActivity.class.getSimpleName();
+    private              int    LOGIN_RESULT_CODE         = 100;
+    private              int    GOOGLE_PLAY_RESULT_CODE   = 200;
+    private final        int    REQUEST_PHONE_PERMISSIONS = 0;
+    private static final String TAG                       = WelComeActivity.class.getSimpleName();
 
     @Override
-    protected void initData() {
+    protected void initData()
+    {
 
     }
 
     @Override
-    protected void initViews(Bundle savedInstanceState) {
+    protected void initViews(Bundle savedInstanceState)
+    {
         clearNotification();
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -80,36 +85,45 @@ public class WelComeActivity extends BaseActivity implements SplashView, TIMCall
         ////            GoogleApiAvailability.getInstance().getErrorDialog(this, GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(this),
         ////                    GOOGLE_PLAY_RESULT_CODE).show();
         //        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+        {
             if ((checkSelfPermission(Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED))
                 permissionsList.add(Manifest.permission.READ_PHONE_STATE);
             if ((checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED))
                 permissionsList.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-            if (permissionsList.size() == 0) {
+            if (permissionsList.size() == 0)
+            {
                 init();
-            } else {
+            }
+            else
+            {
                 requestPermissions(permissionsList.toArray(new String[permissionsList.size()]),
                         REQUEST_PHONE_PERMISSIONS);
             }
-        } else {
+        }
+        else
+        {
             init();
         }
     }
 
     @Override
-    protected void initEvent() {
+    protected void initEvent()
+    {
 
     }
 
     @Override
-    protected void initViewData() {
+    protected void initViewData()
+    {
     }
 
     /**
      * 跳转到主界面
      */
     @Override
-    public void navToHome() {
+    public void navToHome()
+    {
         String identifier = ConfigManager.instance().getIdentifier();
         String userSig = TLSService.getInstance().getUserSig(identifier);
 
@@ -119,43 +133,54 @@ public class WelComeActivity extends BaseActivity implements SplashView, TIMCall
         LoginBusiness.loginIm(identifier, userSig, this);
     }
 
-    private void initUserConfig() {
+    private void initUserConfig()
+    {
         //登录之前要初始化群和好友关系链缓存
         TIMUserConfig userConfig = new TIMUserConfig();
         userConfig.setUserStatusListener(
 
-                new TIMUserStatusListener() {
+                new TIMUserStatusListener()
+                {
                     @Override
-                    public void onForceOffline() {
+                    public void onForceOffline()
+                    {
                         Log.d(TAG, "receive force offline message");
                         Intent intent = new Intent(WelComeActivity.this, DialogActivity.class);
                         startActivity(intent);
                     }
 
                     @Override
-                    public void onUserSigExpired() {
+                    public void onUserSigExpired()
+                    {
                         //票据过期，需要重新登录
-                        new NotifyDialog().show(getString(R.string.tls_expire), getSupportFragmentManager(), new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                //                            logout();
-                            }
-                        });
+//                        new NotifyDialog().show(getString(R.string.tls_expire), getSupportFragmentManager(), new DialogInterface.OnClickListener()
+//                        {
+//                            @Override
+//                            public void onClick(DialogInterface dialog, int which)
+//                            {
+//                                //                            logout();
+//                            }
+//                        });
+                        ConfigManager.instance().setUserId("");
                     }
                 })
-                .setConnectionListener(new TIMConnListener() {
+                .setConnectionListener(new TIMConnListener()
+                {
                     @Override
-                    public void onConnected() {
+                    public void onConnected()
+                    {
                         Log.i(TAG, "onConnected");
                     }
 
                     @Override
-                    public void onDisconnected(int code, String desc) {
+                    public void onDisconnected(int code, String desc)
+                    {
                         Log.i(TAG, "onDisconnected");
                     }
 
                     @Override
-                    public void onWifiNeedAuth(String name) {
+                    public void onWifiNeedAuth(String name)
+                    {
                         Log.i(TAG, "onWifiNeedAuth");
                     }
                 });
@@ -172,28 +197,34 @@ public class WelComeActivity extends BaseActivity implements SplashView, TIMCall
      * 是否已有用户登录
      */
     @Override
-    public boolean isUserLogin() {
+    public boolean isUserLogin()
+    {
         return !TextUtils.isEmpty(ConfigManager.instance().getUserID());
     }
 
     @Override
-    public boolean isIMLogin() {
+    public boolean isIMLogin()
+    {
         String identifier = ConfigManager.instance().getIdentifier();
         return !TLSService.getInstance().needLogin(identifier);
     }
 
     @Override
-    public void imLogin() {
+    public void imLogin()
+    {
         String id = ConfigManager.instance().getIdentifier();
 
-        TencentCloud.login(id, new TencentCloud.LoginListener() {
+        TencentCloud.login(id, new TencentCloud.LoginListener()
+        {
             @Override
-            public void onSuccess(String identifier) {
+            public void onSuccess(String identifier)
+            {
                 navToHome();
             }
 
             @Override
-            public void onFail(String msg, int code2) {
+            public void onFail(String msg, int code2)
+            {
                 navToHome();
             }
         });
@@ -203,22 +234,27 @@ public class WelComeActivity extends BaseActivity implements SplashView, TIMCall
      * imsdk登录失败后回调
      */
     @Override
-    public void onError(int i, String s) {
+    public void onError(int i, String s)
+    {
         Log.e(TAG, "login error : code " + i + " " + s);
-        switch (i) {
+        switch (i)
+        {
             case 6208:
                 //离线状态下被其他终端踢下线
-                NotifyDialog dialog = new NotifyDialog();
-                dialog.show(getString(R.string.kick_logout), getSupportFragmentManager(), new DialogInterface.OnClickListener() {
+                IMNotifyDialog dialog = new IMNotifyDialog();
+                dialog.show(getString(R.string.kick_logout), getSupportFragmentManager(), new DialogInterface.OnClickListener()
+                {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        navToHome();
+                    public void onClick(DialogInterface dialog, int which)
+                    {
                     }
+
+
                 });
                 break;
             //case 6200:
             //    Toast.makeText(this, getString(R.string.login_error_timeout), Toast.LENGTH_SHORT).show();
-                //navToHome();
+            //navToHome();
             //    break;
             default:
                 //Toast.makeText(this, getString(R.string.login_error), Toast.LENGTH_SHORT).show();
@@ -232,7 +268,8 @@ public class WelComeActivity extends BaseActivity implements SplashView, TIMCall
      * imsdk登录成功后回调
      */
     @Override
-    public void onSuccess() {
+    public void onSuccess()
+    {
 
         //初始化程序后台后消息推送
         PushUtil.getInstance();
@@ -240,14 +277,18 @@ public class WelComeActivity extends BaseActivity implements SplashView, TIMCall
         MessageEvent.getInstance();
         String deviceMan = Build.MANUFACTURER;
         //注册小米和华为推送
-        if (deviceMan.equals("Xiaomi") && shouldMiInit()) {
+        if (deviceMan.equals("Xiaomi") && shouldMiInit())
+        {
             MiPushClient.registerPush(getApplicationContext(), "2882303761517480335", "5411748055335");
-        } else if (deviceMan.equals("HUAWEI")) {
+        }
+        else if (deviceMan.equals("HUAWEI"))
+        {
             //PushManager.requestToken(this);
         }
 
         //魅族推送只适用于Flyme系统,因此可以先行判断是否为魅族机型，再进行订阅，避免在其他机型上出现兼容性问题
-        if (MzSystemUtils.isBrandMeizu(getApplicationContext())) {
+        if (MzSystemUtils.isBrandMeizu(getApplicationContext()))
+        {
             com.meizu.cloud.pushsdk.PushManager.register(this, "112662", "3aaf89f8e13f43d2a4f97a703c6f65b3");
         }
 
@@ -266,18 +307,23 @@ public class WelComeActivity extends BaseActivity implements SplashView, TIMCall
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
         super.onActivityResult(requestCode, resultCode, data);
         Log.d(TAG, "onActivityResult code:" + requestCode);
-        if (LOGIN_RESULT_CODE == requestCode) {
+        if (LOGIN_RESULT_CODE == requestCode)
+        {
             int lastErrno = TLSService.getInstance().getLastErrno();
             Log.d(TAG, "login error no " + lastErrno);
-            if (0 == lastErrno) {
+            if (0 == lastErrno)
+            {
                 String id = TLSService.getInstance().getLastUserIdentifier();
                 UserInfo.getInstance().setId(id);
                 UserInfo.getInstance().setUserSig(TLSService.getInstance().getUserSig(id));
                 navToHome();
-            } else if (resultCode == RESULT_CANCELED) {
+            }
+            else if (resultCode == RESULT_CANCELED)
+            {
                 finish();
             }
         }
@@ -285,12 +331,17 @@ public class WelComeActivity extends BaseActivity implements SplashView, TIMCall
 
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        switch (requestCode) {
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults)
+    {
+        switch (requestCode)
+        {
             case REQUEST_PHONE_PERMISSIONS:
-                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                {
                     init();
-                } else {
+                }
+                else
+                {
                     Toast.makeText(this, getString(R.string.need_permission), Toast.LENGTH_SHORT).show();
                     finish();
                 }
@@ -301,7 +352,8 @@ public class WelComeActivity extends BaseActivity implements SplashView, TIMCall
     }
 
 
-    private void init() {
+    private void init()
+    {
 
 
         SharedPreferences pref = getSharedPreferences("data", MODE_PRIVATE);
@@ -320,13 +372,16 @@ public class WelComeActivity extends BaseActivity implements SplashView, TIMCall
     /**
      * 判断小米推送是否已经初始化
      */
-    private boolean shouldMiInit() {
+    private boolean shouldMiInit()
+    {
         ActivityManager am = ((ActivityManager) getSystemService(Context.ACTIVITY_SERVICE));
         List<ActivityManager.RunningAppProcessInfo> processInfos = am.getRunningAppProcesses();
         String mainProcessName = getPackageName();
         int myPid = android.os.Process.myPid();
-        for (ActivityManager.RunningAppProcessInfo info : processInfos) {
-            if (info.pid == myPid && mainProcessName.equals(info.processName)) {
+        for (ActivityManager.RunningAppProcessInfo info : processInfos)
+        {
+            if (info.pid == myPid && mainProcessName.equals(info.processName))
+            {
                 return true;
             }
         }
@@ -336,7 +391,8 @@ public class WelComeActivity extends BaseActivity implements SplashView, TIMCall
     /**
      * 清楚所有通知栏通知
      */
-    private void clearNotification() {
+    private void clearNotification()
+    {
         NotificationManager notificationManager = (NotificationManager) this
                 .getSystemService(NOTIFICATION_SERVICE);
         notificationManager.cancelAll();

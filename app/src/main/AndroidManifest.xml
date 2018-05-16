@@ -437,7 +437,7 @@
         <activity android:name=".im.ui.GroupMemberActivity"/>
         <activity
             android:name=".im.ui.customview.DialogActivity"
-            android:theme="@android:style/Theme.Dialog"/>
+            android:theme="@style/dialogNoAnimation"/>
         <activity android:name=".im.ui.GroupMemberProfileActivity"/>
         <activity android:name=".im.ui.FriendshipHandleActivity"/>
         <activity android:name=".im.ui.AboutActivity"/>

@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.tencent.imsdk.TIMConversation;
@@ -33,6 +34,7 @@ import com.twlrg.slbl.im.model.GroupManageConversation;
 import com.twlrg.slbl.im.model.MessageFactory;
 import com.twlrg.slbl.im.model.NomalConversation;
 import com.twlrg.slbl.im.utils.PushUtil;
+import com.twlrg.slbl.utils.APPUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -48,6 +50,7 @@ public class ConversationFragment extends Fragment implements ConversationView,F
     private final String TAG = "ConversationFragment";
 
     private View view;
+    private View mTopView;
     private List<Conversation> conversationList = new LinkedList<>();
     private ConversationAdapter adapter;
     private ListView listView;
@@ -70,6 +73,9 @@ public class ConversationFragment extends Fragment implements ConversationView,F
         if (view == null){
             view = inflater.inflate(R.layout.fragment_conversation, container, false);
             listView = (ListView) view.findViewById(R.id.list);
+            mTopView = view.findViewById(R.id.topView);
+            mTopView.setVisibility(View.VISIBLE);
+            mTopView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, APPUtils.getStatusBarHeight(getActivity())));
             adapter = new ConversationAdapter(getActivity(), R.layout.item_conversation, conversationList);
             listView.setAdapter(adapter);
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

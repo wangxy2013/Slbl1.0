@@ -704,18 +704,6 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
         }
     }
 
-    @Override
-    public void onDestroyView()
-    {
-        super.onDestroyView();
-
-        if (null != unbinder)
-        {
-            unbinder.unbind();
-            unbinder = null;
-        }
-    }
-
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data)

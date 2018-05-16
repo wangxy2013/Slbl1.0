@@ -12,8 +12,11 @@ import com.twlrg.slbl.R;
 import com.twlrg.slbl.http.DataRequest;
 import com.twlrg.slbl.http.HttpRequest;
 import com.twlrg.slbl.http.IRequestListener;
+import com.twlrg.slbl.im.TencentCloud;
+import com.twlrg.slbl.json.RegisterHandler;
 import com.twlrg.slbl.json.ResultHandler;
 import com.twlrg.slbl.utils.ConstantUtil;
+import com.twlrg.slbl.utils.LogUtil;
 import com.twlrg.slbl.utils.StringUtils;
 import com.twlrg.slbl.utils.ToastUtil;
 import com.twlrg.slbl.utils.Urls;
@@ -22,6 +25,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import butterknife.BindView;
+import tencent.tls.platform.TLSErrInfo;
+import tencent.tls.platform.TLSHelper;
+import tencent.tls.platform.TLSStrAccRegListener;
+import tencent.tls.platform.TLSUserInfo;
 
 /**
  * 作者：王先云 on 2018/4/13 10:28
@@ -64,7 +71,39 @@ public class RegisterActivity extends BaseActivity implements IRequestListener
 
                 case REQUEST_REGISTER_SUCCESS:
                     ToastUtil.show(RegisterActivity.this, "注册成功!");
-                    finish();
+                    RegisterHandler mRegisterHandler = (RegisterHandler)msg.obj;
+
+                    String uid= mRegisterHandler.getUid();
+
+                    if(!StringUtils.stringIsEmpty(uid))
+                    {
+                        TLSHelper instance = TLSHelper.getInstance();
+                        instance.TLSStrAccReg("slbl_client_" + uid, "slbl123456", new TLSStrAccRegListener()
+                        {
+                            @Override
+                            public void OnStrAccRegSuccess(TLSUserInfo tlsUserInfo)
+                            {
+                                finish();
+                                //LogUtil.d(TAG, "OnStrAccRegSuccess:" + tlsUserInfo.identifier + "");
+                            }
+
+                            @Override
+                            public void OnStrAccRegFail(TLSErrInfo tlsErrInfo)
+                            {
+                                finish();
+                                //LogUtil.d(TAG, "OnStrAccRegFail:" + tlsErrInfo.Msg + " " + tlsErrInfo.ExtraMsg);
+
+                            }
+
+                            @Override
+                            public void OnStrAccRegTimeout(TLSErrInfo tlsErrInfo)
+                            {
+                                finish();
+                                //LogUtil.d(TAG, "OnStrAccRegTimeout:" + tlsErrInfo.Msg + " " + tlsErrInfo.ExtraMsg);
+                            }
+                        });
+                    }
+
                     break;
 
 
@@ -127,7 +166,7 @@ public class RegisterActivity extends BaseActivity implements IRequestListener
             }
 
             Map<String, String> valuePairs = new HashMap<>();
-            valuePairs.put("mobile",phone);
+            valuePairs.put("mobile", phone);
             DataRequest.instance().request(RegisterActivity.this, Urls.getVerifycodeUrl(), this, HttpRequest.POST, GET_CODE, valuePairs,
                     new ResultHandler());
         }
@@ -162,15 +201,15 @@ public class RegisterActivity extends BaseActivity implements IRequestListener
             }
 
             Map<String, String> valuePairs = new HashMap<>();
-            valuePairs.put("nickname",phone);
-            valuePairs.put("mobile",phone);
-            valuePairs.put("pwd",pwd);
-            valuePairs.put("role","1");
-            valuePairs.put("sex","0");
+            valuePairs.put("nickname", phone);
+            valuePairs.put("mobile", phone);
+            valuePairs.put("pwd", pwd);
+            valuePairs.put("role", "1");
+            valuePairs.put("sex", "0");
             valuePairs.put("email", "");
-            valuePairs.put("verifycode",code);
+            valuePairs.put("verifycode", code);
             DataRequest.instance().request(RegisterActivity.this, Urls.getRegisterUrl(), this, HttpRequest.POST, USER_REGISTER, valuePairs,
-                    new ResultHandler());
+                    new RegisterHandler());
 
 
         }

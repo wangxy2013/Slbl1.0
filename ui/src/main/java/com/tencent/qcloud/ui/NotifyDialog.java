@@ -46,7 +46,7 @@ public class NotifyDialog extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        // Use the Builder class for convenient dialog construction
+
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setMessage(title)
                 .setPositiveButton(R.string.confirm, okListener)

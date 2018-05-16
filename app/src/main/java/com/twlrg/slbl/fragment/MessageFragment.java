@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 
 import com.twlrg.slbl.MyApplication;
 import com.twlrg.slbl.activity.LoginActivity;
+import com.twlrg.slbl.activity.MainActivity;
 import com.twlrg.slbl.im.event.LoginEvent;
 import com.twlrg.slbl.im.ui.ConversationFragment;
 
@@ -15,29 +16,36 @@ import de.greenrobot.event.EventBus;
  * 邮箱：wangxianyun1@163.com
  * 描述：消息
  */
-public class MessageFragment extends ConversationFragment {
+public class MessageFragment extends ConversationFragment
+{
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         EventBus.getDefault().register(this);
     }
 
     @Override
-    public void onDestroy() {
+    public void onDestroy()
+    {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
     }
 
 
-    public void onEventMainThread(LoginEvent event){
+    public void onEventMainThread(LoginEvent event)
+    {
         reloadData();
     }
 
     @Override
-    public void onResume() {
+    public void onResume()
+    {
         super.onResume();
-        if (!MyApplication.getInstance().isLogin()) {
+        ((MainActivity) getActivity()).changeTabStatusColor(1);
+        if (!MyApplication.getInstance().isLogin())
+        {
             LoginActivity.start(getActivity(), true);
         }
     }
