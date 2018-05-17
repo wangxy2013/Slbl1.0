@@ -5,10 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
@@ -125,6 +125,10 @@ public class HotelDetailActivity extends BaseActivity implements IRequestListene
     TextView     tvConference;
     @BindView(R.id.hotel_banner)
     CustomBanner hotelBanner;
+    @BindView(R.id.topView)
+    View         topView;
+    @BindView(R.id.iv_arrow_right)
+    ImageView    ivArrowRight;
 
     private String id, city_value, s_date, e_date, lng, lat, title;
     private boolean summary_is_open;
@@ -244,7 +248,7 @@ public class HotelDetailActivity extends BaseActivity implements IRequestListene
     protected void initViews(Bundle savedInstanceState)
     {
         setContentView(R.layout.activity_hotel_detail);
-        setStatusColor(ContextCompat.getColor(this, R.color.windowBackground));
+        setTranslucentStatus();
     }
 
     @Override
@@ -304,6 +308,10 @@ public class HotelDetailActivity extends BaseActivity implements IRequestListene
     protected void initViewData()
     {
         tvTitle.setText(title);
+
+        setStatusBarTextDeep(true);
+        topView.setVisibility(View.VISIBLE);
+        topView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, APPUtils.getStatusBarHeight(this)));
         tvBreakfastType1.setSelected(true);
         tvBreakfastType11.setSelected(true);
         rvRoom.setLayoutManager(new FullyLinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
@@ -333,7 +341,7 @@ public class HotelDetailActivity extends BaseActivity implements IRequestListene
                 }
                 else
                 {
-                    LoginActivity.start(HotelDetailActivity.this,true);
+                    LoginActivity.start(HotelDetailActivity.this, true);
                 }
 
 
@@ -643,6 +651,7 @@ public class HotelDetailActivity extends BaseActivity implements IRequestListene
             }
         }
     }
+
 
 
 }

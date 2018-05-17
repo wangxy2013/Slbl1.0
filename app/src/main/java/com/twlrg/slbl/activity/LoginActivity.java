@@ -69,6 +69,7 @@ public class LoginActivity extends BaseActivity implements IRequestListener
 
     private static final int    REQUEST_LOGIN_SUCCESS = 0x01;
     public static final  int    REQUEST_FAIL          = 0x02;
+    public static final  int    LOGIN_IM              = 0X03;
     private static final String USER_LOGIN            = "user_login";
 
     @SuppressLint("HandlerLeak")
@@ -87,6 +88,15 @@ public class LoginActivity extends BaseActivity implements IRequestListener
                     ToastUtil.show(LoginActivity.this, "登录成功!");
                     ConfigManager.instance().setUserPwd(mPwd);
                     ConfigManager.instance().setMobile(mUserName);
+                    sendEmptyMessage(LOGIN_IM);
+                    break;
+
+
+                case REQUEST_FAIL:
+                    ToastUtil.show(LoginActivity.this, msg.obj.toString());
+                    break;
+
+                case LOGIN_IM:
                     TencentCloud.LoginListener login = new TencentCloud.LoginListener()
                     {
                         @Override
@@ -113,14 +123,7 @@ public class LoginActivity extends BaseActivity implements IRequestListener
                     {
                         TencentCloud.login(identifier, login);
                     }
-
                     break;
-
-
-                case REQUEST_FAIL:
-                    ToastUtil.show(LoginActivity.this, msg.obj.toString());
-                    break;
-
 
             }
         }

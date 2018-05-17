@@ -135,6 +135,7 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
     private int star;
     private int range;
     private int price;
+    private  String  region;
     private String currentCity = "深圳市";
     private String city_value  = "2158";
 
@@ -146,10 +147,11 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
 
     private String mStartDate;
     private String mEndDate;
-    private String          mCityValue    = "2158";
-    private List<HotelInfo> hotelInfoList = new ArrayList<>();
-    private List<CityInfo>  cityInfoList  = new ArrayList<>();
-
+    private String           mCityValue     = "2158";
+    private List<HotelInfo>  hotelInfoList  = new ArrayList<>();
+    private List<CityInfo>   cityInfoList   = new ArrayList<>();
+    private List<RegionInfo> regionInfoList = new ArrayList<>();
+    ;
 
     private HotelAdapter    mHotelAdapter;
     private LocationService locationService;
@@ -194,6 +196,15 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
                 case REQUEST_FAIL:
                     // ToastUtil.show(getActivity(), msg.obj.toString());
 
+                    mHotelAdapter.notifyDataSetChanged();
+                    if (hotelInfoList.isEmpty())
+                    {
+                        llNoData.setVisibility(View.VISIBLE);
+                    }
+                    else
+                    {
+                        llNoData.setVisibility(View.GONE);
+                    }
                     break;
 
                 case GET_CITY_SUCCESS:
@@ -206,7 +217,8 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
                     RegionListHandler mRegionListHandler = (RegionListHandler) msg.obj;
                     moreFilterInfos.clear();
                     mMoreFilterPopupWindow = null;
-                    List<RegionInfo> regionInfoList = mRegionListHandler.getRegionInfoList();
+                    regionInfoList.clear();
+                    regionInfoList.addAll(mRegionListHandler.getRegionInfoList());
                     for (int i = 0; i < regionInfoList.size(); i++)
                     {
                         FilterInfo mFilterInfo = new FilterInfo();
@@ -407,8 +419,8 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
                         .putExtra("CITY_VALUE", mCityValue)
                         .putExtra("S_DATE", mStartDate)
                         .putExtra("E_DATE", mEndDate)
-                        .putExtra("LNG", lng)
-                        .putExtra("LAT", lat)
+                        .putExtra("LNG", String.valueOf(lng))
+                        .putExtra("LAT", String.valueOf(lat))
 
 
                 );
@@ -486,6 +498,7 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
         valuePairs.put("s_date", mStartDate);
         valuePairs.put("e_date", mEndDate);
         valuePairs.put("page", pn + "");
+        valuePairs.put("region" ,region);
         DataRequest.instance().request(getActivity(), Urls.getHotelListUrl(), this, HttpRequest.POST, GET_HOTEL_LIST, valuePairs,
                 new HotelInfoListHandler());
     }
@@ -641,6 +654,10 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
                     @Override
                     public void onItemClick(View view, int position)
                     {
+
+                        // city_value = regionInfoList.get(position).getId();
+
+                        region = regionInfoList.get(position).getId();
                         tvMore.setText(moreFilterInfos.get(position).getTitle());
                         tvMore.setTextColor(ContextCompat.getColor(getActivity(), R.color.green));
                         mMoreFilterPopupWindow.dismiss();
@@ -755,13 +772,13 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
 
                 if (!StringUtils.stringIsEmpty(getCityById(city_id)))
                 {
-                    tvDistance.setText("不限");
+                    tvDistance.setText("距离");
                     tvDistance.setTextColor(ContextCompat.getColor(getActivity(), R.color.blackA));
-                    tvPrice.setText("不限");
+                    tvPrice.setText("价格");
                     tvPrice.setTextColor(ContextCompat.getColor(getActivity(), R.color.blackA));
-                    tvStar.setText("不限");
+                    tvStar.setText("星级");
                     tvStar.setTextColor(ContextCompat.getColor(getActivity(), R.color.blackA));
-                    tvMore.setText("不限");
+                    tvMore.setText("更多");
                     tvMore.setTextColor(ContextCompat.getColor(getActivity(), R.color.blackA));
                     star = 0;
                     price = 0;
@@ -942,6 +959,7 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
                         {
                             title = "定位失败,已为您自动切换到深圳市";
                             tvCity.setText("深圳市");
+                            city_value = "2158";
                         }
 
 

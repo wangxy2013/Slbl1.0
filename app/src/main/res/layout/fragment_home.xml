@@ -24,6 +24,8 @@
 
         <RelativeLayout
             android:id="@+id/rl_city"
+            android:paddingTop="@dimen/dm_5"
+            android:paddingBottom="@dimen/dm_5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true">
@@ -60,6 +62,9 @@
 
             <LinearLayout
                 android:id="@+id/ll_date"
+                android:paddingLeft="@dimen/dm_5"
+                android:paddingRight="@dimen/dm_5"
+                android:layout_centerVertical="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
@@ -121,6 +126,7 @@
     </RelativeLayout>
 
     <LinearLayout
+        android:background="@color/white"
         android:id="@+id/ll_top"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

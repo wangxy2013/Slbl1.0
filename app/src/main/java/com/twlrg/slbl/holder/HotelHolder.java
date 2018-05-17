@@ -29,7 +29,7 @@ public class HotelHolder extends RecyclerView.ViewHolder
     private RatingBar mStarRb;
 
 
-    private AutoFitTextView mHotelNameTv;
+    private TextView mHotelNameTv;
     private TextView        mPriceTv;
     private TextView        mPositionLabelTv;
     private TextView        mServiceLabelTv;
@@ -43,7 +43,7 @@ public class HotelHolder extends RecyclerView.ViewHolder
     {
         super(rootView);
         mStarRb = (RatingBar) rootView.findViewById(R.id.rb_star);
-        mHotelNameTv = (AutoFitTextView) rootView.findViewById(R.id.tv_hotel_name);
+        mHotelNameTv = (TextView) rootView.findViewById(R.id.tv_hotel_name);
         mHotelImgIv = (ImageView) rootView.findViewById(R.id.iv_hotel_img);
         mPriceTv = (TextView) rootView.findViewById(R.id.tv_price);
         mPositionLabelTv = (TextView) rootView.findViewById(R.id.tv_position_label);

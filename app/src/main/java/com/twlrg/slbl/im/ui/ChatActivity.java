@@ -88,6 +88,7 @@ public class ChatActivity extends FragmentActivity implements ChatView
     private String  userName = "";
     private Handler handler  = new Handler();
 
+    private MyBroadCastReceiver mMyBroadCastReceiver;
 
     public static void navToChat(Context context, String identify, TIMConversationType type)
     {
@@ -110,16 +111,18 @@ public class ChatActivity extends FragmentActivity implements ChatView
         return intent;
     }
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+
+
+        mMyBroadCastReceiver = new MyBroadCastReceiver();
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(USER_LOGOUT);
-        registerReceiver(new MyBroadCastReceiver(), intentFilter);
+        registerReceiver(mMyBroadCastReceiver, intentFilter);
 
         identify = getIntent().getStringExtra("identify");
         type = (TIMConversationType) getIntent().getSerializableExtra("type");
@@ -275,6 +278,9 @@ public class ChatActivity extends FragmentActivity implements ChatView
     {
         super.onDestroy();
         presenter.stop();
+
+        if (null != mMyBroadCastReceiver)
+            unregisterReceiver(mMyBroadCastReceiver);
     }
 
 
@@ -761,4 +767,6 @@ public class ChatActivity extends FragmentActivity implements ChatView
             }
         }
     }
+
+
 }

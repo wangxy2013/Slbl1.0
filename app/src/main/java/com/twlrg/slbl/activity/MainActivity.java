@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTabHost;
 import android.support.v4.content.ContextCompat;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -28,8 +29,10 @@ import com.twlrg.slbl.fragment.OrderFragment;
 import com.twlrg.slbl.fragment.UserCenterFragment;
 import com.twlrg.slbl.im.ui.ChatActivity;
 import com.twlrg.slbl.im.ui.ConversationFragment;
+import com.twlrg.slbl.im.ui.customview.DialogActivity;
 import com.twlrg.slbl.service.LocationService;
 import com.twlrg.slbl.utils.ConfigManager;
+import com.twlrg.slbl.utils.DialogUtils;
 import com.twlrg.slbl.utils.LogUtil;
 import com.twlrg.slbl.utils.StatusBarUtil;
 
@@ -54,12 +57,16 @@ public class MainActivity extends BaseActivity
 
     private final String USER_LOGOUT = "USER_LOGOUT";
 
+
+    private MyBroadCastReceiver mMyBroadCastReceiver;
+
     @Override
     protected void initData()
     {
+        mMyBroadCastReceiver = new MyBroadCastReceiver();
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(USER_LOGOUT);
-        registerReceiver(new MyBroadCastReceiver(), intentFilter);
+        registerReceiver(mMyBroadCastReceiver, intentFilter);
     }
 
     @Override
@@ -128,6 +135,17 @@ public class MainActivity extends BaseActivity
         mUserCenterFragment.onActivityResult(requestCode, resultCode, data);
     }
 
+    @Override
+    protected void onDestroy()
+    {
+        super.onDestroy();
+
+        if (null != mMyBroadCastReceiver)
+        {
+            unregisterReceiver(mMyBroadCastReceiver);
+        }
+
+    }
 
     class MyBroadCastReceiver extends BroadcastReceiver
     {
@@ -152,4 +170,37 @@ public class MainActivity extends BaseActivity
             }
         }
     }
+
+
+    /**
+     * 监听Back键按下事件,方法2:
+     * 注意:
+     * 返回值表示:是否能完全处理该事件
+     * 在此处返回false,所以会继续传播该事件.
+     * 在具体项目中此处的返回值视情况而定.
+     */
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event)
+    {
+        if ((keyCode == KeyEvent.KEYCODE_BACK))
+        {
+
+            DialogUtils.showToastDialog2Button(MainActivity.this, "是否退出商旅部落", new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    finish();
+                }
+            });
+
+            return false;
+        }
+        else
+        {
+            return super.onKeyDown(keyCode, event);
+        }
+
+    }
+
 }
