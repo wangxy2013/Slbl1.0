@@ -82,11 +82,11 @@ public class ChatActivity extends FragmentActivity implements ChatView
     private String           identify;
     private RecorderUtil recorder = new RecorderUtil();
     private TIMConversationType type;
-    private String              titleStr;
+    private String titleStr = "";
 
     private String userFaceurl;
-
-    private Handler handler = new Handler();
+    private String  userName = "";
+    private Handler handler  = new Handler();
 
 
     public static void navToChat(Context context, String identify, TIMConversationType type)
@@ -167,58 +167,59 @@ public class ChatActivity extends FragmentActivity implements ChatView
             }
         });
         registerForContextMenu(listView);
-        TemplateTitle title = (TemplateTitle) findViewById(R.id.chat_title);
-        switch (type)
-        {
-            case C2C:
-                title.setMoreImg(R.drawable.btn_person);
-                if (FriendshipInfo.getInstance().isFriend(identify))
-                {
-                    title.setMoreImgAction(new View.OnClickListener()
-                    {
-                        @Override
-                        public void onClick(View v)
-                        {
-                            Intent intent = new Intent(ChatActivity.this, ProfileActivity.class);
-                            intent.putExtra("identify", identify);
-                            startActivity(intent);
-                        }
-                    });
-                    FriendProfile profile = FriendshipInfo.getInstance().getProfile(identify);
-                    title.setTitleText(titleStr = profile == null ? identify : profile.getName());
-                }
-                else
-                {
-                    title.setMoreImgAction(new View.OnClickListener()
-                    {
-                        @Override
-                        public void onClick(View v)
-                        {
-                            Intent person = new Intent(ChatActivity.this, AddFriendActivity.class);
-                            person.putExtra("id", identify);
-                            person.putExtra("name", identify);
-                            startActivity(person);
-                        }
-                    });
-                    title.setTitleText(titleStr = identify);
-                }
-                break;
-            case Group:
-                title.setMoreImg(R.drawable.btn_group);
-                title.setMoreImgAction(new View.OnClickListener()
-                {
-                    @Override
-                    public void onClick(View v)
-                    {
-                        Intent intent = new Intent(ChatActivity.this, GroupProfileActivity.class);
-                        intent.putExtra("identify", identify);
-                        startActivity(intent);
-                    }
-                });
-                title.setTitleText(GroupInfo.getInstance().getGroupName(identify));
-                break;
+        final TemplateTitle title = (TemplateTitle) findViewById(R.id.chat_title);
 
-        }
+        //        switch (type)
+        //        {
+        //            case C2C:
+        //                title.setMoreImg(R.drawable.btn_person);
+        //                if (FriendshipInfo.getInstance().isFriend(identify))
+        //                {
+        //                    title.setMoreImgAction(new View.OnClickListener()
+        //                    {
+        //                        @Override
+        //                        public void onClick(View v)
+        //                        {
+        //                            Intent intent = new Intent(ChatActivity.this, ProfileActivity.class);
+        //                            intent.putExtra("identify", identify);
+        //                            startActivity(intent);
+        //                        }
+        //                    });
+        //                    FriendProfile profile = FriendshipInfo.getInstance().getProfile(identify);
+        //                    title.setTitleText(titleStr = profile == null ? identify : profile.getName());
+        //                }
+        //                else
+        //                {
+        //                    title.setMoreImgAction(new View.OnClickListener()
+        //                    {
+        //                        @Override
+        //                        public void onClick(View v)
+        //                        {
+        //                            Intent person = new Intent(ChatActivity.this, AddFriendActivity.class);
+        //                            person.putExtra("id", identify);
+        //                            person.putExtra("name", identify);
+        //                            startActivity(person);
+        //                        }
+        //                    });
+        //                    title.setTitleText(titleStr = identify);
+        //                }
+        //                break;
+        //            case Group:
+        //                title.setMoreImg(R.drawable.btn_group);
+        //                title.setMoreImgAction(new View.OnClickListener()
+        //                {
+        //                    @Override
+        //                    public void onClick(View v)
+        //                    {
+        //                        Intent intent = new Intent(ChatActivity.this, GroupProfileActivity.class);
+        //                        intent.putExtra("identify", identify);
+        //                        startActivity(intent);
+        //                    }
+        //                });
+        //                title.setTitleText(GroupInfo.getInstance().getGroupName(identify));
+        //                break;
+        //
+        //        }
         voiceSendingView = (VoiceSendingView) findViewById(R.id.voice_sending);
 
         List<String> users = new ArrayList<>();
@@ -241,6 +242,8 @@ public class ChatActivity extends FragmentActivity implements ChatView
                 {
 
                     userFaceurl = res.getFaceUrl();
+                    userName = res.getNickName();
+                    title.setTitleText(userName);
                 }
                 presenter.start();
             }
@@ -300,7 +303,7 @@ public class ChatActivity extends FragmentActivity implements ChatView
                     {
                         case TYPING:
                             TemplateTitle title = (TemplateTitle) findViewById(R.id.chat_title);
-                            title.setTitleText(getString(R.string.chat_typing));
+                            // title.setTitleText(getString(R.string.chat_typing));
                             handler.removeCallbacks(resetTitle);
                             handler.postDelayed(resetTitle, 3000);
                             break;
@@ -737,7 +740,7 @@ public class ChatActivity extends FragmentActivity implements ChatView
         public void run()
         {
             TemplateTitle title = (TemplateTitle) findViewById(R.id.chat_title);
-            title.setTitleText(titleStr);
+            title.setTitleText(userName);
         }
     };
 

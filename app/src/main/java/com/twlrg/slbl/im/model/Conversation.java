@@ -18,6 +18,8 @@ public abstract class Conversation implements Comparable {
     //会话对象名称
     protected String name;
 
+    private String nickName;
+
 
     protected String faceUrl;
     /**
@@ -30,12 +32,25 @@ public abstract class Conversation implements Comparable {
      */
     abstract public long getUnreadNum();
 
+    public String getNickName()
+    {
+        return nickName;
+    }
+
+    public void setNickName(String nickName)
+    {
+        this.nickName = nickName;
+    }
 
     /**
      * 将所有消息标记为已读
      */
     abstract public void readAllMessage();
 
+    public void setName(String name)
+    {
+        this.name = name;
+    }
 
     /**
      * 获取头像

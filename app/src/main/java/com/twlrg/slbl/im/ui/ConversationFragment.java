@@ -274,6 +274,8 @@ public class ConversationFragment extends Fragment implements ConversationView, 
                         if (res.getIdentifier().equals(conversationList.get(i).getIdentify()))
                         {
                             conversationList.get(i).setFaceUrl(res.getFaceUrl());
+                            conversationList.get(i).setName(res.getNickName());
+                            conversationList.get(i).setNickName(res.getNickName());
                         }
                     }
                     Log.e("2222", "identifier: " + res.getIdentifier() + " nickName: " + res.getNickName()

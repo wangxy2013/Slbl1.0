@@ -434,6 +434,7 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
 
     private void initCity()
     {
+        initLocation();
         Map<String, String> valuePairs = new HashMap<>();
         DataRequest.instance().request(getActivity(), Urls.getCityListUrl(), this, HttpRequest.POST, GET_CITY_LIST, valuePairs,
                 new CityListHandler());
@@ -703,7 +704,6 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
         }
         else if (GET_CITY_LIST.equals(action))
         {
-            initLocation();
             if (ConstantUtil.RESULT_SUCCESS.equals(resultCode))
             {
                 mHandler.sendMessage(mHandler.obtainMessage(GET_CITY_SUCCESS, obj));
@@ -948,9 +948,19 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
                     }
                     else
                     {
-                        title = "定位成功,您的城市为" + currentCity + ",已为你自动切换到" + cityInfoList.get(0).getName();
-                        tvCity.setText(cityInfoList.get(0).getName());
-                        city_value = cityInfoList.get(0).getId();
+                        if (cityInfoList.isEmpty())
+                        {
+                            title = "定位成功,您的城市为" + currentCity + ",已为你自动切换到深圳";
+                            tvCity.setText("深圳市");
+                            city_value = "2158";
+                        }
+                        else
+                        {
+                            title = "定位成功,您的城市为" + currentCity + ",已为你自动切换到" + cityInfoList.get(0).getName();
+                            tvCity.setText(cityInfoList.get(0).getName());
+                            city_value = cityInfoList.get(0).getId();
+                        }
+
                     }
 
 

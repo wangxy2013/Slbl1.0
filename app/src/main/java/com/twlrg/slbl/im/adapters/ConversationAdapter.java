@@ -63,7 +63,7 @@ public class ConversationAdapter extends ArrayAdapter<Conversation>
             view.setTag(viewHolder);
         }
         final Conversation data = getItem(position);
-        viewHolder.tvName.setText(data.getName());
+        viewHolder.tvName.setText(data.getNickName());
         //        viewHolder.avatar.setImageResource(data.getAvatar());
 
         LogUtil.e("TAG", "data.getFaceUrl()--->" + data.getFaceUrl());
