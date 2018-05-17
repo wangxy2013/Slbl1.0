@@ -88,8 +88,18 @@ public class ConferenceHolder extends RecyclerView.ViewHolder
             }
         }, picList);
 
+
+        int price = mConference.getPrice();
+        String priceStr = price + "";
+
+        if (price > 10000)
+        {
+            double n = (double) price / 10000;
+            priceStr = n + "万";
+        }
+
         mtTitleTv.setText(mConference.getTitle());
-        mPriceTv.setText("￥" + mConference.getPrice() + "起");
+        mPriceTv.setText("￥" + priceStr + "起");
         mAreaTv.setText(mConference.getArea() + "㎡");
         mFloorTv.setText(mConference.getFloor() + "楼");
         mTheatreTv.setText("剧院" + mConference.getTheatre() + "人");
