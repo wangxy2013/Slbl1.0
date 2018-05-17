@@ -19,11 +19,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.baidu.location.BDAbstractLocationListener;
 import com.baidu.location.BDLocation;
@@ -114,7 +114,11 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
 
 
     @BindView(R.id.et_keyword)
-    EditText mEtKeyword;
+    EditText     mEtKeyword;
+    @BindView(R.id.btn_load)
+    Button       btnLoad;
+    @BindView(R.id.ll_no_data)
+    LinearLayout llNoData;
 
     private RecyclerView mRecyclerView;
     private View rootView = null;
@@ -175,6 +179,15 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
                     HotelInfoListHandler mHotelInfoListHandler = (HotelInfoListHandler) msg.obj;
                     hotelInfoList.addAll(mHotelInfoListHandler.getHotelInfoList());
                     mHotelAdapter.notifyDataSetChanged();
+
+                    if (hotelInfoList.isEmpty())
+                    {
+                        llNoData.setVisibility(View.VISIBLE);
+                    }
+                    else
+                    {
+                        llNoData.setVisibility(View.GONE);
+                    }
 
                     break;
 
@@ -292,6 +305,7 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
     @Override
     protected void initEvent()
     {
+        btnLoad.setOnClickListener(this);
         rlStar.setOnClickListener(this);
         rlDistance.setOnClickListener(this);
         rlPrice.setOnClickListener(this);
@@ -379,7 +393,7 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
         mPullToRefreshRecyclerView.setOnRefreshListener(this);
         mPullToRefreshRecyclerView.setPullRefreshEnabled(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-        mRecyclerView.addItemDecoration(new EmptyDecoration(getActivity(), "正在加载..."));
+        mRecyclerView.addItemDecoration(new EmptyDecoration(getActivity(), ""));
 
         mHotelAdapter = new HotelAdapter(hotelInfoList, getActivity(), new MyItemClickListener()
         {
@@ -652,6 +666,14 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
             bundle.putSerializable("CITY_LIST", (Serializable) cityInfoList);
             startActivityForResult(new Intent(getActivity(), CityListActivity.class).putExtras(bundle), GET_CITY_CODE);
         }
+        else if (v == btnLoad)
+        {
+            ((MainActivity) getActivity()).showProgressDialog();
+            hotelInfoList.clear();
+            pn = 1;
+            mRefreshStatus = 0;
+            getHotelList();
+        }
     }
 
 
@@ -718,8 +740,8 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
 
                 if (!StringUtils.stringIsEmpty(mStartDate) && !StringUtils.stringIsEmpty(mEndDate))
                 {
-                    tvCheck.setText("住 "+StringUtils.toMonthAndDay(mStartDate));
-                    tvLeave.setText("离 "+StringUtils.toMonthAndDay(mEndDate));
+                    tvCheck.setText("住 " + StringUtils.toMonthAndDay(mStartDate));
+                    tvLeave.setText("离 " + StringUtils.toMonthAndDay(mEndDate));
                 }
             }
 
@@ -733,6 +755,18 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
 
                 if (!StringUtils.stringIsEmpty(getCityById(city_id)))
                 {
+                    tvDistance.setText("不限");
+                    tvDistance.setTextColor(ContextCompat.getColor(getActivity(), R.color.blackA));
+                    tvPrice.setText("不限");
+                    tvPrice.setTextColor(ContextCompat.getColor(getActivity(), R.color.blackA));
+                    tvStar.setText("不限");
+                    tvStar.setTextColor(ContextCompat.getColor(getActivity(), R.color.blackA));
+                    tvMore.setText("不限");
+                    tvMore.setTextColor(ContextCompat.getColor(getActivity(), R.color.blackA));
+                    star = 0;
+                    price = 0;
+                    range = 0;
+
                     ((MainActivity) getActivity()).showProgressDialog();
                     city_value = city_id;
                     hotelInfoList.clear();
@@ -902,6 +936,7 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
                         {
                             title = "定位失败,已为您自动切换到" + cityInfoList.get(0).getName();
                             tvCity.setText(cityInfoList.get(0).getName());
+                            city_value = cityInfoList.get(0).getId();
                         }
                         else
                         {
@@ -915,7 +950,7 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
                     {
                         title = "定位成功,您的城市为" + currentCity + ",已为你自动切换到" + cityInfoList.get(0).getName();
                         tvCity.setText(cityInfoList.get(0).getName());
-
+                        city_value = cityInfoList.get(0).getId();
                     }
 
 
@@ -942,6 +977,7 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
                 LogUtil.e("TAG", "33333333333333");
                 String title = "定位失败,已为您自动切换到深圳市";
                 tvCity.setText("深圳市");
+                city_value = "2158";
                 DialogUtils.showPromptDialog(getActivity(), title, new MyItemClickListener()
                 {
                     @Override
@@ -1026,5 +1062,6 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
                 break;
         }
     }
+
 
 }

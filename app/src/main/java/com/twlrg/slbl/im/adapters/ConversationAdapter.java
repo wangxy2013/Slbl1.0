@@ -7,20 +7,26 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.twlrg.slbl.R;
 import com.tencent.qcloud.ui.CircleImageView;
 import com.twlrg.slbl.im.model.Conversation;
 import com.twlrg.slbl.im.utils.TimeUtil;
+import com.twlrg.slbl.utils.ConfigManager;
+import com.twlrg.slbl.utils.LogUtil;
+import com.twlrg.slbl.utils.StringUtils;
+import com.twlrg.slbl.utils.Urls;
 
 import java.util.List;
 
 /**
  * 会话界面adapter
  */
-public class ConversationAdapter extends ArrayAdapter<Conversation> {
+public class ConversationAdapter extends ArrayAdapter<Conversation>
+{
 
-    private int resourceId;
-    private View view;
+    private int        resourceId;
+    private View       view;
     private ViewHolder viewHolder;
 
     /**
@@ -31,17 +37,22 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
      *                 instantiating views.
      * @param objects  The objects to represent in the ListView.
      */
-    public ConversationAdapter(Context context, int resource, List<Conversation> objects) {
+    public ConversationAdapter(Context context, int resource, List<Conversation> objects)
+    {
         super(context, resource, objects);
         resourceId = resource;
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        if (convertView != null){
+    public View getView(int position, View convertView, ViewGroup parent)
+    {
+        if (convertView != null)
+        {
             view = convertView;
             viewHolder = (ViewHolder) view.getTag();
-        }else{
+        }
+        else
+        {
             view = LayoutInflater.from(getContext()).inflate(resourceId, null);
             viewHolder = new ViewHolder();
             viewHolder.tvName = (TextView) view.findViewById(R.id.name);
@@ -53,20 +64,40 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
         }
         final Conversation data = getItem(position);
         viewHolder.tvName.setText(data.getName());
-        viewHolder.avatar.setImageResource(data.getAvatar());
+        //        viewHolder.avatar.setImageResource(data.getAvatar());
+
+        LogUtil.e("TAG", "data.getFaceUrl()--->" + data.getFaceUrl());
+
+        if (StringUtils.stringIsEmpty(data.getFaceUrl()))
+        {
+            viewHolder.avatar.setImageResource(data.getAvatar());
+        }
+        else
+        {
+            ImageLoader.getInstance().displayImage(data.getFaceUrl(), viewHolder.avatar);
+        }
+
+
         viewHolder.lastMessage.setText(data.getLastMessageSummary());
         viewHolder.time.setText(TimeUtil.getTimeStr(data.getLastMessageTime()));
         long unRead = data.getUnreadNum();
-        if (unRead <= 0){
+        if (unRead <= 0)
+        {
             viewHolder.unread.setVisibility(View.INVISIBLE);
-        }else{
+        }
+        else
+        {
             viewHolder.unread.setVisibility(View.VISIBLE);
             String unReadStr = String.valueOf(unRead);
-            if (unRead < 10){
+            if (unRead < 10)
+            {
                 viewHolder.unread.setBackground(getContext().getResources().getDrawable(R.drawable.point1));
-            }else{
+            }
+            else
+            {
                 viewHolder.unread.setBackground(getContext().getResources().getDrawable(R.drawable.point2));
-                if (unRead > 99){
+                if (unRead > 99)
+                {
                     unReadStr = getContext().getResources().getString(R.string.time_more);
                 }
             }
@@ -75,12 +106,13 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
         return view;
     }
 
-    public class ViewHolder{
-        public TextView tvName;
+    public class ViewHolder
+    {
+        public TextView        tvName;
         public CircleImageView avatar;
-        public TextView lastMessage;
-        public TextView time;
-        public TextView unread;
+        public TextView        lastMessage;
+        public TextView        time;
+        public TextView        unread;
 
     }
 }

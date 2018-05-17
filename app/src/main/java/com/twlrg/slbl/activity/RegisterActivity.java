@@ -1,5 +1,6 @@
 package com.twlrg.slbl.activity;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Message;
 import android.view.View;
@@ -59,6 +60,7 @@ public class RegisterActivity extends BaseActivity implements IRequestListener
     private static final String GET_CODE                 = "GET_CODE";
 
 
+    @SuppressLint("HandlerLeak")
     private BaseHandler mHandler = new BaseHandler(this)
     {
         @Override

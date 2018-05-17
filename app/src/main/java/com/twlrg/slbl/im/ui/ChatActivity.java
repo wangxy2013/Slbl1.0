@@ -11,6 +11,7 @@ import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,8 +24,11 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.tencent.imsdk.TIMConversationType;
+import com.tencent.imsdk.TIMFriendshipManager;
 import com.tencent.imsdk.TIMMessage;
 import com.tencent.imsdk.TIMMessageStatus;
+import com.tencent.imsdk.TIMUserProfile;
+import com.tencent.imsdk.TIMValueCallBack;
 import com.tencent.imsdk.ext.message.TIMMessageDraft;
 import com.tencent.imsdk.ext.message.TIMMessageExt;
 import com.tencent.imsdk.ext.message.TIMMessageLocator;
@@ -79,6 +83,9 @@ public class ChatActivity extends FragmentActivity implements ChatView
     private RecorderUtil recorder = new RecorderUtil();
     private TIMConversationType type;
     private String              titleStr;
+
+    private String userFaceurl;
+
     private Handler handler = new Handler();
 
 
@@ -110,7 +117,6 @@ public class ChatActivity extends FragmentActivity implements ChatView
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
-
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(USER_LOGOUT);
         registerReceiver(new MyBroadCastReceiver(), intentFilter);
@@ -214,7 +220,32 @@ public class ChatActivity extends FragmentActivity implements ChatView
 
         }
         voiceSendingView = (VoiceSendingView) findViewById(R.id.voice_sending);
-        presenter.start();
+
+        List<String> users = new ArrayList<>();
+        users.add(identify);
+        TIMFriendshipManager.getInstance().getUsersProfile(users, new TIMValueCallBack<List<TIMUserProfile>>()
+        {
+            @Override
+            public void onError(int code, String desc)
+            {
+                //错误码 code 和错误描述 desc，可用于定位请求失败原因
+                //错误码 code 列表请参见错误码表
+                Log.e("1111", "getUsersProfile failed: " + code + " desc");
+            }
+
+            @Override
+            public void onSuccess(List<TIMUserProfile> result)
+            {
+                Log.e("222", "getUsersProfile succ");
+                for (TIMUserProfile res : result)
+                {
+
+                    userFaceurl = res.getFaceUrl();
+                }
+                presenter.start();
+            }
+        });
+
     }
 
     @Override
@@ -259,6 +290,7 @@ public class ChatActivity extends FragmentActivity implements ChatView
         else
         {
             Message mMessage = MessageFactory.getMessage(message);
+            mMessage.setUserFace(userFaceurl);
             if (mMessage != null)
             {
                 if (mMessage instanceof CustomMessage)
@@ -308,6 +340,7 @@ public class ChatActivity extends FragmentActivity implements ChatView
         for (int i = 0; i < messages.size(); ++i)
         {
             Message mMessage = MessageFactory.getMessage(messages.get(i));
+            mMessage.setUserFace(userFaceurl);
             if (mMessage == null || messages.get(i).status() == TIMMessageStatus.HasDeleted)
                 continue;
             if (mMessage instanceof CustomMessage && (((CustomMessage) mMessage).getType() == CustomMessage.Type.TYPING ||
@@ -709,6 +742,7 @@ public class ChatActivity extends FragmentActivity implements ChatView
     };
 
     private final String USER_LOGOUT = "USER_LOGOUT";
+
     class MyBroadCastReceiver extends BroadcastReceiver
     {
         private static final String TAG = "TestBroadCastReceiver";

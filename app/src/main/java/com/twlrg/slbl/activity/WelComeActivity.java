@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.meizu.cloud.pushsdk.util.MzSystemUtils;
 import com.tencent.imsdk.TIMCallBack;
 import com.tencent.imsdk.TIMConnListener;
+import com.tencent.imsdk.TIMFriendshipManager;
 import com.tencent.imsdk.TIMLogLevel;
 import com.tencent.imsdk.TIMManager;
 import com.tencent.imsdk.TIMUserConfig;
@@ -29,6 +30,7 @@ import com.tencent.qcloud.presentation.event.FriendshipEvent;
 import com.tencent.qcloud.presentation.event.GroupEvent;
 import com.tencent.qcloud.presentation.event.MessageEvent;
 import com.tencent.qcloud.presentation.event.RefreshEvent;
+import com.tencent.qcloud.presentation.presenter.FriendshipManagerPresenter;
 import com.tencent.qcloud.presentation.presenter.SplashPresenter;
 import com.tencent.qcloud.presentation.viewfeatures.SplashView;
 import com.tencent.qcloud.tlslibrary.activity.HostLoginActivity;
@@ -44,6 +46,7 @@ import com.twlrg.slbl.im.utils.PushUtil;
 import com.twlrg.slbl.utils.ConfigManager;
 import com.twlrg.slbl.utils.DialogUtils;
 import com.twlrg.slbl.utils.LogUtil;
+import com.twlrg.slbl.utils.Urls;
 import com.twlrg.slbl.widget.IMNotifyDialog;
 import com.xiaomi.mipush.sdk.MiPushClient;
 
@@ -153,14 +156,15 @@ public class WelComeActivity extends BaseActivity implements SplashView, TIMCall
                     public void onUserSigExpired()
                     {
                         //票据过期，需要重新登录
-//                        new NotifyDialog().show(getString(R.string.tls_expire), getSupportFragmentManager(), new DialogInterface.OnClickListener()
-//                        {
-//                            @Override
-//                            public void onClick(DialogInterface dialog, int which)
-//                            {
-//                                //                            logout();
-//                            }
-//                        });
+                        //                        new NotifyDialog().show(getString(R.string.tls_expire), getSupportFragmentManager(), new DialogInterface
+                        // .OnClickListener()
+                        //                        {
+                        //                            @Override
+                        //                            public void onClick(DialogInterface dialog, int which)
+                        //                            {
+                        //                                //                            logout();
+                        //                            }
+                        //                        });
                         ConfigManager.instance().setUserId("");
                     }
                 })
@@ -219,7 +223,7 @@ public class WelComeActivity extends BaseActivity implements SplashView, TIMCall
             @Override
             public void onSuccess(String identifier)
             {
-                navToHome();
+                modifyUserProfile();
             }
 
             @Override
@@ -228,6 +232,27 @@ public class WelComeActivity extends BaseActivity implements SplashView, TIMCall
                 navToHome();
             }
         });
+    }
+
+    private void modifyUserProfile()
+    {
+        String name = ConfigManager.instance().getUserNickName();
+        String userPic = Urls.getImgUrl(ConfigManager.instance().getUserPic());
+        FriendshipManagerPresenter.setMyInfo(name, userPic, new TIMCallBack()
+        {
+            @Override
+            public void onError(int i, String s)
+            {
+
+            }
+
+            @Override
+            public void onSuccess()
+            {
+                navToHome();
+            }
+        });
+
     }
 
     /**

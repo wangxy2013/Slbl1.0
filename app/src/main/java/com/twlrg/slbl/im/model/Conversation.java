@@ -19,6 +19,7 @@ public abstract class Conversation implements Comparable {
     protected String name;
 
 
+    protected String faceUrl;
     /**
      * 获取最后一条消息的时间
      */
@@ -59,6 +60,15 @@ public abstract class Conversation implements Comparable {
      */
     abstract public String getName();
 
+    public String getFaceUrl()
+    {
+        return faceUrl;
+    }
+
+    public void setFaceUrl(String faceUrl)
+    {
+        this.faceUrl = faceUrl;
+    }
 
     public String getIdentify(){
         return identify;

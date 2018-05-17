@@ -342,6 +342,19 @@ public class FriendshipManagerPresenter {
         TIMFriendshipManager.getInstance().modifyProfile(param, callBack);
     }
 
+    /**
+     * 设置我的昵称
+     *
+     * @param name 昵称
+     * @param callBack 回调
+     */
+    public static void setMyInfo(String name, String faceUrl,TIMCallBack callBack){
+        TIMFriendshipManager.ModifyUserProfileParam param = new TIMFriendshipManager.ModifyUserProfileParam();
+        param.setNickname(name);
+        param.setFaceUrl(faceUrl);
+        TIMFriendshipManager.getInstance().modifyProfile(param, callBack);
+    }
+
 
     /**
      * 设置好友备注
