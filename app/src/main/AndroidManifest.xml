@@ -54,7 +54,6 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
 
 
-
     <!-- mi push -->
     <permission
         android:name="com.tencent.qcloud.timchat.permission.MIPUSH_RECEIVE"
@@ -66,15 +65,17 @@
     <!--mz push-->
     <!-- 兼容flyme5.0以下版本，魅族内部集成pushSDK必填，不然无法收到消息-->
     <uses-permission android:name="com.meizu.flyme.push.permission.RECEIVE"></uses-permission>
-    <permission android:name="com.tencent.qcloud.timchat.push.permission.MESSAGE"
-                android:protectionLevel="signature"/>
+    <permission
+        android:name="com.tencent.qcloud.timchat.push.permission.MESSAGE"
+        android:protectionLevel="signature"/>
     <uses-permission
         android:name="com.tencent.qcloud.timchat.push.permission.MESSAGE"></uses-permission>
 
     <!--  兼容flyme3.0配置权限-->
     <uses-permission android:name="com.meizu.c2dm.permission.RECEIVE"/>
-    <permission android:name="com.tencent.qcloud.timchat.permission.C2D_MESSAGE"
-                android:protectionLevel="signature"></permission>
+    <permission
+        android:name="com.tencent.qcloud.timchat.permission.C2D_MESSAGE"
+        android:protectionLevel="signature"></permission>
     <uses-permission android:name="com.tencent.qcloud.timchat.permission.C2D_MESSAGE"/>
 
 
@@ -205,6 +206,11 @@
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden"/>
+        <activity
+            android:name=".activity.HotelSalesmanListActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden"/>
 
 
         <activity
@@ -218,14 +224,16 @@
             android:enabled="true"
             android:process=":remote">
         </service>
+
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="kS7T5g5aCAguBkmvCHSqZtwWvlVoURWW">
         </meta-data>
 
 
-        <meta-data android:name="com.tencent.rdm.uuid"
-                   android:value="83b3186d-0ef4-40e4-83ca-ced776b1ee1e"/>
+        <meta-data
+            android:name="com.tencent.rdm.uuid"
+            android:value="83b3186d-0ef4-40e4-83ca-ced776b1ee1e"/>
 
         <activity android:name=".im.ui.HomeActivity"/>
         <activity
@@ -239,13 +247,16 @@
             android:name=".im.ui.ProfileActivity"
             android:launchMode="singleTask"/>
         <activity android:name=".im.ui.ManageFriendGroupActivity"/>
-        <activity android:name=".im.ui.VideoActivity"
-                  android:screenOrientation="portrait"/>
+        <activity
+            android:name=".im.ui.VideoActivity"
+            android:screenOrientation="portrait"/>
         <activity android:name=".im.ui.CreateGroupActivity"/>
-        <activity android:name=".im.ui.TCVideoRecordActivity"
-                  android:screenOrientation="portrait"/>
-        <activity android:name=".im.ui.TCVideoPreviewActivity"
-                  android:screenOrientation="portrait"/>
+        <activity
+            android:name=".im.ui.TCVideoRecordActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".im.ui.TCVideoPreviewActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".im.ui.GroupProfileActivity"
             android:launchMode="singleTask"/>
@@ -370,32 +381,32 @@
 
         <!-- PushSDK:PushSDK接收外部请求事件入口 -->
         <!--<receiver-->
-            <!--android:name="com.huawei.android.pushagent.PushEventReceiver"-->
-            <!--android:process=":HwPushService">-->
-            <!--<intent-filter>-->
-                <!--<action android:name="com.huawei.android.push.intent.REFRESH_PUSH_CHANNEL"/>-->
-                <!--<action android:name="com.huawei.intent.action.PUSH"/>-->
-                <!--<action android:name="com.huawei.intent.action.PUSH_ON"/>-->
-                <!--<action android:name="com.huawei.android.push.PLUGIN"/>-->
-            <!--</intent-filter>-->
+        <!--android:name="com.huawei.android.pushagent.PushEventReceiver"-->
+        <!--android:process=":HwPushService">-->
+        <!--<intent-filter>-->
+        <!--<action android:name="com.huawei.android.push.intent.REFRESH_PUSH_CHANNEL"/>-->
+        <!--<action android:name="com.huawei.intent.action.PUSH"/>-->
+        <!--<action android:name="com.huawei.intent.action.PUSH_ON"/>-->
+        <!--<action android:name="com.huawei.android.push.PLUGIN"/>-->
+        <!--</intent-filter>-->
         <!--</receiver>-->
         <!--<receiver-->
-            <!--android:name="com.huawei.android.pushagent.PushBootReceiver"-->
-            <!--android:process=":HwPushService">-->
-            <!--<intent-filter>-->
-                <!--<action android:name="com.huawei.android.push.intent.REGISTER"/>-->
-                <!--&lt;!&ndash; <action android:name="android.net.conn.CONNECTIVITY_CHANGE" /> &ndash;&gt;-->
-            <!--</intent-filter>-->
+        <!--android:name="com.huawei.android.pushagent.PushBootReceiver"-->
+        <!--android:process=":HwPushService">-->
+        <!--<intent-filter>-->
+        <!--<action android:name="com.huawei.android.push.intent.REGISTER"/>-->
+        <!--&lt;!&ndash; <action android:name="android.net.conn.CONNECTIVITY_CHANGE" /> &ndash;&gt;-->
+        <!--</intent-filter>-->
 
-            <!--<meta-data-->
-                <!--android:name="CS_cloud_version"-->
-                <!--android:value="\u0032\u0037\u0030\u0035"/>-->
+        <!--<meta-data-->
+        <!--android:name="CS_cloud_version"-->
+        <!--android:value="\u0032\u0037\u0030\u0035"/>-->
         <!--</receiver>-->
 
         <!--&lt;!&ndash; PushSDK:Push服务 &ndash;&gt;-->
         <!--<service-->
-            <!--android:name="com.huawei.android.pushagent.PushService"-->
-            <!--android:process=":HwPushService"/>-->
+        <!--android:name="com.huawei.android.pushagent.PushService"-->
+        <!--android:process=":HwPushService"/>-->
         <!-- hwpush -->
 
         <!-- firebase -->
@@ -421,6 +432,7 @@
                 <!-- 兼容低版本Flyme3推送服务配置 -->
                 <action android:name="com.meizu.c2dm.intent.REGISTRATION"/>
                 <action android:name="com.meizu.c2dm.intent.RECEIVE"/>
+
                 <category android:name="com.tencent.qcloud.timchat"></category>
             </intent-filter>
         </receiver>

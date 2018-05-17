@@ -10,21 +10,24 @@ import java.io.Serializable;
  * 邮箱：wangxianyun1@163.com
  * 描述：一句话简单描述
  */
-public class SaleInfo  implements Serializable
+public class SaleInfo implements Serializable
 {
-    private String id;// 499,
-    private String portrait;//\/Uploads\/portrait\/1521947823_20180325111702.jpeg
-    private String nickname;//刘瑛明
-    private String position;//农民
+    private String  id;// 499,
+    private String  portrait;//\/Uploads\/portrait\/1521947823_20180325111702.jpeg
+    private String  nickname;//刘瑛明
+    private String  position;//农民
     private boolean isSelected;
 
+    private String phone;
 
     public SaleInfo(JSONObject obj)
     {
-        this.id=obj.optString("id");
-        this.portrait=obj.optString("portrait");
-        this.nickname=obj.optString("nickname");
-        this.position=obj.optString("position");
+        this.id = obj.optString("id");
+        this.portrait = obj.optString("portrait");
+        this.nickname = obj.optString("nickname");
+        this.position = obj.optString("position");
+        this.phone = obj.optString("mobile");
+
     }
 
     public String getId()
@@ -75,5 +78,15 @@ public class SaleInfo  implements Serializable
     public void setSelected(boolean selected)
     {
         isSelected = selected;
+    }
+
+    public String getPhone()
+    {
+        return phone;
+    }
+
+    public void setPhone(String phone)
+    {
+        this.phone = phone;
     }
 }

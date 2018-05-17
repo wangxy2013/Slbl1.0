@@ -250,6 +250,7 @@ public class HotelDetailActivity extends BaseActivity implements IRequestListene
     @Override
     protected void initEvent()
     {
+        llChat.setOnClickListener(this);
         ivBack.setOnClickListener(this);
         ivLocation.setOnClickListener(this);
         tvCommentCount.setOnClickListener(this);
@@ -429,7 +430,7 @@ public class HotelDetailActivity extends BaseActivity implements IRequestListene
         //跳转聊天
         else if (v == llChat)
         {
-
+            startActivity(new Intent(HotelDetailActivity.this, HotelSalesmanListActivity.class).putExtra("MERCHANT_ID", id));
         }
         //不限早餐
         else if (v == tvBreakfastType1 || v == tvBreakfastType11)
