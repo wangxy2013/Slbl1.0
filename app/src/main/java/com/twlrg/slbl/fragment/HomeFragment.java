@@ -983,9 +983,10 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
                     {
                         if (!cityInfoList.isEmpty())
                         {
-                            title = "定位失败,已为您自动切换到" + cityInfoList.get(0).getName();
-                            tvCity.setText(cityInfoList.get(0).getName());
-                            city_value = cityInfoList.get(0).getId();
+                            CityInfo mCityInfo = cityInfoList.get(0);
+                            title = "定位失败,已为您自动切换到" + mCityInfo.getName();
+                            tvCity.setText(mCityInfo.getName());
+                            city_value = mCityInfo.getId();
                         }
                         else
                         {
@@ -1006,9 +1007,10 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
                         }
                         else
                         {
-                            title = "定位成功,您的城市为" + currentCity + ",已为你自动切换到" + cityInfoList.get(0).getName();
-                            tvCity.setText(cityInfoList.get(0).getName());
-                            city_value = cityInfoList.get(0).getId();
+                            CityInfo mCityInfo = cityInfoList.get(0);
+                            title = "定位成功,您的城市为" + currentCity + ",已为你自动切换到" + mCityInfo.getName();
+                            tvCity.setText(mCityInfo.getName());
+                            city_value = mCityInfo.getId();
                         }
 
                     }
