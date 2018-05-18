@@ -24,11 +24,11 @@
 
         <RelativeLayout
             android:id="@+id/rl_city"
-            android:paddingTop="@dimen/dm_5"
-            android:paddingBottom="@dimen/dm_5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true">
+            android:layout_centerVertical="true"
+            android:paddingBottom="@dimen/dm_5"
+            android:paddingTop="@dimen/dm_5">
 
             <TextView
                 android:id="@+id/tv_city"
@@ -62,12 +62,12 @@
 
             <LinearLayout
                 android:id="@+id/ll_date"
-                android:paddingLeft="@dimen/dm_5"
-                android:paddingRight="@dimen/dm_5"
-                android:layout_centerVertical="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_centerVertical="true"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/dm_5"
+                android:paddingRight="@dimen/dm_5">
                 <TextView
                     android:id="@+id/tv_check"
                     android:layout_width="wrap_content"
@@ -106,13 +106,14 @@
                 android:layout_toRightOf="@+id/line1"
                 android:src="@drawable/ic_search_black"/>
 
-            <EditText
+            <com.twlrg.slbl.widget.ClearEditText
                 android:id="@+id/et_keyword"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="30dp"
                 android:layout_centerVertical="true"
                 android:layout_toRightOf="@+id/iv_search"
                 android:background="@color/translucent"
+                android:gravity="center_vertical"
                 android:hint="关键字/位置/酒店名"
                 android:imeOptions="actionSearch"
                 android:inputType="text"
@@ -126,10 +127,10 @@
     </RelativeLayout>
 
     <LinearLayout
-        android:background="@color/white"
         android:id="@+id/ll_top"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/white"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:padding="@dimen/dm_10"
@@ -269,16 +270,16 @@
             android:orientation="vertical">
 
             <TextView
-                android:textSize="@dimen/t18"
-                android:text="暂无数据"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:text="暂无数据"
+                android:textSize="@dimen/t18"/>
 
             <Button
                 android:id="@+id/btn_load"
-                android:layout_marginTop="@dimen/dm_5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dm_5"
                 android:background="@drawable/gray_frame_5dp"
                 android:text="重新加载"/>
         </LinearLayout>

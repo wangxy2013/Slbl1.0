@@ -14,8 +14,11 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.ActionMode;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
@@ -55,6 +58,7 @@ import com.twlrg.slbl.utils.LogUtil;
 import com.twlrg.slbl.utils.StringUtils;
 import com.twlrg.slbl.utils.ToastUtil;
 import com.twlrg.slbl.utils.Urls;
+import com.twlrg.slbl.widget.ClearEditText;
 import com.twlrg.slbl.widget.EmptyDecoration;
 import com.twlrg.slbl.widget.FilterPopupWindow;
 import com.twlrg.slbl.widget.list.refresh.PullToRefreshBase;
@@ -114,11 +118,11 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
 
 
     @BindView(R.id.et_keyword)
-    EditText     mEtKeyword;
+    ClearEditText mEtKeyword;
     @BindView(R.id.btn_load)
-    Button       btnLoad;
+    Button        btnLoad;
     @BindView(R.id.ll_no_data)
-    LinearLayout llNoData;
+    LinearLayout  llNoData;
 
     private RecyclerView mRecyclerView;
     private View rootView = null;
@@ -132,10 +136,10 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
     //手机定位的经纬度
     private double lng = 0;
     private double lat = 0;
-    private int star;
-    private int range;
-    private int price;
-    private  String  region;
+    private int    star;
+    private int    range;
+    private int    price;
+    private String region;
     private String currentCity = "深圳市";
     private String city_value  = "2158";
 
@@ -385,6 +389,34 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
             }
         });
 
+
+        //不需要用复制
+        mEtKeyword.setCustomSelectionActionModeCallback(new ActionMode.Callback()
+        {
+            @Override
+            public boolean onCreateActionMode(ActionMode actionMode, Menu menu)
+            {
+                return false;
+            }
+
+            @Override
+            public boolean onPrepareActionMode(ActionMode actionMode, Menu menu)
+            {
+                return false;
+            }
+
+            @Override
+            public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem)
+            {
+                return false;
+            }
+
+            @Override
+            public void onDestroyActionMode(ActionMode actionMode)
+            {
+
+            }
+        });
     }
 
 
@@ -498,7 +530,7 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
         valuePairs.put("s_date", mStartDate);
         valuePairs.put("e_date", mEndDate);
         valuePairs.put("page", pn + "");
-        valuePairs.put("region" ,region);
+        valuePairs.put("region", region);
         DataRequest.instance().request(getActivity(), Urls.getHotelListUrl(), this, HttpRequest.POST, GET_HOTEL_LIST, valuePairs,
                 new HotelInfoListHandler());
     }

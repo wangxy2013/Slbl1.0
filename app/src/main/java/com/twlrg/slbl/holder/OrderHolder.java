@@ -68,7 +68,16 @@ public class OrderHolder extends RecyclerView.ViewHolder
         switch (mOrderInfo.getIs_used())
         {
             case 0:
-                status = "待支付";
+
+                if ("1".equals(mOrderInfo.getPayment_trade_status()))
+                {
+                    status = "待酒店确认";
+                }
+                else
+                {
+                    status = "待支付";
+                }
+
                 break;
             case 1:
                 status = "已预订成功";

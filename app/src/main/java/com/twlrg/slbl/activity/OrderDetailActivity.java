@@ -180,9 +180,19 @@ public class OrderDetailActivity extends BaseActivity implements IRequestListene
                         switch (mOrderInfo.getIs_used())
                         {
                             case 0:
-                                btnCancel.setVisibility(View.VISIBLE);
-                                btnStatus.setText("去支付");
-                                btnStatus.setEnabled(true);
+                                if ("1".equals(mOrderInfo.getPayment_trade_status()))
+                                {
+                                    btnCancel.setVisibility(View.VISIBLE);
+                                    btnStatus.setText("待酒店确认");
+                                    btnStatus.setEnabled(false);
+                                }
+                                else
+                                {
+                                    btnCancel.setVisibility(View.VISIBLE);
+                                    btnStatus.setText("去支付");
+                                    btnStatus.setEnabled(true);
+                                }
+
                                 break;
                             case 1:
                                 btnCancel.setVisibility(View.VISIBLE);

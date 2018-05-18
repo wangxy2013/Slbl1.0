@@ -30,10 +30,8 @@ public class FilterPopupWindow extends PopupWindow implements PopupWindow.OnDism
 {
     View rootView;
     private NoScrollListView mListView;
-
-    private Activity mContext;
-
-    private FilterAdapter mAdapter;
+    private Activity         mContext;
+    private FilterAdapter    mAdapter;
 
     private MyItemClickListener listener;
     private int                 mHeight;
@@ -51,10 +49,10 @@ public class FilterPopupWindow extends PopupWindow implements PopupWindow.OnDism
         setFocusable(true);
         setBackgroundDrawable(new ColorDrawable());
         setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
-        setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
+        setHeight(ViewGroup.LayoutParams.MATCH_PARENT);
         initView();
         initEvent();
-       // WindowManager.LayoutParams lp = mContext.getWindow().getAttributes();
+        // WindowManager.LayoutParams lp = mContext.getWindow().getAttributes();
         //lp.alpha = 0.5f; //0.0-1.0
         //mContext.getWindow().setAttributes(lp);
 

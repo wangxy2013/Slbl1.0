@@ -95,7 +95,7 @@ public class SubmitOrderActivity extends BaseActivity implements IRequestListene
     private String    orderId;
     private OrderInfo mOrderInfo;
 
-    private static final int REQUEST_SUCCESS    = 0x01;
+    private static final int REQUEST_SUCCESS          = 0x01;
     public static final  int REQUEST_FAIL             = 0x02;
     private static final int GET_SALE_SUCCESS         = 0x03;
     private static final int GET_ORDER_DETAIL_SUCCESS = 0x04;
@@ -208,6 +208,7 @@ public class SubmitOrderActivity extends BaseActivity implements IRequestListene
                     {
                         // 该笔订单是否真实支付成功，需要依赖服务端的异步通知。
                         ToastUtil.show(SubmitOrderActivity.this, "支付成功");
+                        finish();
                     }
                     else
                     {
@@ -386,8 +387,8 @@ public class SubmitOrderActivity extends BaseActivity implements IRequestListene
         valuePairs.put("ordcode", mOrderInfo.getOrdcode());
         valuePairs.put("payment_type", "ali");
         valuePairs.put("product", mOrderInfo.getTitle());
-        valuePairs.put("total_fee", mOrderInfo.getTotal_fee());
-        // valuePairs.put("total_fee", "0.01");
+        // valuePairs.put("total_fee", mOrderInfo.getTotal_fee());
+        valuePairs.put("total_fee", "0.01");
         DataRequest.instance().request(SubmitOrderActivity.this, Urls.getAlipayUrl(), SubmitOrderActivity.this, HttpRequest.POST, GET_ALI_APY,
                 valuePairs,
                 new ResultHandler());
