@@ -63,7 +63,7 @@ public class HotelHolder extends RecyclerView.ViewHolder
         ImageLoader.getInstance().displayImage(Urls.getImgUrl(mHotelInfo.getHotel_img()), mHotelImgIv);
         mStarRb.setRating(Float.parseFloat(mHotelInfo.getStar() + ""));
         mHotelNameTv.setText(mHotelInfo.getTitle());
-        mPriceTv.setText("￥" + mHotelInfo.getPrice() + "起");
+        mPriceTv.setText("￥" + mHotelInfo.getPrice());
         mPositionLabelTv.setText(mHotelInfo.getPosition_label());
         mServiceLabelTv.setText(mHotelInfo.getService_label());
         mDistanceTv.setText(mHotelInfo.getJl()+"公里");

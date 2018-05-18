@@ -33,14 +33,15 @@ public class RoomHolder extends RecyclerView.ViewHolder
     private ImageView mRoomImgIv;
 
 
-    private AutoFitTextView mTitleNameTv;
-    private TextView        mPriceTv;
-    private TextView        mAreaTv;
-    private TextView        mBedTypeTv;
-    private TextView        mReserveTv;
-    private CustomBanner   mRoombanner;
+    private AutoFitTextView     mTitleNameTv;
+    private TextView            mPriceTv;
+    private TextView            mAreaTv;
+    private TextView            mBedTypeTv;
+    private TextView            mReserveTv;
+    private CustomBanner        mRoombanner;
     private MyItemClickListener listener1;
     private List<String> picList = new ArrayList<>();
+
     public RoomHolder(View rootView, MyItemClickListener listener1)
     {
         super(rootView);
@@ -50,7 +51,7 @@ public class RoomHolder extends RecyclerView.ViewHolder
         mAreaTv = (TextView) rootView.findViewById(R.id.tv_area);
         mBedTypeTv = (TextView) rootView.findViewById(R.id.tv_bed_type);
         mReserveTv = (TextView) rootView.findViewById(R.id.tv_reserve);
-        mRoombanner= (CustomBanner) rootView.findViewById(R.id.room_banner);
+        mRoombanner = (CustomBanner) rootView.findViewById(R.id.room_banner);
         this.listener1 = listener1;
     }
 
@@ -63,8 +64,8 @@ public class RoomHolder extends RecyclerView.ViewHolder
 
         int width = APPUtils.getScreenWidth(mContext);
         int height = (int) (width * 0.75);
-//        mRoomImgIv.setLayoutParams(new FrameLayout.LayoutParams(width, height));
-//        ImageLoader.getInstance().displayImage(Urls.getImgUrl(mRoomInfo.getPic1()), mRoomImgIv);
+        //        mRoomImgIv.setLayoutParams(new FrameLayout.LayoutParams(width, height));
+        //        ImageLoader.getInstance().displayImage(Urls.getImgUrl(mRoomInfo.getPic1()), mRoomImgIv);
         mRoombanner.setLayoutParams(new FrameLayout.LayoutParams(width, height));
         mRoombanner.setPages(new CustomBanner.ViewCreator<String>()
         {
@@ -87,7 +88,7 @@ public class RoomHolder extends RecyclerView.ViewHolder
 
 
         mTitleNameTv.setText(mRoomInfo.getTitle());
-        mPriceTv.setText("￥" + mRoomInfo.getPrice() + "起");
+        mPriceTv.setText("￥" + mRoomInfo.getPrice());
 
         String smokeless = mRoomInfo.getSmokeless();
         String wifi = mRoomInfo.getWifi();
@@ -98,11 +99,11 @@ public class RoomHolder extends RecyclerView.ViewHolder
         String mWifi = "有WIFI";
         String mWindow = "有窗";
         String zc = "无早餐";
-        String floor =  mRoomInfo.getFloor();
+        String floor = mRoomInfo.getFloor();
 
-        if(!StringUtils.stringIsEmpty(floor) && !floor.contains("层"))
+        if (!StringUtils.stringIsEmpty(floor) && !floor.contains("层"))
         {
-            floor = floor+"层";
+            floor = floor + "层";
         }
 
         if (!"1".equals(smokeless))
@@ -131,7 +132,7 @@ public class RoomHolder extends RecyclerView.ViewHolder
             zc = "双早餐";
         }
 
-        mAreaTv.setText(mRoomInfo.getArea() + "㎡/" + floor+ "/" + mWindow + "/" + mSmokeless);
+        mAreaTv.setText(mRoomInfo.getArea() + "㎡/" + floor + "/" + mWindow + "/" + mSmokeless);
         mBedTypeTv.setText(mRoomInfo.getBed_type() + "  " + zc + "  " + mWifi);
 
         mReserveTv.setOnClickListener(new View.OnClickListener()

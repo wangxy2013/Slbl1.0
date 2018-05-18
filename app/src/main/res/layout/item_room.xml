@@ -30,16 +30,29 @@
             app:indicatorStyle="ORDINARY"
             app:indicatorUnSelectRes="@drawable/shape_point_select"
             />
-        <TextView
-            android:id="@+id/tv_price"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/dm_15"
             android:background="@drawable/common_yellow_5dp"
-            android:padding="@dimen/dm_5"
-            android:text="125"
-            android:textColor="@color/white"
-            android:textSize="@dimen/t14"/>
+            android:padding="@dimen/dm_5">
+            <TextView
+                android:id="@+id/tv_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="125"
+                android:textColor="@color/white"
+                android:textSize="@dimen/t16"
+                android:textStyle="bold"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="起"
+                android:layout_marginLeft="@dimen/dm_3"
+                android:textColor="@color/white"
+                android:textSize="@dimen/t10"
+                />
+        </LinearLayout>
     </FrameLayout>
 
     <LinearLayout

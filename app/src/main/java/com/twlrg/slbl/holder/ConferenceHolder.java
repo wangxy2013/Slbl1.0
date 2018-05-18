@@ -99,7 +99,7 @@ public class ConferenceHolder extends RecyclerView.ViewHolder
         }
 
         mtTitleTv.setText(mConference.getTitle());
-        mPriceTv.setText("￥" + priceStr + "起");
+        mPriceTv.setText("￥" + priceStr);
         mAreaTv.setText(mConference.getArea() + "㎡");
         mFloorTv.setText(mConference.getFloor() + "楼");
         mTheatreTv.setText("剧院" + mConference.getTheatre() + "人");
