@@ -1,7 +1,10 @@
 package com.twlrg.slbl.activity;
 
+import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -22,8 +25,12 @@ import com.baidu.mapapi.model.LatLng;
 import com.twlrg.slbl.R;
 import com.twlrg.slbl.utils.APPUtils;
 import com.twlrg.slbl.utils.LogUtil;
+import com.twlrg.slbl.utils.ToastUtil;
 import com.twlrg.slbl.widget.AutoFitTextView;
+import com.twlrg.slbl.widget.SelectMapPopupWindow;
 
+
+import java.io.File;
 
 import butterknife.BindView;
 
@@ -34,6 +41,8 @@ import butterknife.BindView;
  */
 public class LocationActivity extends BaseActivity
 {
+
+
     @BindView(R.id.topView)
     View            topView;
     @BindView(R.id.iv_back)
@@ -52,6 +61,9 @@ public class LocationActivity extends BaseActivity
 
     private String hotelName;
     private String lat, lng;
+
+
+    private SelectMapPopupWindow mSelectMapPopupWindow;
 
     @Override
     protected void initData()
@@ -101,6 +113,18 @@ public class LocationActivity extends BaseActivity
             public boolean onMarkerClick(final Marker marker)
             {
                 Button button = new Button(getApplicationContext());
+
+
+                button.setOnClickListener(new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View v)
+                    {
+
+                    }
+                });
+
+
                 button.setBackgroundResource(R.drawable.popup);
                 InfoWindow.OnInfoWindowClickListener listener = null;
                 if (marker == mMarkerA)
@@ -116,6 +140,12 @@ public class LocationActivity extends BaseActivity
                             //                                    ll.longitude + 0.005);
                             //                            marker.setPosition(llNew);
                             //                            mBaiduMap.hideInfoWindow();
+
+                            if (null != mSelectMapPopupWindow)
+                            {
+                                mSelectMapPopupWindow.showPopupWindow(LocationActivity.this);
+                            }
+
                         }
                     };
                     LatLng ll = marker.getPosition();
@@ -126,7 +156,86 @@ public class LocationActivity extends BaseActivity
             }
         });
 
+
+        mSelectMapPopupWindow = new SelectMapPopupWindow(LocationActivity.this, new SelectMapPopupWindow.OnSelectedListener()
+        {
+            @Override
+            public void OnSelected(View v, int position)
+            {
+                switch (position)
+                {
+                    case 0:
+                        if (APPUtils.isAppInstall(LocationActivity.this, "com.autonavi.minimap"))
+                        {
+                            openGaoDeNavi();
+                        }
+                        else
+                        {
+                            ToastUtil.show(LocationActivity.this, "未安装高德地图");
+                        }
+                        break;
+                    case 1:
+                        if (APPUtils.isAppInstall(LocationActivity.this, "com.baidu.BaiduMap"))
+                        {
+                            openBaiduNavi();
+                        }
+                        else
+                        {
+                            ToastUtil.show(LocationActivity.this, "未安装百度地图");
+                        }
+                        break;
+                    case 2:
+                        mSelectMapPopupWindow.dismissPopupWindow();
+                        break;
+                }
+            }
+        });
+
     }
+
+
+    /**
+     * 启动高德App进行导航
+     * sourceApplication 必填 第三方调用应用名称。如 amap
+     * poiname           非必填 POI 名称
+     * dev               必填 是否偏移(0:lat 和 lon 是已经加密后的,不需要国测加密; 1:需要国测加密)
+     * style             必填 导航方式(0 速度快; 1 费用少; 2 路程短; 3 不走高速；4 躲避拥堵；5 不走高速且避免收费；6 不走高速且躲避拥堵；7 躲避收费和拥堵；8 不走高速躲避收费和拥堵))
+     */
+    private void openGaoDeNavi()
+    {
+        StringBuffer stringBuffer = new StringBuffer("androidamap://navi?sourceApplication=")
+                .append("yitu8_driver").append("&lat=").append(lat)
+                .append("&lon=").append(lng)
+                .append("&dev=").append(1)
+                .append("&style=").append(0);
+        ;
+        if (!TextUtils.isEmpty(hotelName))
+        {
+            stringBuffer.append("&poiname=").append(hotelName);
+        }
+        Intent intent = new Intent(Intent.ACTION_VIEW, android.net.Uri.parse(stringBuffer.toString()));
+        intent.addCategory(Intent.CATEGORY_DEFAULT);
+        intent.setPackage("com.autonavi.minimap");
+        startActivity(intent);
+    }
+
+
+    /**
+     * 打开百度地图导航客户端
+     * intent = Intent.getIntent("baidumap://map/navi?location=34.264642646862,108.95108518068&type=BLK&src=thirdapp.navi.you
+     * location 坐标点 location与query二者必须有一个，当有location时，忽略query
+     * query    搜索key   同上
+     * type 路线规划类型  BLK:躲避拥堵(自驾);TIME:最短时间(自驾);DIS:最短路程(自驾);FEE:少走高速(自驾);默认DIS
+     */
+    private void openBaiduNavi()
+    {
+        StringBuffer stringBuffer = new StringBuffer("baidumap://map/navi?location=")
+                .append(lat).append(",").append(lng).append("&type=TIME");
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(stringBuffer.toString()));
+        intent.setPackage("com.baidu.BaiduMap");
+        startActivity(intent);
+    }
+
 
     public void initOverlay()
     {

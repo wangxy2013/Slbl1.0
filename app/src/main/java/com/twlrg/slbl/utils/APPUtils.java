@@ -212,6 +212,7 @@ public class APPUtils
      * @param mContext
      * @return
      */
+    @SuppressLint("MissingPermission")
     public static String getIMEI(Context mContext)
     {
         String mImei = "NULL";
