@@ -11,7 +11,8 @@
     <View
         android:id="@+id/topView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:visibility="gone"/>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/dm_40">
@@ -121,8 +122,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/dm_15"
-        android:layout_marginTop="@dimen/dm_15"
         android:layout_marginRight="@dimen/dm_10"
+        android:layout_marginTop="@dimen/dm_15"
         android:layout_toRightOf="@+id/iv_user_head"
         android:orientation="horizontal">
         <TextView
@@ -136,30 +137,30 @@
 
         <EditText
             android:id="@+id/et_userName"
-            android:layout_marginLeft="@dimen/dm_5"
             android:layout_width="match_parent"
-            android:layout_marginRight="@dimen/dm_10"
             android:layout_height="wrap_content"
-            android:background="@drawable/edittext_selector"
-            android:padding="@dimen/dm_5"
-            android:textColor="@color/black"
-            android:textSize="@dimen/t16" android:layout_alignParentTop="true" android:layout_toRightOf="@+id/tv_user_name"
-            android:layout_toEndOf="@+id/tv_user_name"/>
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="@dimen/dm_5"
+            android:layout_marginRight="@dimen/dm_10"
+            android:layout_toEndOf="@+id/tv_user_name"
+            android:layout_toRightOf="@+id/tv_user_name"
+            android:background="@drawable/edittext_selector" android:padding="@dimen/dm_5" android:textColor="@color/black"
+            android:textSize="@dimen/t16"/>
     </RelativeLayout>
 
     <View
-        android:layout_marginLeft="15dp"
-        android:layout_marginTop="@dimen/dm_5"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dm_1"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="@dimen/dm_5"
         android:background="@color/line"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/dm_15"
-        android:layout_marginTop="@dimen/dm_15"
         android:layout_marginRight="@dimen/dm_10"
+        android:layout_marginTop="@dimen/dm_15"
         android:layout_toRightOf="@+id/iv_user_head"
         android:orientation="horizontal">
         <TextView
@@ -175,9 +176,9 @@
             android:id="@+id/tv_userSex"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/dm_10"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/dm_5"
+            android:layout_marginRight="@dimen/dm_10"
             android:layout_toRightOf="@+id/tv_user_sex"
             android:background="@drawable/edittext_selector"
             android:padding="@dimen/dm_5"
@@ -186,10 +187,10 @@
     </RelativeLayout>
 
     <View
-        android:layout_marginLeft="15dp"
-        android:layout_marginTop="@dimen/dm_5"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dm_1"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="@dimen/dm_5"
         android:background="@color/line"/>
 
 
@@ -197,8 +198,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/dm_15"
-        android:layout_marginTop="@dimen/dm_15"
         android:layout_marginRight="@dimen/dm_10"
+        android:layout_marginTop="@dimen/dm_15"
         android:layout_toRightOf="@+id/iv_user_head"
         android:orientation="horizontal">
         <TextView
@@ -214,9 +215,9 @@
             android:id="@+id/tv_userPhone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/dm_10"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/dm_5"
+            android:layout_marginRight="@dimen/dm_10"
             android:layout_toRightOf="@+id/tv_user_phone"
             android:padding="@dimen/dm_5"
             android:textColor="@color/black"
@@ -224,18 +225,18 @@
     </RelativeLayout>
 
     <View
-        android:layout_marginLeft="15dp"
-        android:layout_marginTop="@dimen/dm_5"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dm_1"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="@dimen/dm_5"
         android:background="@color/line"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/dm_15"
-        android:layout_marginTop="@dimen/dm_15"
         android:layout_marginRight="@dimen/dm_10"
+        android:layout_marginTop="@dimen/dm_15"
         android:layout_toRightOf="@+id/iv_user_head"
         android:orientation="horizontal">
         <TextView
@@ -251,9 +252,9 @@
             android:id="@+id/et_userEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/dm_10"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/dm_5"
+            android:layout_marginRight="@dimen/dm_10"
             android:layout_toRightOf="@+id/tv_user_email"
             android:background="@drawable/edittext_selector"
             android:padding="@dimen/dm_5"
@@ -262,10 +263,10 @@
     </RelativeLayout>
 
     <View
-        android:layout_marginLeft="15dp"
-        android:layout_marginTop="@dimen/dm_5"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dm_1"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="@dimen/dm_5"
         android:background="@color/line"/>
 
 
@@ -273,8 +274,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/dm_15"
-        android:layout_marginTop="@dimen/dm_15"
         android:layout_marginRight="@dimen/dm_10"
+        android:layout_marginTop="@dimen/dm_15"
         android:layout_toRightOf="@+id/iv_user_head"
         android:orientation="horizontal">
         <TextView
@@ -287,18 +288,18 @@
             android:textSize="@dimen/t16"/>
 
         <EditText
-            android:textStyle="bold"
-            android:background="@color/translucent"
-            android:text="012345678"
-            android:inputType="textPassword"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/dm_5"
             android:layout_toRightOf="@+id/tv_user_pwd"
+            android:background="@color/translucent"
+            android:inputType="textPassword"
             android:padding="@dimen/dm_5"
+            android:text="012345678"
             android:textColor="@color/black"
-            android:textSize="@dimen/t16"/>
+            android:textSize="@dimen/t16"
+            android:textStyle="bold"/>
 
         <TextView
             android:id="@+id/tv_modify_pwd"
@@ -313,33 +314,33 @@
     </RelativeLayout>
 
     <View
-        android:layout_marginLeft="15dp"
-        android:layout_marginTop="@dimen/dm_5"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dm_1"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="@dimen/dm_5"
         android:background="@color/line"/>
 
 
     <TextView
         android:id="@+id/tv_version"
         android:layout_width="match_parent"
-        android:gravity="center"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:text="版本:V1.1.0"
         android:layout_marginTop="@dimen/dm_15"
+        android:gravity="center"
+        android:text="版本:V1.1.0"
         android:textColor="@color/black"
         android:textSize="@dimen/t14"/>
 
     <Button
         android:id="@+id/btn_logout"
-        android:layout_marginTop="@dimen/dm_10"
-        android:textColor="@color/white"
-        android:text="退出登录"
-        android:textSize="@dimen/t18"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
         android:layout_marginLeft="@dimen/dm_25"
         android:layout_marginRight="@dimen/dm_25"
+        android:layout_marginTop="@dimen/dm_10"
         android:background="@drawable/common_light_blue_bg"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:text="退出登录"
+        android:textColor="@color/white"
+        android:textSize="@dimen/t18"/>
 </LinearLayout>

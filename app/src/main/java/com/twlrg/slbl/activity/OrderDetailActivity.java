@@ -399,13 +399,22 @@ public class OrderDetailActivity extends BaseActivity implements IRequestListene
         }
         else if (v == btnCancel)//取消订单
         {
-            showProgressDialog();
-            Map<String, String> valuePairs = new HashMap<>();
-            valuePairs.put("token", ConfigManager.instance().getToken());
-            valuePairs.put("uid", ConfigManager.instance().getUserID());
-            valuePairs.put("order_id", order_id);
-            DataRequest.instance().request(OrderDetailActivity.this, Urls.getOrderCancelUrl(), this, HttpRequest.POST, ORDER_CANCEL, valuePairs,
-                    new ResultHandler());
+
+            DialogUtils.showToastDialog2Button(this, "是否确认取消订单", new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    showProgressDialog();
+                    Map<String, String> valuePairs = new HashMap<>();
+                    valuePairs.put("token", ConfigManager.instance().getToken());
+                    valuePairs.put("uid", ConfigManager.instance().getUserID());
+                    valuePairs.put("order_id", order_id);
+                    DataRequest.instance().request(OrderDetailActivity.this, Urls.getOrderCancelUrl(), OrderDetailActivity.this, HttpRequest.POST, ORDER_CANCEL, valuePairs,
+                            new ResultHandler());
+                }
+            });
+
 
         }
         else if (v == btnStatus)//去支付

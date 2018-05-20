@@ -222,8 +222,8 @@
         android:paddingRight="@dimen/dm_30"
         android:text="立即注册"
         android:textColor="@color/white"
-        android:textSize="@dimen/t22"
-        android:textStyle="bold"/>
+        android:textSize="@dimen/t18"
+        />
 
 
 </LinearLayout>

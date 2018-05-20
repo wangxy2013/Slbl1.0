@@ -1,6 +1,7 @@
 package com.twlrg.slbl.activity;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -31,6 +32,7 @@ import com.twlrg.slbl.json.HotelDetailHandler;
 import com.twlrg.slbl.listener.MyItemClickListener;
 import com.twlrg.slbl.utils.APPUtils;
 import com.twlrg.slbl.utils.ConstantUtil;
+import com.twlrg.slbl.utils.StringUtils;
 import com.twlrg.slbl.utils.ToastUtil;
 import com.twlrg.slbl.utils.Urls;
 import com.twlrg.slbl.widget.AutoFitTextView;
@@ -84,6 +86,9 @@ public class HotelDetailActivity extends BaseActivity implements IRequestListene
     TextView             tvBreakfastType4;
     @BindView(R.id.ll_breakfast)
     LinearLayout         mBreakfastLayout;
+
+    @BindView(R.id.ll_time)
+    LinearLayout         mTimeLayout;
     @BindView(R.id.rv_room)
     RecyclerView         rvRoom;
     @BindView(R.id.iv_room_more)
@@ -132,7 +137,7 @@ public class HotelDetailActivity extends BaseActivity implements IRequestListene
 
     private String id, city_value, s_date, e_date, lng, lat, title;
     private boolean summary_is_open;
-
+    private static final int    GET_DATE_CODE   = 0x99;
 
     private RoomAdapter       mRoomAdapter;
     private ConferenceAdapter mConferenceAdapter;
@@ -170,6 +175,7 @@ public class HotelDetailActivity extends BaseActivity implements IRequestListene
                     mHotelInfo = mHotelDetailHandler.getHotelInfo();
                     if (null != mHotelInfo)
                     {
+                        picList.clear();
                         picList.add(mHotelInfo.getHotel_img());
 
                         rbStar.setRating(Float.parseFloat(mHotelInfo.getStar() + ""));
@@ -211,6 +217,8 @@ public class HotelDetailActivity extends BaseActivity implements IRequestListene
                         }, picList);
 
                     }
+                    roomInfoListAll.clear();
+                    conferenceInfoListAll.clear();
                     roomInfoListAll.addAll(mHotelDetailHandler.getRoomInfoList());
                     conferenceInfoListAll.addAll(mHotelDetailHandler.getConferenceInfoList());
 
@@ -273,7 +281,7 @@ public class HotelDetailActivity extends BaseActivity implements IRequestListene
         tvBreakfastType22.setOnClickListener(this);
         tvBreakfastType33.setOnClickListener(this);
         tvBreakfastType44.setOnClickListener(this);
-
+        mTimeLayout.setOnClickListener(this);
 
         scrollView.setOnScrollListener(new ObservableScrollView.OnScrollListener()
         {
@@ -303,6 +311,8 @@ public class HotelDetailActivity extends BaseActivity implements IRequestListene
             }
         });
     }
+
+
 
     @Override
     protected void initViewData()
@@ -354,7 +364,12 @@ public class HotelDetailActivity extends BaseActivity implements IRequestListene
 
         mConferenceAdapter = new ConferenceAdapter(conferenceInfoList, HotelDetailActivity.this);
         rvConference.setAdapter(mConferenceAdapter);
+        loadData();
+    }
 
+
+    private void loadData()
+    {
         showProgressDialog();
         Map<String, String> valuePairs = new HashMap<>();
         valuePairs.put("id", id);
@@ -366,7 +381,6 @@ public class HotelDetailActivity extends BaseActivity implements IRequestListene
         DataRequest.instance().request(HotelDetailActivity.this, Urls.getHotelDetailUrl(), this, HttpRequest.POST, GET_HOTEL_DETAIL, valuePairs,
                 new HotelDetailHandler());
     }
-
 
     @Override
     public void onClick(View v)
@@ -499,6 +513,10 @@ public class HotelDetailActivity extends BaseActivity implements IRequestListene
             tvBreakfastType33.setSelected(false);
             tvBreakfastType4.setSelected(true);
             tvBreakfastType44.setSelected(true);
+        }
+        else if(v == mTimeLayout)
+        {
+            startActivityForResult(new Intent(HotelDetailActivity.this, HotelTimeActivity.class), GET_DATE_CODE);
         }
 
     }
@@ -653,5 +671,28 @@ public class HotelDetailActivity extends BaseActivity implements IRequestListene
     }
 
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == GET_DATE_CODE)
+        {
+            if (resultCode == Activity.RESULT_OK && null != data)
+            {
+                s_date = data.getStringExtra("CHEK_IN");
+                e_date = data.getStringExtra("CHEK_OUT");
 
-}
+                if (!StringUtils.stringIsEmpty(s_date) && !StringUtils.stringIsEmpty(e_date))
+                {
+                    tvStartDate.setText(s_date);
+                    tvEndDate.setText(e_date);
+                    loadData();
+
+                }
+            }
+
+        }
+    }
+
+
+    }

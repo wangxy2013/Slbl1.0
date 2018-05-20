@@ -147,7 +147,7 @@
         android:paddingRight="@dimen/dm_30"
         android:text="立即登录"
         android:textColor="@color/white"
-        android:textSize="@dimen/t22"/>
+        android:textSize="@dimen/t18"/>
 
 
     <TextView

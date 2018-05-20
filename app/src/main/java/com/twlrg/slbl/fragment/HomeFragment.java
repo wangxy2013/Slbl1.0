@@ -3,11 +3,15 @@ package com.twlrg.slbl.fragment;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Message;
+import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
@@ -160,6 +164,8 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
     private HotelAdapter    mHotelAdapter;
     private LocationService locationService;
 
+    private int    count;
+    private Dialog  mToastDialog;
     private static final int REQUEST_SUCCESS    = 0x01;
     private static final int REQUEST_FAIL       = 0x02;
     private static final int GET_CITY_SUCCESS   = 0x03;
@@ -424,7 +430,15 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
     public void onResume()
     {
         super.onResume();
+
+        if(null !=mToastDialog)
+        {
+            mToastDialog.dismiss();
+        }
         ((MainActivity) getActivity()).changeTabStatusColor(0);
+        openGPSSettings();
+
+
     }
 
     @Override
@@ -465,23 +479,13 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
         {
             showContacts();
         }
-        else
-        {
-            initCity();//init为定位方法
-        }
 
         tvCheck.setText("住 " + StringUtils.toMonthAndDay(mStartDate));
         tvLeave.setText("离 " + StringUtils.toMonthAndDay(mEndDate));
 
 
-    }
 
-    private void initCity()
-    {
-        initLocation();
-        Map<String, String> valuePairs = new HashMap<>();
-        DataRequest.instance().request(getActivity(), Urls.getCityListUrl(), this, HttpRequest.POST, GET_CITY_LIST, valuePairs,
-                new CityListHandler());
+
     }
 
 
@@ -830,6 +834,10 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
 
             }
         }
+        if (requestCode == GPS_REQUEST_CODE)
+        {
+            openGPSSettings();
+        }
     }
 
 
@@ -1087,7 +1095,7 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
                 != PackageManager.PERMISSION_GRANTED)
         {
             ToastUtil.show(getActivity(), "没有权限,请手动开启定位权限");
-
+            openGPSSettings();
             // 申请一个（或多个）权限，并提供用于回调返回的获取码（用户定义）
             ActivityCompat.requestPermissions(getActivity(), new String[]{
                     Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission
@@ -1095,7 +1103,7 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
         }
         else
         {
-            initCity();
+            openGPSSettings();
         }
     }
 
@@ -1112,16 +1120,80 @@ public class HomeFragment extends BaseFragment implements PullToRefreshBase.OnRe
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED)
                 {
                     // 获取到权限，作相应处理（调用定位SDK应当确保相关权限均被授权，否则可能引起定位失败）
-                    initCity();
+                    openGPSSettings();
                 }
                 else
                 {
                     // 没有获取到权限，做特殊处理
                     ToastUtil.show(getActivity(), "没有权限,请手动开启定位权限");
+                    openGPSSettings();
                 }
                 break;
             default:
                 break;
+        }
+    }
+
+
+    private int GPS_REQUEST_CODE = 10;
+
+    /**
+     * 检测GPS是否打开
+     *
+     * @return
+     */
+    private boolean checkGPSIsOpen()
+    {
+        boolean isOpen;
+        LocationManager locationManager = (LocationManager) getActivity()
+                .getSystemService(Context.LOCATION_SERVICE);
+        isOpen = locationManager.isProviderEnabled(android.location.LocationManager.GPS_PROVIDER);
+        return isOpen;
+    }
+
+    /**
+     * 跳转GPS设置
+     */
+    private void openGPSSettings()
+    {
+        if (checkGPSIsOpen())
+        {
+            if (count == 0)
+            {
+                count++;
+                initLocation();
+                Map<String, String> valuePairs = new HashMap<>();
+                DataRequest.instance().request(getActivity(), Urls.getCityListUrl(), this, HttpRequest.POST, GET_CITY_LIST, valuePairs,
+                        new CityListHandler());
+            }
+        }
+        else
+        {
+            if(null !=mToastDialog)
+            {
+                mToastDialog.show();
+            }
+            else
+            {
+                mToastDialog = DialogUtils.showToastDialog2Button(getActivity(), "请打开定位功能", new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View v)
+                    {
+                        Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                        startActivityForResult(intent, GPS_REQUEST_CODE);
+                    }
+                }, new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View v)
+                    {
+                        openGPSSettings();
+                    }
+                });
+                mToastDialog.show();
+            }
+
         }
     }
 

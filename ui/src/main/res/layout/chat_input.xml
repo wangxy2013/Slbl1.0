@@ -87,7 +87,7 @@
     <LinearLayout
         android:id="@+id/morePanel"
         android:layout_width="match_parent"
-        android:layout_height="220dp"
+        android:layout_height="110dp"
         android:orientation="vertical"
         android:visibility="gone"
         android:background="@color/background_gray1">
@@ -136,7 +136,7 @@
                     android:textColor="@color/text_gray1"/>
             </LinearLayout>
             <LinearLayout
-                android:id="@+id/btn_video"
+                android:id="@+id/btn_file"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -146,21 +146,22 @@
                 <ImageView
                     android:layout_width="60dp"
                     android:layout_height="60dp"
-                    android:src="@drawable/ic_video"/>
+                    android:src="@drawable/ic_file"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:text="@string/chat_video"
+                    android:text="@string/chat_file"
                     android:textColor="@color/text_gray1"/>
             </LinearLayout>
         </RelativeLayout>
         <RelativeLayout
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp">
             <LinearLayout
-                android:id="@+id/btn_file"
+                android:id="@+id/btn_video"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
@@ -170,12 +171,12 @@
                 <ImageView
                     android:layout_width="60dp"
                     android:layout_height="60dp"
-                    android:src="@drawable/ic_file"/>
+                    android:src="@drawable/ic_video"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:text="@string/chat_file"
+                    android:text="@string/chat_video"
                     android:textColor="@color/text_gray1"/>
             </LinearLayout>
         </RelativeLayout>

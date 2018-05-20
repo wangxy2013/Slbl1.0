@@ -211,7 +211,7 @@
                 android:layout_marginTop="@dimen/dm_15"
                 android:text="费用明细"
                 android:textColor="@color/green"
-                android:textSize="@dimen/t16"/>
+                android:textSize="@dimen/t14"/>
 
             <View
                 android:layout_width="match_parent"
