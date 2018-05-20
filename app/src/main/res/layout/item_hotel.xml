@@ -10,7 +10,7 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dm_15"
+        android:layout_height="@dimen/dm_10"
         android:background="#E3E3E3"/>
     <FrameLayout
         android:layout_width="match_parent"
@@ -62,7 +62,7 @@
                 android:id="@+id/rb_star"
                 style="@style/foodRatingBar"
                 android:layout_width="wrap_content"
-                android:layout_height="22dp"
+                android:layout_height="@dimen/dm_16"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:isIndicator="false"
@@ -77,7 +77,6 @@
                 android:layout_marginRight="@dimen/dm_15"
                 android:layout_toLeftOf="@+id/rb_star"
                 android:ellipsize="end"
-                android:gravity="center_vertical"
                 android:maxLines="1"
                 android:text="维也纳数据返回惊"
                 android:textColor="@color/black"

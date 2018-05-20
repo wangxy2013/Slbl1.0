@@ -13,9 +13,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/rl_chat"
-        android:layout_below="@+id/include"
-        >
+        android:layout_below="@+id/include" android:layout_alignParentLeft="true" android:layout_alignParentStart="true">
 
         <com.twlrg.slbl.widget.ObservableScrollView
             android:id="@+id/scrollView"
@@ -62,7 +60,7 @@
                             android:id="@+id/rb_star"
                             style="@style/foodRatingBar"
                             android:layout_width="wrap_content"
-                            android:layout_height="22dp"
+                            android:layout_height="@dimen/dm_16"
                             android:layout_alignParentRight="true"
                             android:layout_marginTop="@dimen/dm_10"
                             android:isIndicator="false"
@@ -73,9 +71,8 @@
                             android:id="@+id/tv_address"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
                             android:layout_marginRight="@dimen/dm_15"
-                            android:layout_marginTop="@dimen/dm_10"
+                            android:layout_marginTop="@dimen/dm_12"
                             android:layout_toLeftOf="@+id/rb_star"
                             android:lineSpacingMultiplier="1.2"
                             android:textColor="@color/black"
@@ -158,16 +155,16 @@
                         android:layout_marginRight="@dimen/dm_5"
                         android:layout_toLeftOf="@+id/iv_arrow_right"
                         android:text="0条评论"
-                        android:textColor="@color/orange"
+                        android:textColor="@color/green"
                         android:textSize="@dimen/t12"/>
                 </RelativeLayout>
 
 
                 <LinearLayout
-                    android:background="@color/white"
-                    android:layout_marginTop="@dimen/dm_10"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dm_46"
+                    android:layout_marginTop="@dimen/dm_10"
+                    android:background="@color/white"
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
@@ -288,12 +285,15 @@
                         android:id="@+id/rv_room"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentTop="true" android:layout_alignParentLeft="true" android:layout_alignParentStart="true"/>
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"/>
+
                 </RelativeLayout>
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/dm_0.5"
-                    android:background="@color/transparentBlack"/>
+                    android:layout_height="@dimen/dm_10"
+                    android:background="#E3E3E3"/>
                 <LinearLayout
                     android:id="@+id/ll_room_more"
                     android:layout_width="match_parent"
@@ -310,8 +310,8 @@
                         android:src="@drawable/ic_arrow_down_64"/>
                     <View
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/dm_0.5"
-                        android:background="@color/transparentBlack"/>
+                        android:layout_height="@dimen/dm_10"
+                        android:background="#E3E3E3"/>
                 </LinearLayout>
 
 
@@ -319,6 +319,7 @@
                     android:id="@+id/tv_conference"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@color/white"
                     android:padding="@dimen/dm_10"
                     android:text="会议室"
                     android:textColor="@color/black"
@@ -335,8 +336,8 @@
                 </RelativeLayout>
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/dm_0.5"
-                    android:background="@color/transparentBlack"/>
+                    android:layout_height="@dimen/dm_10"
+                    android:background="#E3E3E3"/>
                 <LinearLayout
                     android:id="@+id/ll_conference_more"
                     android:layout_width="match_parent"
@@ -353,8 +354,8 @@
                         android:src="@drawable/ic_arrow_down_64"/>
                     <View
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/dm_0.5"
-                        android:background="@color/transparentBlack"/>
+                        android:layout_height="@dimen/dm_10"
+                        android:background="#E3E3E3"/>
                 </LinearLayout>
 
                 <TextView
@@ -383,20 +384,20 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
-                    android:padding="@dimen/dm_5"
+                    android:padding="@dimen/dm_10"
                     android:text="查看详情更多详情"
                     android:textColor="#0061b2"
                     android:textSize="@dimen/t12"/>
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/dm_0.5"
-                    android:layout_marginLeft="@dimen/dm_10"
-                    android:background="@color/transparentBlack"/>
+                    android:layout_height="@dimen/dm_10"
+                    android:background="#E3E3E3"/>
 
                 <RelativeLayout
                     android:id="@+id/rl_policy"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:background="@color/white">
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -416,14 +417,15 @@
                 </RelativeLayout>
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/dm_0.5"
-                    android:background="@color/transparentBlack"/>
+                    android:layout_height="@dimen/dm_10"
+                    android:background="#E3E3E3"/>
 
 
                 <RelativeLayout
                     android:id="@+id/rl_facilities"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:background="@color/white">
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -443,9 +445,8 @@
                 </RelativeLayout>
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/dm_0.5"
-                    android:layout_marginBottom="@dimen/dm_15"
-                    android:background="@color/transparentBlack"/>
+                    android:layout_height="@dimen/dm_10"
+                    android:background="#E3E3E3"/>
             </LinearLayout>
         </com.twlrg.slbl.widget.ObservableScrollView>
 

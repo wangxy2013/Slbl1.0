@@ -5,9 +5,13 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="10dp"
+    android:background="@color/white"
     android:orientation="vertical"
     >
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dm_10"
+        android:background="#E3E3E3"/>
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -84,7 +88,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="1000平方"
-                android:textColor="@color/black"
+                android:textColor="@color/blackC"
                 android:textSize="@dimen/t14"/>
             <TextView
                 android:id="@+id/tv_bed_type"
@@ -93,7 +97,7 @@
                 android:layout_below="@+id/tv_area"
                 android:layout_marginTop="@dimen/dm_5"
                 android:text="1000平方"
-                android:textColor="@color/black"
+                android:textColor="@color/blackC"
                 android:textSize="@dimen/t14"/>
 
             <TextView
@@ -104,8 +108,8 @@
                 android:layout_centerVertical="true"
                 android:background="@drawable/common_green_5dp"
                 android:paddingBottom="@dimen/dm_7"
-                android:paddingLeft="@dimen/dm_15"
-                android:paddingRight="@dimen/dm_15"
+                android:paddingLeft="@dimen/dm_20"
+                android:paddingRight="@dimen/dm_20"
                 android:paddingTop="@dimen/dm_7"
                 android:text="预定"
                 android:textColor="@color/white"

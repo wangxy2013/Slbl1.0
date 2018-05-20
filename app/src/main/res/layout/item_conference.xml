@@ -5,9 +5,13 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="10dp"
+    android:background="@color/white"
     android:orientation="vertical"
     >
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dm_10"
+        android:background="#E3E3E3"/>
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -86,7 +90,7 @@
                 android:layout_marginLeft="@dimen/dm_10"
                 android:layout_marginRight="@dimen/dm_10"
                 android:text="1000平方"
-                android:textColor="@color/black"
+                android:textColor="@color/blackC"
                 android:textSize="@dimen/t14"/>
 
             <TextView
@@ -96,7 +100,7 @@
                 android:layout_marginLeft="@dimen/dm_50"
                 android:layout_toRightOf="@+id/tv_area"
                 android:text="3楼"
-                android:textColor="@color/black"
+                android:textColor="@color/blackC"
                 android:textSize="@dimen/t14"/>
         </RelativeLayout>
         <LinearLayout
