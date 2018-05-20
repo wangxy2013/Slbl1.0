@@ -409,7 +409,7 @@ public class HotelDetailActivity extends BaseActivity implements IRequestListene
             {
                 summary_is_open = false;
                 tvSummary.setMaxLines(3);
-                tvSummaryMore.setText("查看更多酒店详情");
+                tvSummaryMore.setText("查看更多");
             }
             else
             {
