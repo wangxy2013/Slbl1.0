@@ -1,6 +1,10 @@
 package com.twlrg.slbl.activity;
 
 import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Message;
 import android.support.v7.widget.RecyclerView;
@@ -91,9 +95,11 @@ public class SubmitOrderActivity extends BaseActivity implements IRequestListene
     //private SubOrderInfo mSubOrderInfo;
     private SaleAdapter mSaleAdapter;
     private List<SaleInfo> saleInfoList = new ArrayList<>();
-    private IWXAPI    api;
-    private String    orderId;
-    private OrderInfo mOrderInfo;
+    private IWXAPI                 api;
+    private String                 orderId;
+    private OrderInfo              mOrderInfo;
+    private WxpayBroadCastReceiver mWxpayBroadCastReceiver;
+
 
     private static final int REQUEST_SUCCESS          = 0x01;
     public static final  int REQUEST_FAIL             = 0x02;
@@ -103,7 +109,10 @@ public class SubmitOrderActivity extends BaseActivity implements IRequestListene
     private static final int GET_WX_SUCCESS           = 0x06;
     private static final int SDK_PAY_FLAG             = 0x07;
     private static final int GET_ORDER_INFO_SUCCESS   = 0x08;
+    private final static int WXPAY_SUCCESS_CODE       = 0x09;
 
+
+    private final static String WXPAY_SUCCESS    = "WXPAY_SUCCESS";
     private static final String GET_ORDER_DETAIL = "get_order_detail";
     private static final String SUB_ORDER        = "sub_order";
     private static final String GET_SALE         = "get_sale";
@@ -124,7 +133,23 @@ public class SubmitOrderActivity extends BaseActivity implements IRequestListene
 
 
                 case REQUEST_SUCCESS:
-                    ToastUtil.show(SubmitOrderActivity.this, "操作成功!");
+                    //ToastUtil.show(SubmitOrderActivity.this, "操作成功!");
+
+                    DialogUtils.showPayDialog(SubmitOrderActivity.this, new MyItemClickListener()
+                    {
+                        @Override
+                        public void onItemClick(View view, int position)
+                        {
+                            if (position == 0)
+                            {
+                                toWxpay();
+                            }
+                            else
+                            {
+                                toAlipay();
+                            }
+                        }
+                    });
                     //finish();
                     break;
 
@@ -246,6 +271,11 @@ public class SubmitOrderActivity extends BaseActivity implements IRequestListene
 
 
                     break;
+
+                case WXPAY_SUCCESS_CODE:
+                    ToastUtil.show(SubmitOrderActivity.this, "支付成功");
+                    finish();
+                    break;
             }
         }
     };
@@ -276,6 +306,13 @@ public class SubmitOrderActivity extends BaseActivity implements IRequestListene
     protected void initViewData()
     {
         api = WXAPIFactory.createWXAPI(this, ConstantUtil.WX_APPID);
+
+
+        mWxpayBroadCastReceiver = new WxpayBroadCastReceiver();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(WXPAY_SUCCESS);
+        registerReceiver(mWxpayBroadCastReceiver, intentFilter);
+
         tvTitle.setText("订单确认");
         setStatusBarTextDeep(true);
         topView.setVisibility(View.VISIBLE);
@@ -302,14 +339,6 @@ public class SubmitOrderActivity extends BaseActivity implements IRequestListene
                 }
                 mSaleAdapter.notifyDataSetChanged();
 
-                showProgressDialog();
-                Map<String, String> valuePairs = new HashMap<>();
-                valuePairs.put("order_id", orderId);
-                valuePairs.put("sale_uid", getSaleUid());
-                valuePairs.put("remark", etMark.getText().toString());
-                DataRequest.instance().request(SubmitOrderActivity.this, Urls.getSelectSaleUrl(), SubmitOrderActivity.this, HttpRequest.POST, SUB_ORDER,
-                        valuePairs,
-                        new ResultHandler());
             }
         });
         recyclerView.setAdapter(mSaleAdapter);
@@ -350,21 +379,15 @@ public class SubmitOrderActivity extends BaseActivity implements IRequestListene
             }
             else
             {
-                DialogUtils.showPayDialog(SubmitOrderActivity.this, new MyItemClickListener()
-                {
-                    @Override
-                    public void onItemClick(View view, int position)
-                    {
-                        if (position == 0)
-                        {
-                            toWxpay();
-                        }
-                        else
-                        {
-                            toAlipay();
-                        }
-                    }
-                });
+
+
+                showProgressDialog();
+                Map<String, String> valuePairs = new HashMap<>();
+                valuePairs.put("order_id", orderId);
+                valuePairs.put("sale_uid", getSaleUid());
+                valuePairs.put("remark", etMark.getText().toString());
+                DataRequest.instance().request(SubmitOrderActivity.this, Urls.getSelectSaleUrl(), SubmitOrderActivity.this, HttpRequest.POST, SUB_ORDER,
+                        valuePairs, new ResultHandler());
             }
 
 
@@ -402,7 +425,8 @@ public class SubmitOrderActivity extends BaseActivity implements IRequestListene
         valuePairs.put("ordcode", mOrderInfo.getOrdcode());
         valuePairs.put("payment_type", "wx");
         valuePairs.put("product", mOrderInfo.getTitle());
-        valuePairs.put("total_fee", mOrderInfo.getTotal_fee());
+        // valuePairs.put("total_fee", mOrderInfo.getTotal_fee());
+        valuePairs.put("total_fee", "0.01");
         DataRequest.instance().request(SubmitOrderActivity.this, Urls.getWxpayUrl(), SubmitOrderActivity.this, HttpRequest.POST, GET_WX_APY,
                 valuePairs,
                 new WxpayHandler());
@@ -502,5 +526,32 @@ public class SubmitOrderActivity extends BaseActivity implements IRequestListene
 
     }
 
+    @Override
+    protected void onDestroy()
+    {
+        super.onDestroy();
+        if (null != mWxpayBroadCastReceiver)
+        {
+            unregisterReceiver(mWxpayBroadCastReceiver);
+        }
+
+    }
+
+
+    //微信支付回调
+    class WxpayBroadCastReceiver extends BroadcastReceiver
+    {
+
+        @Override
+        public void onReceive(Context context, Intent intent)
+        {
+
+            if (WXPAY_SUCCESS.contentEquals(intent.getAction()))
+            {
+
+                mHandler.sendEmptyMessageDelayed(WXPAY_SUCCESS_CODE, 500);
+            }
+        }
+    }
 
 }

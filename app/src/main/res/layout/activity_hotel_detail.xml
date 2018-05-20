@@ -161,12 +161,11 @@
                         android:textColor="@color/orange"
                         android:textSize="@dimen/t12"/>
                 </RelativeLayout>
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/dm_0.5"
-                    android:background="@color/transparentBlack"/>
+
 
                 <LinearLayout
+                    android:background="@color/white"
+                    android:layout_marginTop="@dimen/dm_10"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dm_46"
                     android:gravity="center_vertical"
@@ -289,7 +288,7 @@
                         android:id="@+id/rv_room"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        />
+                        android:layout_alignParentTop="true" android:layout_alignParentLeft="true" android:layout_alignParentStart="true"/>
                 </RelativeLayout>
                 <View
                     android:layout_width="match_parent"

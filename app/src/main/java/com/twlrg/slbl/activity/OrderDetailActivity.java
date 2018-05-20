@@ -1,6 +1,8 @@
 package com.twlrg.slbl.activity;
 
 import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
@@ -123,7 +125,10 @@ public class OrderDetailActivity extends BaseActivity implements IRequestListene
     private static final int GET_ALI_SUCCESS          = 0x05;
     private static final int GET_WX_SUCCESS           = 0x06;
     private static final int SDK_PAY_FLAG             = 0x07;
+    private final static int WXPAY_SUCCESS_CODE       = 0x09;
 
+
+    private final static String WXPAY_SUCCESS    = "WXPAY_SUCCESS";
     private static final String GET_ORDER_INFO   = "get_order_info";
     private static final String ORDER_CANCEL     = "order_cancel";
     private static final String GET_ORDER_DETAIL = "get_order_detail";
@@ -312,6 +317,11 @@ public class OrderDetailActivity extends BaseActivity implements IRequestListene
                         // 该笔订单真实的支付结果，需要依赖服务端的异步通知。
                         ToastUtil.show(OrderDetailActivity.this, "支付失败");
                     }
+                    break;
+
+                case WXPAY_SUCCESS_CODE:
+                    ToastUtil.show(OrderDetailActivity.this, "支付成功");
+                    finish();
                     break;
             }
         }
@@ -563,6 +573,23 @@ public class OrderDetailActivity extends BaseActivity implements IRequestListene
             else
             {
                 mHandler.sendMessage(mHandler.obtainMessage(REQUEST_FAIL, resultMsg));
+            }
+        }
+    }
+
+
+    //微信支付回调
+    class WxpayBroadCastReceiver extends BroadcastReceiver
+    {
+
+        @Override
+        public void onReceive(Context context, Intent intent)
+        {
+
+            if (WXPAY_SUCCESS.contentEquals(intent.getAction()))
+            {
+
+                mHandler.sendEmptyMessageDelayed(WXPAY_SUCCESS_CODE, 500);
             }
         }
     }

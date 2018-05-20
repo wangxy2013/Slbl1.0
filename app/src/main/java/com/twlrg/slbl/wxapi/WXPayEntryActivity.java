@@ -61,7 +61,7 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler
         {
             if (resp.errCode == 0)
             {
-                ToastUtil.show(this, "支付成功");
+                sendBroadcast(new Intent().setAction("WXPAY_SUCCESS"));
             }
             else if (resp.errCode == -2)
             {

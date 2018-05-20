@@ -215,9 +215,9 @@
 
         <activity
             android:name=".wxapi.WXPayEntryActivity"
-            android:configChanges="keyboardHidden|orientation"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden"/>
+            android:exported="true"
+            android:launchMode="singleTop"
+            />
 
         <service
             android:name="com.baidu.location.f"
