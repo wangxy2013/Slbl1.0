@@ -15,6 +15,7 @@ import com.twlrg.slbl.utils.ConfigManager;
 import java.util.ArrayList;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * 作者：王先云 on 2018/4/12 15:46
@@ -25,9 +26,17 @@ public class GuideActivity extends BaseActivity implements View.OnClickListener,
         ViewPager.OnPageChangeListener
 {
     @BindView(R.id.viewpager)
-    ViewPager viewpager;
+    ViewPager    viewpager;
     @BindView(R.id.btn_submit)
-    Button    mSubmitBtn;
+    Button       mSubmitBtn;
+    @BindView(R.id.iv_point1)
+    ImageView    ivPoint1;
+    @BindView(R.id.iv_point2)
+    ImageView    ivPoint2;
+    @BindView(R.id.iv_point3)
+    ImageView    ivPoint3;
+    @BindView(R.id.ll_point)
+    LinearLayout llPoint;
 
 
     // 定义ViewPager适配器
@@ -140,17 +149,29 @@ public class GuideActivity extends BaseActivity implements View.OnClickListener,
     {
         //判断是否是最后一页，若是则显示按钮
 
-        if (position == pics.length - 1)
+
+        switch (position)
         {
+            case 0:
+                ivPoint1.setImageResource(R.drawable.ic_point_selected);
+                ivPoint2.setImageResource(R.drawable.ic_point_normal);
+                ivPoint3.setImageResource(R.drawable.ic_point_normal);
+                mSubmitBtn.setVisibility(View.GONE);
+                llPoint.setVisibility(View.VISIBLE);
+                break;
 
-            mSubmitBtn.setVisibility(View.VISIBLE);
+            case 1:
+                ivPoint1.setImageResource(R.drawable.ic_point_normal);
+                ivPoint2.setImageResource(R.drawable.ic_point_selected);
+                ivPoint3.setImageResource(R.drawable.ic_point_normal);
+                mSubmitBtn.setVisibility(View.GONE);
+                llPoint.setVisibility(View.VISIBLE);
+                break;
 
-        }
-        else
-        {
-
-            mSubmitBtn.setVisibility(View.GONE);
-
+            case 2:
+                llPoint.setVisibility(View.GONE);
+                mSubmitBtn.setVisibility(View.VISIBLE);
+                break;
         }
     }
 
@@ -159,4 +180,6 @@ public class GuideActivity extends BaseActivity implements View.OnClickListener,
     {
 
     }
+
+
 }

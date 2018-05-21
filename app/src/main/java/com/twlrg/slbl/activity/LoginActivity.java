@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -27,6 +28,7 @@ import com.twlrg.slbl.im.model.UserInfo;
 import com.twlrg.slbl.json.LoginHandler;
 import com.twlrg.slbl.utils.ConfigManager;
 import com.twlrg.slbl.utils.ConstantUtil;
+import com.twlrg.slbl.utils.DialogUtils;
 import com.twlrg.slbl.utils.LogUtil;
 import com.twlrg.slbl.utils.StringUtils;
 import com.twlrg.slbl.utils.ToastUtil;
@@ -67,10 +69,12 @@ public class LoginActivity extends BaseActivity implements IRequestListener
 
     String mUserName, mPwd;
 
-    private static final int    REQUEST_LOGIN_SUCCESS = 0x01;
-    public static final  int    REQUEST_FAIL          = 0x02;
-    public static final  int    LOGIN_IM              = 0X03;
-    private static final String USER_LOGIN            = "user_login";
+    private static final int REQUEST_LOGIN_SUCCESS = 0x01;
+    public static final  int REQUEST_FAIL          = 0x02;
+    public static final  int LOGIN_IM              = 0X03;
+    public static final  int ACTIVITY_FINISH       = 0X04;
+
+    private static final String USER_LOGIN = "user_login";
 
     @SuppressLint("HandlerLeak")
     private BaseHandler mHandler = new BaseHandler(this)
@@ -123,6 +127,10 @@ public class LoginActivity extends BaseActivity implements IRequestListener
                     {
                         TencentCloud.login(identifier, login);
                     }
+                    break;
+
+                case ACTIVITY_FINISH:
+                    finish();
                     break;
 
             }
@@ -191,6 +199,7 @@ public class LoginActivity extends BaseActivity implements IRequestListener
 
         if (v == ivBack)
         {
+            sendBroadcast(new Intent().setAction("USER_LOGOUT"));
             finish();
         }
         else if (v == tvForgetPwd)
@@ -243,5 +252,30 @@ public class LoginActivity extends BaseActivity implements IRequestListener
                 mHandler.sendMessage(mHandler.obtainMessage(REQUEST_FAIL, resultMsg));
             }
         }
+    }
+
+
+    /**
+     * 监听Back键按下事件,方法2:
+     * 注意:
+     * 返回值表示:是否能完全处理该事件
+     * 在此处返回false,所以会继续传播该事件.
+     * 在具体项目中此处的返回值视情况而定.
+     */
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event)
+    {
+        if ((keyCode == KeyEvent.KEYCODE_BACK))
+        {
+
+            sendBroadcast(new Intent().setAction("USER_LOGOUT"));
+            finish();
+            return false;
+        }
+        else
+        {
+            return super.onKeyDown(keyCode, event);
+        }
+
     }
 }

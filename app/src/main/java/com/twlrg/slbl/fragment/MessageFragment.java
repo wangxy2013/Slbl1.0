@@ -1,13 +1,21 @@
 package com.twlrg.slbl.fragment;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.os.Message;
 import android.support.annotation.Nullable;
 
+import com.tencent.qcloud.tlslibrary.service.TLSService;
 import com.twlrg.slbl.MyApplication;
+import com.twlrg.slbl.activity.BaseHandler;
 import com.twlrg.slbl.activity.LoginActivity;
 import com.twlrg.slbl.activity.MainActivity;
+import com.twlrg.slbl.im.TencentCloud;
 import com.twlrg.slbl.im.event.LoginEvent;
 import com.twlrg.slbl.im.ui.ConversationFragment;
+import com.twlrg.slbl.utils.ConfigManager;
+import com.twlrg.slbl.utils.LogUtil;
+import com.twlrg.slbl.utils.ToastUtil;
 
 import de.greenrobot.event.EventBus;
 
@@ -18,6 +26,33 @@ import de.greenrobot.event.EventBus;
  */
 public class MessageFragment extends ConversationFragment
 {
+    public static final int INIT_ONRESUME = 0X04;
+
+
+    @SuppressLint("HandlerLeak")
+    private BaseHandler mHandler = new BaseHandler(getActivity())
+    {
+        @Override
+        public void handleMessage(Message msg)
+        {
+            super.handleMessage(msg);
+            switch (msg.what)
+            {
+                case INIT_ONRESUME:
+                    if (((MainActivity) getActivity()).getTabIndex() == 1)
+                    {
+                        ((MainActivity) getActivity()).changeTabStatusColor(1);
+                        if (!MyApplication.getInstance().isLogin())
+                        {
+                            LoginActivity.start(getActivity(), true);
+                        }
+                    }
+                    break;
+
+
+            }
+        }
+    };
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState)
@@ -43,10 +78,6 @@ public class MessageFragment extends ConversationFragment
     public void onResume()
     {
         super.onResume();
-        ((MainActivity) getActivity()).changeTabStatusColor(1);
-        if (!MyApplication.getInstance().isLogin())
-        {
-            LoginActivity.start(getActivity(), true);
-        }
+        mHandler.sendEmptyMessageDelayed(INIT_ONRESUME, 200);
     }
 }

@@ -147,6 +147,12 @@ public class MainActivity extends BaseActivity
 
     }
 
+
+    public  int  getTabIndex()
+    {
+        return  fragmentTabHost.getCurrentTab();
+    }
+
     class MyBroadCastReceiver extends BroadcastReceiver
     {
         private static final String TAG = "TestBroadCastReceiver";

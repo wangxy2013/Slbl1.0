@@ -1,5 +1,6 @@
 package com.twlrg.slbl.fragment;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
@@ -75,7 +76,9 @@ public class OrderFragment extends BaseFragment implements PullToRefreshBase.OnR
 
     private static final int REQUEST_SUCCESS = 0x01;
     private static final int REQUEST_FAIL    = 0x02;
+    private static final int INIT_ONRESUME   = 0x04;
 
+    @SuppressLint("HandlerLeak")
     private BaseHandler mHandler = new BaseHandler(getActivity())
     {
         @Override
@@ -96,6 +99,24 @@ public class OrderFragment extends BaseFragment implements PullToRefreshBase.OnR
 
                     break;
 
+                case INIT_ONRESUME:
+                    if (((MainActivity) getActivity()).getTabIndex() == 2)
+                    {
+                        ((MainActivity) getActivity()).changeTabStatusColor(2);
+
+                        if (MyApplication.getInstance().isLogin())
+                        {
+                            orderInfoList.clear();
+                            pn = 1;
+                            mRefreshStatus = 0;
+                            getOrderList();
+                        }
+                        else
+                        {
+                            LoginActivity.start(getActivity(), true);
+                        }
+                    }
+                    break;
 
             }
         }
@@ -126,19 +147,8 @@ public class OrderFragment extends BaseFragment implements PullToRefreshBase.OnR
     public void onResume()
     {
         super.onResume();
-        ((MainActivity) getActivity()).changeTabStatusColor(2);
+        mHandler.sendEmptyMessageDelayed(INIT_ONRESUME, 200);
 
-        if(MyApplication.getInstance().isLogin())
-        {
-            orderInfoList.clear();
-            pn = 1;
-            mRefreshStatus = 0;
-            getOrderList();
-        }
-        else
-        {
-            LoginActivity.start(getActivity(),true);
-        }
 
     }
 
@@ -189,7 +199,7 @@ public class OrderFragment extends BaseFragment implements PullToRefreshBase.OnR
 
     }
 
-       private void getOrderList()
+    private void getOrderList()
     {
         Map<String, String> valuePairs = new HashMap<>();
         valuePairs.put("uid", ConfigManager.instance().getUserID());

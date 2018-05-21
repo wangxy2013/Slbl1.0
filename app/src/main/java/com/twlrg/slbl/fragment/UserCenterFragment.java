@@ -109,6 +109,8 @@ public class UserCenterFragment extends BaseFragment implements View.OnClickList
     private static final int REQUEST_SUCCESS    = 0x01;
     public static final  int REQUEST_FAIL       = 0x02;
     private static final int UPLOAD_PIC_SUCCESS = 0x03;
+    private static final int INIT_ONRESUME      = 0x04;
+
 
     private static final String UPLOAD_USER_PIC  = "upload_user_pic";
     private static final String UPDATE_USER_INFO = "update_user_info";
@@ -165,6 +167,47 @@ public class UserCenterFragment extends BaseFragment implements View.OnClickList
                         ConfigManager.instance().setUserPic(data);
                     }
                     break;
+
+                case INIT_ONRESUME:
+
+                    if (((MainActivity) getActivity()).getTabIndex() == 3)
+                    {
+
+                        ((MainActivity) getActivity()).changeTabStatusColor(3);
+                        if (!MyApplication.getInstance().isLogin())
+                        {
+                            LoginActivity.start(getActivity(), true);
+                        }
+                        else
+                        {
+
+                            ImageLoader.getInstance().displayImage(Urls.getImgUrl(ConfigManager.instance().getUserPic()), ivUserHead);
+                            etNickName.setText(ConfigManager.instance().getUserNickName());
+                            tvAccount.setText(ConfigManager.instance().getMobile());
+                            etUserName.setText(ConfigManager.instance().getUserName());
+
+                            int sex = ConfigManager.instance().getUserSex();
+
+                            if (sex == 0)
+                            {
+                                tvUserSex.setText("保密");
+                            }
+                            else if (sex == 1)
+                            {
+                                tvUserSex.setText("男");
+                            }
+                            else
+                            {
+                                tvUserSex.setText("女");
+                            }
+
+                            tvUserPhone.setText(ConfigManager.instance().getMobile());
+                            etUserEmail.setText(ConfigManager.instance().getUserEmail());
+                            tvVersion.setText("版本：V" + APPUtils.getVersionName(getActivity()));
+                        }
+                        showEditStatus(false);
+                    }
+                    break;
             }
         }
     };
@@ -198,39 +241,7 @@ public class UserCenterFragment extends BaseFragment implements View.OnClickList
     public void onResume()
     {
         super.onResume();
-        ((MainActivity) getActivity()).changeTabStatusColor(3);
-        if (!MyApplication.getInstance().isLogin())
-        {
-            LoginActivity.start(getActivity(),true);
-        }
-        else
-        {
-
-            ImageLoader.getInstance().displayImage(Urls.getImgUrl(ConfigManager.instance().getUserPic()), ivUserHead);
-            etNickName.setText(ConfigManager.instance().getUserNickName());
-            tvAccount.setText(ConfigManager.instance().getMobile());
-            etUserName.setText(ConfigManager.instance().getUserName());
-
-            int sex = ConfigManager.instance().getUserSex();
-
-            if (sex == 0)
-            {
-                tvUserSex.setText("保密");
-            }
-            else if (sex == 1)
-            {
-                tvUserSex.setText("男");
-            }
-            else
-            {
-                tvUserSex.setText("女");
-            }
-
-            tvUserPhone.setText(ConfigManager.instance().getMobile());
-            etUserEmail.setText(ConfigManager.instance().getUserEmail());
-            tvVersion.setText("版本：V" + APPUtils.getVersionName(getActivity()));
-        }
-        showEditStatus(false);
+        mHandler.sendEmptyMessageDelayed(INIT_ONRESUME, 200);
     }
 
     @Override
@@ -384,7 +395,7 @@ public class UserCenterFragment extends BaseFragment implements View.OnClickList
         {
             APPUtils.logout(getActivity());
             TencentCloud.logout();
-            LoginActivity.start(getActivity(),true);
+            LoginActivity.start(getActivity(), true);
 
         }
         else if (v == tvModifyPwd)
