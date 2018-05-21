@@ -32,8 +32,8 @@ public class HotelSaleHolder extends RecyclerView.ViewHolder
     private TextView  mPositionTv;
     private ImageView mPhoneIv;
     private ImageView mMessageIv;
-
-    private Context mContext;
+    private TextView  mRoleTypetTv;
+    private Context   mContext;
 
     public HotelSaleHolder(View rootView, Context mContext)
     {
@@ -44,6 +44,7 @@ public class HotelSaleHolder extends RecyclerView.ViewHolder
         mPositionTv = (TextView) rootView.findViewById(R.id.tv_position);
         mPhoneIv = (ImageView) rootView.findViewById(R.id.iv_phone);
         mMessageIv = (ImageView) rootView.findViewById(R.id.iv_message);
+        mRoleTypetTv = (TextView) rootView.findViewById(R.id.tv_role_type);
     }
 
 
@@ -52,6 +53,9 @@ public class HotelSaleHolder extends RecyclerView.ViewHolder
         ImageLoader.getInstance().displayImage(Urls.getImgUrl(mSaleInfo.getPortrait()), mUserPicIv);
         mUserNameTv.setText(mSaleInfo.getNickname());
         mPositionTv.setText(mSaleInfo.getPosition());
+
+        mRoleTypetTv.setText(getRoleType(mSaleInfo.getRole_type()));
+
         mPhoneIv.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -84,6 +88,48 @@ public class HotelSaleHolder extends RecyclerView.ViewHolder
                 }
             }
         });
+    }
+
+    private String getRoleType(String type)
+    {
+
+
+        if (StringUtils.stringIsEmpty(type))
+        {
+            return "";
+        }
+        StringBuffer sb = new StringBuffer();
+
+        String[] typeArr = type.split(",");
+        for (int i = 0; i < typeArr.length; i++)
+        {
+            if (!StringUtils.stringIsEmpty(typeArr[i]))
+            {
+                sb.append(getbusiness(Integer.parseInt(typeArr[i])));
+                sb.append("  ");
+            }
+        }
+
+        return sb.toString();
+
+    }
+
+    private String getbusiness(int p)
+    {
+        switch (p)
+        {
+            case 1:
+                return "散房";
+            case 2:
+                return "团房";
+            case 3:
+                return "宴会";
+            case 4:
+                return "会议";
+
+        }
+
+        return "散房";
     }
 
 }

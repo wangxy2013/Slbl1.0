@@ -31,6 +31,10 @@ public class RegionListHandler extends JsonHandler
 
             if (null != arr)
             {
+                RegionInfo mRegionInfo1 = new RegionInfo();
+                mRegionInfo1.setName("不限");
+                mRegionInfo1.setId("");
+                regionInfoList.add(mRegionInfo1);
                 for (int i = 0; i < arr.length(); i++)
                 {
                     RegionInfo mRegionInfo = new RegionInfo(arr.optJSONObject(i));

@@ -17,8 +17,8 @@ public class SaleInfo implements Serializable
     private String  nickname;//刘瑛明
     private String  position;//农民
     private boolean isSelected;
-
-    private String phone;
+    private String  role_type;
+    private String  phone;
 
     public SaleInfo(JSONObject obj)
     {
@@ -27,6 +27,7 @@ public class SaleInfo implements Serializable
         this.nickname = obj.optString("nickname");
         this.position = obj.optString("position");
         this.phone = obj.optString("mobile");
+        this.role_type = obj.optString("role_type");
 
     }
 
@@ -88,5 +89,15 @@ public class SaleInfo implements Serializable
     public void setPhone(String phone)
     {
         this.phone = phone;
+    }
+
+    public String getRole_type()
+    {
+        return role_type;
+    }
+
+    public void setRole_type(String role_type)
+    {
+        this.role_type = role_type;
     }
 }

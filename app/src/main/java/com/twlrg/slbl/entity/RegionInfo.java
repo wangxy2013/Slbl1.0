@@ -12,6 +12,7 @@ public class RegionInfo
     private String id;// 3,
     private String name;// "东城区"
 
+    public RegionInfo() {}
 
     public RegionInfo(JSONObject obj)
     {

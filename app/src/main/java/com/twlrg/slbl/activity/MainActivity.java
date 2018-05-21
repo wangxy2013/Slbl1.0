@@ -79,7 +79,23 @@ public class MainActivity extends BaseActivity
     @Override
     protected void initEvent()
     {
+        fragmentTabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener()
+        {
+            @Override
+            public void onTabChanged(String tabId)
+            {
+                LogUtil.e("TAG", "tabId--->" + tabId);
 
+                if (!"首页".equals(tabId))
+                {
+                    if (!MyApplication.getInstance().isLogin())
+                    {
+                        fragmentTabHost.setCurrentTab(0);
+                        LoginActivity.start(MainActivity.this, true);
+                    }
+                }
+            }
+        });
     }
 
     @Override
@@ -148,9 +164,9 @@ public class MainActivity extends BaseActivity
     }
 
 
-    public  int  getTabIndex()
+    public int getTabIndex()
     {
-        return  fragmentTabHost.getCurrentTab();
+        return fragmentTabHost.getCurrentTab();
     }
 
     class MyBroadCastReceiver extends BroadcastReceiver
