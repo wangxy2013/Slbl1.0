@@ -181,5 +181,9 @@ public class Urls
         return BASE_URL + "wxpay/pay";
     }
 
-
+    //客房价格接口（无早，单早，双早）
+    public static String getRoom_priceUrl()
+    {
+        return BASE_URL + "merchant/room_price";
+    }
 }
