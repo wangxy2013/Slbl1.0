@@ -65,17 +65,14 @@
         android:orientation="vertical">
 
 
-        <com.twlrg.twsl.widget.AutoFitTextView
+        <com.twlrg.slbl.widget.AutoFitTextView
             android:id="@+id/tv_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
             android:layout_margin="@dimen/dm_10"
             android:layout_marginRight="@dimen/dm_15"
-            android:layout_toLeftOf="@+id/rb_star"
             android:gravity="center_vertical"
             android:maxLines="1"
-            android:text="维也纳数据返回惊"
             android:textColor="@color/black"
             android:textSize="@dimen/t16"/>
 
