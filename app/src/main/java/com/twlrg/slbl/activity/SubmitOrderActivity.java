@@ -253,7 +253,7 @@ public class SubmitOrderActivity extends BaseActivity implements IRequestListene
                         tvPhone.setText(mOrderInfo.getMobile());
                         tvRoomTitle.setText(mOrderInfo.getTitle());
                         tvDays.setText(mOrderInfo.getDays() + "晚  " + mOrderInfo.getBuynum() + "间");
-                        tvTime.setText(mOrderInfo.getCheck_in() + " 至 " + mOrderInfo.getCheck_out());
+                        tvTime.setText(mOrderInfo.getCheck_in() + "     至      " + mOrderInfo.getCheck_out());
                         tvCancelPolicy.setText(mOrderInfo.getCancel_policy());
                         tvTotalFee.setText("￥" + mOrderInfo.getTotal_fee());
 

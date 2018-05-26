@@ -137,6 +137,8 @@ public class BookRoomActivity extends BaseActivity implements IRequestListener
     LinearLayout llOccupant;
     @BindView(R.id.tv_invoice)
     TextView     tvInvoice;
+    @BindView(R.id.tv_in_name)
+    TextView     tvInName;
 
 
     private List<View>     nameLayoutList = new ArrayList<>();
@@ -322,8 +324,9 @@ public class BookRoomActivity extends BaseActivity implements IRequestListener
         tvInvoice.setText(invoice);
         tvTitle.setText(hotel_name);
         tvRoomTitle.setText(room_name);
-        tvTime.setText(check_in + " 至 " + check_out);
+        tvTime.setText(check_in + "     至     " + check_out);
         tvBuynum.setText(buynum + "间");
+        tvInName.setText("入住人");
         setRoomCount(1);
         updateCountTextView(tvCount1);
 
@@ -335,6 +338,7 @@ public class BookRoomActivity extends BaseActivity implements IRequestListener
         {
             llOccupant.setVisibility(View.VISIBLE);
         }
+
 
         isShowRoom = false;
         llRoomCount.setVisibility(View.GONE);
@@ -445,7 +449,7 @@ public class BookRoomActivity extends BaseActivity implements IRequestListener
             buynum = p;
             tvBuynum.setText(buynum + "间");
             setRoomCount(buynum);
-
+            tvInName.setText("入住人");
         }
         else
         {
@@ -456,6 +460,7 @@ public class BookRoomActivity extends BaseActivity implements IRequestListener
                 {
                     buynum = Integer.parseInt(content);
                     tvBuynum.setText(buynum + "间");
+                    tvInName.setText("预定人");
                     setRoomCount(1);
                 }
             });
@@ -530,7 +535,7 @@ public class BookRoomActivity extends BaseActivity implements IRequestListener
 
                 if (!StringUtils.stringIsEmpty(check_in) && !StringUtils.stringIsEmpty(check_out))
                 {
-                    tvTime.setText(check_in + " 至 " + check_out);
+                    tvTime.setText(check_in + "     至     " + check_out);
                 }
             }
 
@@ -553,6 +558,7 @@ public class BookRoomActivity extends BaseActivity implements IRequestListener
             }
         }
     }
+
 
 
 }

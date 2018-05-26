@@ -26,51 +26,58 @@
                 android:text="酒店大酒店"
                 android:textColor="@color/black"
                 android:textSize="@dimen/t16"/>
-
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dm_1"
+                android:layout_marginBottom="@dimen/dm_10"
+                android:background="@color/line"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dm_15"
-                android:layout_marginRight="@dimen/dm_15"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/dm_10"
+                android:paddingLeft="@dimen/dm_15"
+                android:paddingRight="@dimen/dm_15"
+                android:paddingTop="@dimen/dm_10">
 
                 <TextView
                     android:layout_width="@dimen/dm_0"
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
                     android:text="入住人"
-                    android:textColor="@color/black"
+                    android:textColor="@color/textColorBlack"
                     android:textSize="@dimen/t14"/>
                 <TextView
                     android:id="@+id/tv_name"
                     android:layout_width="@dimen/dm_0"
                     android:layout_height="wrap_content"
                     android:layout_weight="7"
-                    android:textColor="@color/black"
+                    android:textColor="@color/textColorBlack"
                     android:textSize="@dimen/t14"/>
 
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dm_15"
-                android:layout_marginRight="@dimen/dm_15"
-                android:layout_marginTop="@dimen/dm_10"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/dm_10"
+                android:paddingLeft="@dimen/dm_15"
+                android:paddingRight="@dimen/dm_15"
+                android:paddingTop="@dimen/dm_10">
 
                 <TextView
                     android:layout_width="@dimen/dm_0"
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
                     android:text="手机号"
-                    android:textColor="@color/black"
+                    android:textColor="@color/textColorBlack"
                     android:textSize="@dimen/t14"/>
                 <TextView
                     android:id="@+id/tv_mobile"
                     android:layout_width="@dimen/dm_0"
                     android:layout_height="wrap_content"
                     android:layout_weight="7"
-                    android:textColor="@color/black"
+                    android:textColor="@color/textColorBlack"
                     android:textSize="@dimen/t14"/>
 
             </LinearLayout>
@@ -78,24 +85,25 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dm_15"
-                android:layout_marginRight="@dimen/dm_15"
-                android:layout_marginTop="@dimen/dm_10"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/dm_10"
+                android:paddingLeft="@dimen/dm_15"
+                android:paddingRight="@dimen/dm_15"
+                android:paddingTop="@dimen/dm_10">
 
                 <TextView
                     android:layout_width="@dimen/dm_0"
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
                     android:text="预订客房"
-                    android:textColor="@color/black"
+                    android:textColor="@color/textColorBlack"
                     android:textSize="@dimen/t14"/>
                 <TextView
                     android:id="@+id/tv_room"
                     android:layout_width="@dimen/dm_0"
                     android:layout_height="wrap_content"
                     android:layout_weight="6"
-                    android:textColor="@color/black"
+                    android:textColor="@color/textColorBlack"
                     android:textSize="@dimen/t14"/>
 
                 <TextView
@@ -104,31 +112,32 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="1晚"
-                    android:textColor="@color/black"
+                    android:textColor="@color/textColorBlack"
                     android:textSize="@dimen/t14"/>
 
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dm_15"
-                android:layout_marginRight="@dimen/dm_15"
-                android:layout_marginTop="@dimen/dm_10"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/dm_10"
+                android:paddingLeft="@dimen/dm_15"
+                android:paddingRight="@dimen/dm_15"
+                android:paddingTop="@dimen/dm_10">
 
                 <TextView
                     android:layout_width="@dimen/dm_0"
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
                     android:text="入住时间"
-                    android:textColor="@color/black"
+                    android:textColor="@color/textColorBlack"
                     android:textSize="@dimen/t14"/>
                 <TextView
                     android:id="@+id/tv_time"
                     android:layout_width="@dimen/dm_0"
                     android:layout_height="wrap_content"
                     android:layout_weight="6"
-                    android:textColor="@color/black"
+                    android:textColor="@color/textColorBlack"
                     android:textSize="@dimen/t14"/>
 
                 <TextView
@@ -137,7 +146,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="1晚"
-                    android:textColor="@color/black"
+                    android:textColor="@color/textColorBlack"
                     android:textSize="@dimen/t14"/>
 
             </LinearLayout>
@@ -161,7 +170,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
                     android:text="支付状态"
-                    android:textColor="@color/black"
+                    android:textColor="@color/textColorBlack"
                     android:textSize="@dimen/t14"/>
 
                 <RelativeLayout
@@ -184,7 +193,7 @@
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:text="(含服务费)"
-                        android:textColor="@color/black"
+                        android:textColor="@color/textColorBlack"
                         android:textSize="@dimen/t10"/>
 
 
@@ -222,25 +231,23 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dm_15"
-                android:layout_marginRight="@dimen/dm_15"
-                android:layout_marginTop="@dimen/dm_10"
                 android:orientation="horizontal"
-                android:paddingBottom="@dimen/dm_10">
+                android:padding="@dimen/dm_15"
+                >
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="2.5"
+                    android:layout_weight="3"
                     android:text="取消政策"
-                    android:textColor="@color/black"
+                    android:textColor="@color/textColorBlack"
                     android:textSize="@dimen/t14"/>
 
                 <TextView
                     android:id="@+id/tv_cancel_policy"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="7.5"
-                    android:textColor="@color/black"
+                    android:layout_weight="7"
+                    android:textColor="@color/textColorBlack"
                     android:textSize="@dimen/t14"/>
             </LinearLayout>
             <View
@@ -250,25 +257,23 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dm_15"
-                android:layout_marginRight="@dimen/dm_15"
-                android:layout_marginTop="@dimen/dm_10"
                 android:orientation="horizontal"
-                android:paddingBottom="@dimen/dm_10">
+                android:padding="@dimen/dm_15"
+                >
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="2.5"
+                    android:layout_weight="3"
                     android:text="特殊要求"
-                    android:textColor="@color/black"
+                    android:textColor="@color/textColorBlack"
                     android:textSize="@dimen/t14"/>
 
                 <TextView
                     android:id="@+id/tv_requirement"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="7.5"
-                    android:textColor="@color/black"
+                    android:layout_weight="7"
+                    android:textColor="@color/textColorBlack"
                     android:textSize="@dimen/t14"/>
             </LinearLayout>
             <View
@@ -279,25 +284,22 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/dm_10"
-                android:layout_marginLeft="@dimen/dm_15"
-                android:layout_marginRight="@dimen/dm_15"
-                android:layout_marginTop="@dimen/dm_10"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:padding="@dimen/dm_15">
 
                 <TextView
                     android:layout_width="@dimen/dm_0"
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
                     android:text="发票要求"
-                    android:textColor="@color/black"
+                    android:textColor="@color/textColorBlack"
                     android:textSize="@dimen/t14"/>
                 <TextView
                     android:id="@+id/tv_invoice"
                     android:layout_width="@dimen/dm_0"
                     android:layout_height="wrap_content"
                     android:layout_weight="7"
-                    android:textColor="@color/black"
+                    android:textColor="@color/textColorBlack"
                     android:textSize="@dimen/t14"/>
 
             </LinearLayout>
@@ -306,18 +308,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dm_1"
                 android:background="@color/line"/>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dm_1"
-                android:background="@color/line"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/dm_10"
-                android:layout_marginLeft="@dimen/dm_15"
-                android:layout_marginTop="@dimen/dm_10"
-                android:gravity="center_vertical">
+                android:gravity="center_vertical"
+                android:padding="@dimen/dm_15">
 
 
                 <TextView
@@ -325,14 +320,14 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
                     android:text="温馨提示"
-                    android:textColor="@color/black"
+                    android:textColor="@color/textColorBlack"
                     android:textSize="@dimen/t14"/>
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="7"
                     android:text="@string/wxts"
-                    android:textColor="@color/black"
+                    android:textColor="@color/textColorBlack"
                     android:textSize="@dimen/t14"/>
             </LinearLayout>
             <View

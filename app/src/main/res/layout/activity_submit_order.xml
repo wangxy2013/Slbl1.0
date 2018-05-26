@@ -33,30 +33,8 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dm_1"
+                android:layout_marginBottom="@dimen/dm_10"
                 android:background="@color/line"/>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="@dimen/dm_15">
-
-                <TextView
-                    android:id="@+id/textView3"
-                    android:layout_width="@dimen/dm_0"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="3"
-                    android:text="入住人"
-                    android:textColor="@color/textColorBlack" android:textSize="@dimen/t14"/>
-                <TextView
-                    android:id="@+id/tv_occupant"
-                    android:layout_width="@dimen/dm_0"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="7"
-                    android:text="1111"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/t14"/>
-
-            </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
@@ -68,7 +46,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:padding="@dimen/dm_15">
+                android:paddingRight="@dimen/dm_15"
+                android:paddingBottom="@dimen/dm_10"
+                android:paddingTop="@dimen/dm_10"
+                android:paddingLeft="@dimen/dm_15">
                 <TextView
                     android:layout_width="@dimen/dm_0"
                     android:layout_height="wrap_content"
@@ -99,6 +80,33 @@
                     />
 
             </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingRight="@dimen/dm_15"
+                android:paddingBottom="@dimen/dm_10"
+                android:paddingTop="@dimen/dm_10"
+                android:paddingLeft="@dimen/dm_15">
+
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="@dimen/dm_0"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:text="入住人"
+                    android:textColor="@color/textColorBlack"
+                    android:textSize="@dimen/t14"/>
+                <TextView
+                    android:id="@+id/tv_occupant"
+                    android:layout_width="@dimen/dm_0"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="7"
+                    android:text="1111"
+                    android:textColor="@color/textColorBlack"
+                    android:textSize="@dimen/t14"/>
+
+            </LinearLayout>
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dm_1"
@@ -108,7 +116,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:padding="@dimen/dm_15">
+                android:paddingRight="@dimen/dm_15"
+                android:paddingBottom="@dimen/dm_10"
+                android:paddingTop="@dimen/dm_10"
+                android:paddingLeft="@dimen/dm_15">
 
                 <TextView
                     android:layout_width="@dimen/dm_0"
@@ -123,7 +134,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="7"
                     android:background="@color/transparent"
-                    android:textColor="@color/black"
+                    android:textColor="@color/textColorBlack"
                     android:textSize="@dimen/t14"/>
 
             </LinearLayout>
@@ -137,7 +148,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:padding="@dimen/dm_15">
+                android:paddingRight="@dimen/dm_15"
+                android:paddingBottom="@dimen/dm_10"
+                android:paddingTop="@dimen/dm_10"
+                android:paddingLeft="@dimen/dm_15">
 
                 <TextView
                     android:layout_width="@dimen/dm_0"
@@ -167,7 +181,10 @@
                 android:layout_height="wrap_content"
 
                 android:orientation="horizontal"
-                android:padding="@dimen/dm_15">
+                android:paddingRight="@dimen/dm_15"
+                android:paddingBottom="@dimen/dm_10"
+                android:paddingTop="@dimen/dm_10"
+                android:paddingLeft="@dimen/dm_15">
 
                 <TextView
                     android:layout_width="@dimen/dm_0"
@@ -181,7 +198,7 @@
                     android:layout_width="@dimen/dm_0"
                     android:layout_height="wrap_content"
                     android:layout_weight="7"
-                    android:textColor="@color/black"
+                    android:textColor="@color/textColorBlack"
                     android:textSize="@dimen/t14"/>
 
             </LinearLayout>
@@ -189,6 +206,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dm_1"
+                android:layout_marginTop="@dimen/dm_10"
                 android:background="@color/line"/>
 
             <RelativeLayout

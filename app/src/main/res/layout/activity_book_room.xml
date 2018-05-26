@@ -36,7 +36,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="7"
                     android:text="1111"
-                    android:textColor="@color/black"
+                    android:textColor="@color/textColorBlack"
                     android:textSize="@dimen/t14"/>
 
             </LinearLayout>
@@ -57,7 +57,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
                     android:text="房间数"
-                    android:textColor="@color/black"
+                    android:textColor="@color/textColorBlack"
                     android:textSize="@dimen/t14"/>
                 <TextView
                     android:id="@+id/tv_buynum"
@@ -65,7 +65,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="6.03"
                     android:text="1间"
-                    android:textColor="@color/black"
+                    android:textColor="@color/textColorBlack"
                     android:textSize="@dimen/t14"/>
                 <ImageView
                     android:layout_width="@dimen/dm_0"
@@ -323,7 +323,6 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dm_1"
-                android:layout_marginTop="@dimen/dm_10"
                 android:background="@color/line"/>
 
             <RelativeLayout
@@ -339,7 +338,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:text="是否显示手机号给酒店"
-                    android:textColor="@color/black"
+                    android:textColor="@color/textColorBlack"
                     android:textSize="@dimen/t16"/>
 
                 <com.suke.widget.SwitchButton
