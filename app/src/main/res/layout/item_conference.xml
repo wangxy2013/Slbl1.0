@@ -65,7 +65,7 @@
         android:orientation="vertical">
 
 
-        <com.twlrg.twsl.widget.AutoFitTextView
+        <com.twlrg.slbl.widget.AutoFitTextView
             android:id="@+id/tv_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

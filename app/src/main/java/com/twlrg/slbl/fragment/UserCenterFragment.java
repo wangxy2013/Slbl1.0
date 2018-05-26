@@ -272,6 +272,7 @@ public class UserCenterFragment extends BaseFragment implements View.OnClickList
     {
         mContext = getActivity();
         showEditStatus(false);
+        topView.setVisibility(View.VISIBLE);
         topView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, APPUtils.getStatusBarHeight(getActivity())));
         mSelectPicturePopupWindow = new SelectPicturePopupWindow(getActivity());
         mSelectPicturePopupWindow.setOnSelectedListener(new SelectPicturePopupWindow.OnSelectedListener()

@@ -354,6 +354,7 @@ public class HotelDetailActivity extends BaseActivity implements IRequestListene
                             .putExtra("CHECK_IN", s_date)
                             .putExtra("CHECK_OUT", e_date)
                             .putExtra("CITY_VALUE", city_value)
+                            .putExtra("INVOICE", mHotelInfo.getInvoice())
                             .putExtra("PRICE_TYPE", roomInfoList.get(position).getPrice_type())
 
                     );

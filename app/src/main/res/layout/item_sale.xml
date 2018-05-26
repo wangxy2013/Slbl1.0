@@ -20,31 +20,29 @@
 
     <TextView
         android:id="@+id/tv_user_name"
-        android:layout_width="wrap_content"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="@dimen/dm_15"
-        android:layout_toRightOf="@+id/iv_user_head"
+        android:layout_marginLeft="13dp"
         android:textColor="@color/black"
         android:textSize="@dimen/t16"
-        android:textStyle="bold"/>
+        android:textStyle="bold" android:layout_centerVertical="true" android:layout_toRightOf="@+id/iv_user_head" android:layout_toEndOf="@+id/iv_user_head"
+        android:layout_marginStart="13dp"/>
 
     <TextView
         android:id="@+id/tv_position"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="@dimen/dm_15"
         android:layout_toRightOf="@+id/tv_user_name"
         android:textColor="@color/black"
         android:textSize="@dimen/t14"/>
 
     <ImageView
         android:id="@+id/iv_selected"
-        android:src="@drawable/ic_single_selection_on"
         android:layout_width="wrap_content"
-        android:layout_centerVertical="true"
+        android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_height="wrap_content"/>
+        android:layout_centerVertical="true"
+        android:src="@drawable/ic_single_selection_on"/>
 
 </RelativeLayout>

@@ -1,6 +1,7 @@
 package com.twlrg.slbl.activity;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
@@ -18,7 +19,6 @@ import com.twlrg.slbl.entity.SubOrderInfo;
 import com.twlrg.slbl.http.DataRequest;
 import com.twlrg.slbl.http.HttpRequest;
 import com.twlrg.slbl.http.IRequestListener;
-import com.twlrg.slbl.json.ResultHandler;
 import com.twlrg.slbl.json.SubOrderInfoHandler;
 import com.twlrg.slbl.listener.MyOnClickListener;
 import com.twlrg.slbl.utils.APPUtils;
@@ -36,6 +36,7 @@ import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * 作者：王先云 on 2018/4/23 16:48
@@ -134,15 +135,18 @@ public class BookRoomActivity extends BaseActivity implements IRequestListener
 
     @BindView(R.id.ll_occupant)
     LinearLayout llOccupant;
+    @BindView(R.id.tv_invoice)
+    TextView     tvInvoice;
 
 
     private List<View>     nameLayoutList = new ArrayList<>();
     private List<TextView> countTvList    = new ArrayList<>();
     private List<EditText> etNameList     = new ArrayList<>();
 
-    private String hotel_name, room_name, merchant_id, room_id, check_in, check_out, city_value, price_type;
+    private String hotel_name, room_name, merchant_id, room_id, check_in, check_out, city_value, price_type, invoice;
 
-    private int buynum = 1;
+    private              int buynum        = 1;
+    private static final int GET_DATE_CODE = 0x99;
     private boolean isShowRoom;
     private              boolean isAllName             = true;//判断房间姓名是否全部填写完整
     private              String  zc                    = "无早餐";
@@ -170,21 +174,21 @@ public class BookRoomActivity extends BaseActivity implements IRequestListener
 
                     if (null != mSubOrderInfo)
                     {
-//                        mSubOrderInfo.setBuynum(buynum + "");
-//                        if (!StringUtils.stringIsEmpty(occupant))
-//                        {
-//                            mSubOrderInfo.setOccupant(occupant.substring(0, occupant.length() - 1));
-//                        }
-//                        mSubOrderInfo.setHotelName(hotel_name);
-//                        mSubOrderInfo.setRoomTitle(room_name + "(" + zc + ")");
-//                        mSubOrderInfo.setS_data(check_in);
-//                        mSubOrderInfo.setE_data(check_out);
-//                        mSubOrderInfo.setPhone(etPhone.getText().toString());
-//                        mSubOrderInfo.setMerchant_id(merchant_id);
-//
-//                        Bundle b = new Bundle();
-//                        b.putSerializable("SubOrderInfo", mSubOrderInfo);
-                        startActivity(new Intent(BookRoomActivity.this, SubmitOrderActivity.class).putExtra("ORDER_ID",mSubOrderInfo.getOrder_id()));
+                        //                        mSubOrderInfo.setBuynum(buynum + "");
+                        //                        if (!StringUtils.stringIsEmpty(occupant))
+                        //                        {
+                        //                            mSubOrderInfo.setOccupant(occupant.substring(0, occupant.length() - 1));
+                        //                        }
+                        //                        mSubOrderInfo.setHotelName(hotel_name);
+                        //                        mSubOrderInfo.setRoomTitle(room_name + "(" + zc + ")");
+                        //                        mSubOrderInfo.setS_data(check_in);
+                        //                        mSubOrderInfo.setE_data(check_out);
+                        //                        mSubOrderInfo.setPhone(etPhone.getText().toString());
+                        //                        mSubOrderInfo.setMerchant_id(merchant_id);
+                        //
+                        //                        Bundle b = new Bundle();
+                        //                        b.putSerializable("SubOrderInfo", mSubOrderInfo);
+                        startActivity(new Intent(BookRoomActivity.this, SubmitOrderActivity.class).putExtra("ORDER_ID", mSubOrderInfo.getOrder_id()));
                         finish();
                     }
 
@@ -212,7 +216,7 @@ public class BookRoomActivity extends BaseActivity implements IRequestListener
         check_out = getIntent().getStringExtra("CHECK_OUT");
         city_value = getIntent().getStringExtra("CITY_VALUE");
         price_type = getIntent().getStringExtra("PRICE_TYPE");
-
+        invoice = getIntent().getStringExtra("INVOICE");
         if ("wz".equals(price_type))
         {
             zc = "无早餐";
@@ -251,6 +255,7 @@ public class BookRoomActivity extends BaseActivity implements IRequestListener
         tvCount8.setOnClickListener(this);
         tvCount9.setOnClickListener(this);
         tvCount10.setOnClickListener(this);
+        tvTime.setOnClickListener(this);
 
 
         switchButton.setOnCheckedChangeListener(new SwitchButton.OnCheckedChangeListener()
@@ -314,7 +319,7 @@ public class BookRoomActivity extends BaseActivity implements IRequestListener
         topView.setVisibility(View.VISIBLE);
         topView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, APPUtils.getStatusBarHeight(this)));
 
-
+        tvInvoice.setText(invoice);
         tvTitle.setText(hotel_name);
         tvRoomTitle.setText(room_name);
         tvTime.setText(check_in + " 至 " + check_out);
@@ -373,6 +378,10 @@ public class BookRoomActivity extends BaseActivity implements IRequestListener
         else if (countTvList.contains(v))
         {
             updateCountTextView(v);
+        }
+        else if (v == tvTime)
+        {
+            startActivityForResult(new Intent(BookRoomActivity.this, HotelTimeActivity.class), GET_DATE_CODE);
         }
         else if (v == btnSubmit)
         {
@@ -508,6 +517,25 @@ public class BookRoomActivity extends BaseActivity implements IRequestListener
 
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == GET_DATE_CODE)
+        {
+            if (resultCode == Activity.RESULT_OK && null != data)
+            {
+                check_in = data.getStringExtra("CHEK_IN");
+                check_out = data.getStringExtra("CHEK_OUT");
+
+                if (!StringUtils.stringIsEmpty(check_in) && !StringUtils.stringIsEmpty(check_out))
+                {
+                    tvTime.setText(check_in + " 至 " + check_out);
+                }
+            }
+
+        }
+    }
 
     @Override
     public void notify(String action, String resultCode, String resultMsg, Object obj)
@@ -525,4 +553,6 @@ public class BookRoomActivity extends BaseActivity implements IRequestListener
             }
         }
     }
+
+
 }

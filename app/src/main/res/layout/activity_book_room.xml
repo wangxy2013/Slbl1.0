@@ -4,13 +4,13 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-    <include layout="@layout/layout_head"/>
+    <include
+        android:id="@+id/include2" layout="@layout/layout_head"/>
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/btn_submit"
-        android:layout_below="@+id/ll_head">
+        android:layout_alignParentLeft="true" android:layout_alignParentStart="true" android:layout_below="@+id/include2">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -20,11 +20,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/dm_10"
-                android:layout_marginLeft="@dimen/dm_15"
-                android:layout_marginRight="@dimen/dm_15"
-                android:layout_marginTop="@dimen/dm_10"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:padding="@dimen/dm_15">
 
                 <TextView
                     android:layout_width="@dimen/dm_0"
@@ -52,11 +49,8 @@
                 android:id="@+id/ll_room"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/dm_10"
-                android:layout_marginLeft="@dimen/dm_15"
-                android:layout_marginRight="@dimen/dm_15"
-                android:layout_marginTop="@dimen/dm_10"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:padding="@dimen/dm_15">
 
                 <TextView
                     android:layout_width="@dimen/dm_0"
@@ -84,9 +78,9 @@
             <LinearLayout
                 android:id="@+id/ll_room_count"
                 android:layout_width="match_parent"
-                android:visibility="gone"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone">
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dm_1"
@@ -253,12 +247,12 @@
                     android:id="@+id/tv_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/dm_10"
                     android:layout_marginLeft="@dimen/dm_17"
                     android:layout_marginTop="@dimen/dm_10"
                     android:background="@drawable/sub_text_selector"
                     android:gravity="center"
                     android:padding="@dimen/dm_5"
-                    android:layout_marginBottom="@dimen/dm_10"
                     android:text="自定义间数"
                     android:textColor="@drawable/sub_room_font_selector"
                     android:textSize="@dimen/t14"/>
@@ -273,11 +267,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/dm_10"
-                android:layout_marginLeft="@dimen/dm_15"
-                android:layout_marginRight="@dimen/dm_15"
-                android:layout_marginTop="@dimen/dm_10"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:padding="@dimen/dm_15">
 
                 <TextView
                     android:layout_width="@dimen/dm_0"
@@ -292,6 +283,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="7"
                     android:background="@color/transparent"
+                    android:digits="1234567890"
                     android:hint="用于接收通知"
                     android:inputType="phone"
                     android:maxLength="11"
@@ -307,10 +299,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dm_15"
-                android:layout_marginRight="@dimen/dm_15"
-                android:layout_marginTop="@dimen/dm_10"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:padding="@dimen/dm_15">
 
                 <TextView
                     android:id="@+id/textView"
@@ -325,7 +315,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="7"
                     android:text="2018-01-01至2018-01-01"
-                    android:textColor="@color/black"
+                    android:textColor="@color/green"
                     android:textSize="@dimen/t14"/>
 
 
@@ -363,35 +353,32 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dm_1"
                 android:background="@color/line"/>
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:text="发票"
-                android:textStyle="bold"
-                android:layout_marginLeft="@dimen/dm_15"
-                android:layout_marginTop="@dimen/dm_15"
-                android:textColor="@color/black"
-                android:textSize="@dimen/t16"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:text="1.酒店可提供增值税专用发票/普通发票"
-                android:layout_marginLeft="@dimen/dm_15"
-                android:layout_marginTop="@dimen/dm_10"
-                android:textColor="@color/black"
-                android:textSize="@dimen/t14"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:text="2.发票请直接在酒店前台领取"
-                android:layout_marginLeft="@dimen/dm_15"
-                android:layout_marginTop="@dimen/dm_5"
-                android:textColor="@color/black"
-                android:textSize="@dimen/t14"/>
+                android:orientation="horizontal"
+                android:padding="@dimen/dm_15">
 
+                <TextView
+                    android:layout_width="@dimen/dm_0"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:text="发票要求"
+                    android:textColor="@color/textColorBlack" android:textSize="@dimen/t14"/>
+                <TextView
+                    android:id="@+id/tv_invoice"
+                    android:layout_width="@dimen/dm_0"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="7"
+                    android:textColor="@color/blackA"
+                    android:textSize="@dimen/t14"/>
+
+
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dm_1"
+                android:background="@color/line"/>
         </LinearLayout>
     </ScrollView>
 

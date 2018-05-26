@@ -89,7 +89,6 @@ public class LoginActivity extends BaseActivity implements IRequestListener
 
                 case REQUEST_LOGIN_SUCCESS:
 
-                    ToastUtil.show(LoginActivity.this, "登录成功!");
                     ConfigManager.instance().setUserPwd(mPwd);
                     ConfigManager.instance().setMobile(mUserName);
                     sendEmptyMessage(LOGIN_IM);
@@ -114,8 +113,9 @@ public class LoginActivity extends BaseActivity implements IRequestListener
                         public void onFail(String msg, int code2)
                         {
                             TLSService.getInstance().setLastErrno(-1);
-                            finish();
                             LogUtil.d("login", "failed:" + msg + " " + code2);
+                            hideProgressDialog();
+                            ToastUtil.show(LoginActivity.this, "登录失败!");
                         }
                     };
                     String identifier = ConfigManager.instance().getIdentifier();
@@ -130,6 +130,7 @@ public class LoginActivity extends BaseActivity implements IRequestListener
                     break;
 
                 case ACTIVITY_FINISH:
+                    hideProgressDialog();
                     finish();
                     break;
 
@@ -162,7 +163,9 @@ public class LoginActivity extends BaseActivity implements IRequestListener
             @Override
             public void onSuccess()
             {
+                hideProgressDialog();
                 LogUtil.e("login", "modifyUserProfile onSuccess");
+                ToastUtil.show(LoginActivity.this, "登录成功!");
                 finish();
             }
         });
@@ -229,6 +232,7 @@ public class LoginActivity extends BaseActivity implements IRequestListener
                 return;
             }
 
+            showProgressDialog();
             Map<String, String> valuePairs = new HashMap<>();
             valuePairs.put("mobile", mUserName);
             valuePairs.put("pwd", mPwd);

@@ -6,13 +6,13 @@
 
     <include layout="@layout/layout_head"/>
 
-    <ScrollView
-        android:layout_below="@+id/ll_head"
-        android:layout_above="@+id/btn_submit"
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/btn_submit"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
+        android:layout_below="@+id/ll_head"
         android:layout_centerVertical="true">
 
 
@@ -26,11 +26,8 @@
                 android:id="@+id/tv_hotel_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/dm_10"
-                android:layout_marginLeft="@dimen/dm_15"
-                android:layout_marginRight="@dimen/dm_15"
-                android:layout_marginTop="@dimen/dm_10"
-                android:textColor="@color/black"
+                android:padding="@dimen/dm_15"
+                android:textColor="@color/textColorBlack"
                 android:textSize="@dimen/t14"
                 android:textStyle="bold"/>
             <View
@@ -40,19 +37,16 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/dm_10"
-                android:layout_marginLeft="@dimen/dm_15"
-                android:layout_marginRight="@dimen/dm_15"
-                android:layout_marginTop="@dimen/dm_10"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:padding="@dimen/dm_15">
 
                 <TextView
+                    android:id="@+id/textView3"
                     android:layout_width="@dimen/dm_0"
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
                     android:text="入住人"
-                    android:textColor="@color/textColorBlack"
-                    android:textSize="@dimen/t14"/>
+                    android:textColor="@color/textColorBlack" android:textSize="@dimen/t14"/>
                 <TextView
                     android:id="@+id/tv_occupant"
                     android:layout_width="@dimen/dm_0"
@@ -67,48 +61,54 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dm_1"
-                android:background="@color/line"/>
+                android:background="@color/line"
+                android:visibility="gone"/>
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/dm_10"
-                android:layout_marginLeft="@dimen/dm_15"
-                android:layout_marginRight="@dimen/dm_15"
-                android:layout_marginTop="@dimen/dm_10">
-
-                <TextView
-                    android:id="@+id/tv_room_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="11111"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/t14"
-                    android:textStyle="bold"/>
-
-                <TextView
-                    android:id="@+id/tv_days"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:text="11111"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/t14"
-                    android:textStyle="bold"/>
-
-            </RelativeLayout>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dm_1"
-                android:background="@color/line"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/dm_10"
-                android:layout_marginLeft="@dimen/dm_15"
-                android:layout_marginRight="@dimen/dm_15"
-                android:layout_marginTop="@dimen/dm_10"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:padding="@dimen/dm_15">
+                <TextView
+                    android:layout_width="@dimen/dm_0"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:text="预定客房"
+                    android:textColor="@color/textColorBlack"
+                    android:textSize="@dimen/t14"/>
+
+                <TextView
+                    android:id="@+id/tv_room_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="5"
+                    android:text="11111"
+                    android:textColor="@color/textColorBlack"
+                    android:textSize="@dimen/t14"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_days"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_weight="2"
+                    android:text="11111"
+                    android:textColor="@color/textColorBlack"
+                    android:textSize="@dimen/t14"
+                    />
+
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dm_1"
+                android:background="@color/line"
+                android:visibility="gone"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="@dimen/dm_15">
 
                 <TextView
                     android:layout_width="@dimen/dm_0"
@@ -131,28 +131,28 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dm_1"
-                android:background="@color/line"/>
+                android:background="@color/line"
+                android:visibility="gone"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dm_15"
-                android:layout_marginRight="@dimen/dm_15"
-                android:layout_marginTop="@dimen/dm_10"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:padding="@dimen/dm_15">
 
                 <TextView
                     android:layout_width="@dimen/dm_0"
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
                     android:text="入住时间"
-                    android:textColor="@color/textColorBlack" android:textSize="@dimen/t14"/>
+                    android:textColor="@color/textColorBlack"
+                    android:textSize="@dimen/t14"/>
                 <TextView
                     android:id="@+id/tv_time"
                     android:layout_width="@dimen/dm_0"
                     android:layout_height="wrap_content"
                     android:layout_weight="7"
                     android:text="2018-01-01至2018-01-01"
-                    android:textColor="@color/black"
+                    android:textColor="@color/textColorBlack"
                     android:textSize="@dimen/t14"/>
 
 
@@ -160,16 +160,14 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dm_1"
-                android:layout_marginTop="@dimen/dm_10"
-                android:background="@color/line"/>
+                android:background="@color/line"
+                android:visibility="gone"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/dm_10"
-                android:layout_marginLeft="@dimen/dm_15"
-                android:layout_marginRight="@dimen/dm_15"
-                android:layout_marginTop="@dimen/dm_10"
-                android:orientation="horizontal">
+
+                android:orientation="horizontal"
+                android:padding="@dimen/dm_15">
 
                 <TextView
                     android:layout_width="@dimen/dm_0"
@@ -196,10 +194,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/dm_10"
-                android:layout_marginLeft="@dimen/dm_15"
-                android:layout_marginRight="@dimen/dm_15"
-                android:layout_marginTop="@dimen/dm_10">
+                android:padding="@dimen/dm_15">
 
 
                 <TextView
@@ -233,15 +228,13 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dm_1"
-                android:background="@color/line"/>
+                android:background="@color/line"
+                android:visibility="gone"/>
 
             <com.twlrg.slbl.widget.AutoFitTextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/dm_10"
-                android:layout_marginLeft="@dimen/dm_15"
-                android:layout_marginRight="@dimen/dm_15"
-                android:layout_marginTop="@dimen/dm_10"
+                android:padding="@dimen/dm_15"
                 android:text="请选择您的私人酒店顾问,您的预定有他/她服务"
                 android:textColor="@color/black"
                 android:textSize="@dimen/t14"
@@ -270,7 +263,7 @@
                 android:textSize="@dimen/t14"/>
 
         </LinearLayout>
-    </ScrollView>
+    </android.support.v4.widget.NestedScrollView>
 
     <Button
         android:id="@+id/btn_submit"
