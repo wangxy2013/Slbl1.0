@@ -96,6 +96,7 @@ public class LoginActivity extends BaseActivity implements IRequestListener
 
 
                 case REQUEST_FAIL:
+                    hideProgressDialog();
                     ToastUtil.show(LoginActivity.this, msg.obj.toString());
                     break;
 
