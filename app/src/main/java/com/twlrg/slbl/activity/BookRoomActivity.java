@@ -419,7 +419,15 @@ public class BookRoomActivity extends BaseActivity implements IRequestListener
             valuePairs.put("price_type", price_type);
             valuePairs.put("city_value", city_value);
             valuePairs.put("name", etName1.getText().toString());
-            valuePairs.put("occupant", occupant.substring(0, occupant.length() - 1));
+
+            if (occupant.endsWith("/"))
+            {
+                valuePairs.put("occupant", occupant.substring(0, occupant.length() - 1));
+            }
+            else
+            {
+                valuePairs.put("occupant", occupant.toString());
+            }
             valuePairs.put("show_mobile", show_mobile + "");
             DataRequest.instance().request(BookRoomActivity.this, Urls.getCreatOrderUrl(), this, HttpRequest.POST, CREATE_ORDER, valuePairs,
                     new SubOrderInfoHandler());
@@ -558,7 +566,6 @@ public class BookRoomActivity extends BaseActivity implements IRequestListener
             }
         }
     }
-
 
 
 }

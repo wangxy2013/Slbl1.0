@@ -5,19 +5,22 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/line"
-    android:visibility="gone"
     android:orientation="vertical"
+    android:visibility="gone"
     >
 
     <LinearLayout
         android:id="@+id/ll_name1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dm_0.5"
         android:background="@color/windowBackground"
         android:orientation="horizontal"
-       android:paddingBottom="@dimen/dm_10"                 android:paddingLeft="@dimen/dm_15"                 android:paddingRight="@dimen/dm_15"                 android:paddingTop="@dimen/dm_10"
-        android:layout_marginBottom="@dimen/dm_0.5"
-       >
+        android:paddingBottom="@dimen/dm_10"
+        android:paddingLeft="@dimen/dm_15"
+        android:paddingRight="@dimen/dm_15"
+        android:paddingTop="@dimen/dm_10"
+        >
         <TextView
             android:id="@+id/tv_in_name"
             android:layout_width="0dp"
@@ -45,7 +48,7 @@
         android:layout_marginBottom="@dimen/dm_0.5"
         android:background="@color/windowBackground"
         android:orientation="horizontal"
-       android:paddingBottom="@dimen/dm_10"                 android:paddingLeft="@dimen/dm_15"                 android:paddingRight="@dimen/dm_15"                 android:paddingTop="@dimen/dm_10">
+        android:paddingBottom="@dimen/dm_10" android:paddingLeft="@dimen/dm_15" android:paddingRight="@dimen/dm_15" android:paddingTop="@dimen/dm_10">
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -72,7 +75,7 @@
         android:layout_marginBottom="@dimen/dm_0.5"
         android:background="@color/windowBackground"
         android:orientation="horizontal"
-       android:paddingBottom="@dimen/dm_10"                 android:paddingLeft="@dimen/dm_15"                 android:paddingRight="@dimen/dm_15"                 android:paddingTop="@dimen/dm_10">
+        android:paddingBottom="@dimen/dm_10" android:paddingLeft="@dimen/dm_15" android:paddingRight="@dimen/dm_15" android:paddingTop="@dimen/dm_10">
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -99,7 +102,7 @@
         android:layout_marginBottom="@dimen/dm_0.5"
         android:background="@color/windowBackground"
         android:orientation="horizontal"
-       android:paddingBottom="@dimen/dm_10"                 android:paddingLeft="@dimen/dm_15"                 android:paddingRight="@dimen/dm_15"                 android:paddingTop="@dimen/dm_10">
+        android:paddingBottom="@dimen/dm_10" android:paddingLeft="@dimen/dm_15" android:paddingRight="@dimen/dm_15" android:paddingTop="@dimen/dm_10">
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -126,7 +129,7 @@
         android:layout_marginBottom="@dimen/dm_0.5"
         android:background="@color/windowBackground"
         android:orientation="horizontal"
-       android:paddingBottom="@dimen/dm_10"                 android:paddingLeft="@dimen/dm_15"                 android:paddingRight="@dimen/dm_15"                 android:paddingTop="@dimen/dm_10">
+        android:paddingBottom="@dimen/dm_10" android:paddingLeft="@dimen/dm_15" android:paddingRight="@dimen/dm_15" android:paddingTop="@dimen/dm_10">
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -153,7 +156,7 @@
         android:layout_marginBottom="@dimen/dm_0.5"
         android:background="@color/windowBackground"
         android:orientation="horizontal"
-       android:paddingBottom="@dimen/dm_10"                 android:paddingLeft="@dimen/dm_15"                 android:paddingRight="@dimen/dm_15"                 android:paddingTop="@dimen/dm_10">
+        android:paddingBottom="@dimen/dm_10" android:paddingLeft="@dimen/dm_15" android:paddingRight="@dimen/dm_15" android:paddingTop="@dimen/dm_10">
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -180,7 +183,7 @@
         android:layout_marginBottom="@dimen/dm_0.5"
         android:background="@color/windowBackground"
         android:orientation="horizontal"
-       android:paddingBottom="@dimen/dm_10"                 android:paddingLeft="@dimen/dm_15"                 android:paddingRight="@dimen/dm_15"                 android:paddingTop="@dimen/dm_10">
+        android:paddingBottom="@dimen/dm_10" android:paddingLeft="@dimen/dm_15" android:paddingRight="@dimen/dm_15" android:paddingTop="@dimen/dm_10">
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -207,7 +210,7 @@
         android:layout_marginBottom="@dimen/dm_0.5"
         android:background="@color/windowBackground"
         android:orientation="horizontal"
-       android:paddingBottom="@dimen/dm_10"                 android:paddingLeft="@dimen/dm_15"                 android:paddingRight="@dimen/dm_15"                 android:paddingTop="@dimen/dm_10">
+        android:paddingBottom="@dimen/dm_10" android:paddingLeft="@dimen/dm_15" android:paddingRight="@dimen/dm_15" android:paddingTop="@dimen/dm_10">
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -234,7 +237,7 @@
         android:layout_marginBottom="@dimen/dm_0.5"
         android:background="@color/windowBackground"
         android:orientation="horizontal"
-       android:paddingBottom="@dimen/dm_10"                 android:paddingLeft="@dimen/dm_15"                 android:paddingRight="@dimen/dm_15"                 android:paddingTop="@dimen/dm_10">
+        android:paddingBottom="@dimen/dm_10" android:paddingLeft="@dimen/dm_15" android:paddingRight="@dimen/dm_15" android:paddingTop="@dimen/dm_10">
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -261,7 +264,7 @@
         android:layout_marginBottom="@dimen/dm_0.5"
         android:background="@color/windowBackground"
         android:orientation="horizontal"
-       android:paddingBottom="@dimen/dm_10"                 android:paddingLeft="@dimen/dm_15"                 android:paddingRight="@dimen/dm_15"                 android:paddingTop="@dimen/dm_10">
+        android:paddingBottom="@dimen/dm_10" android:paddingLeft="@dimen/dm_15" android:paddingRight="@dimen/dm_15" android:paddingTop="@dimen/dm_10">
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
