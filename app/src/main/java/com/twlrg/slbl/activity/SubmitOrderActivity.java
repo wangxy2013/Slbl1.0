@@ -253,7 +253,7 @@ public class SubmitOrderActivity extends BaseActivity implements IRequestListene
                         tvPhone.setText(mOrderInfo.getMobile());
                         tvRoomTitle.setText(mOrderInfo.getTitle());
                         tvDays.setText(mOrderInfo.getDays() + "晚  " + mOrderInfo.getBuynum() + "间");
-                        tvTime.setText(mOrderInfo.getCheck_in() + " 至 " + mOrderInfo.getCheck_out());
+                        tvTime.setText(mOrderInfo.getCheck_in() + "     至      " + mOrderInfo.getCheck_out());
                         tvCancelPolicy.setText(mOrderInfo.getCancel_policy());
                         tvTotalFee.setText("￥" + mOrderInfo.getTotal_fee());
 
@@ -410,8 +410,8 @@ public class SubmitOrderActivity extends BaseActivity implements IRequestListene
         valuePairs.put("ordcode", mOrderInfo.getOrdcode());
         valuePairs.put("payment_type", "ali");
         valuePairs.put("product", mOrderInfo.getTitle());
-        // valuePairs.put("total_fee", mOrderInfo.getTotal_fee());
-        valuePairs.put("total_fee", "0.01");
+        valuePairs.put("total_fee", mOrderInfo.getTotal_fee());
+        //valuePairs.put("total_fee", "0.01");
         DataRequest.instance().request(SubmitOrderActivity.this, Urls.getAlipayUrl(), SubmitOrderActivity.this, HttpRequest.POST, GET_ALI_APY,
                 valuePairs,
                 new ResultHandler());
@@ -425,8 +425,8 @@ public class SubmitOrderActivity extends BaseActivity implements IRequestListene
         valuePairs.put("ordcode", mOrderInfo.getOrdcode());
         valuePairs.put("payment_type", "wx");
         valuePairs.put("product", mOrderInfo.getTitle());
-        // valuePairs.put("total_fee", mOrderInfo.getTotal_fee());
-        valuePairs.put("total_fee", "0.01");
+        valuePairs.put("total_fee", mOrderInfo.getTotal_fee());
+        //valuePairs.put("total_fee", "0.01");
         DataRequest.instance().request(SubmitOrderActivity.this, Urls.getWxpayUrl(), SubmitOrderActivity.this, HttpRequest.POST, GET_WX_APY,
                 valuePairs,
                 new WxpayHandler());

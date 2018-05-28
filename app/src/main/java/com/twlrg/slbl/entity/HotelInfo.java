@@ -14,10 +14,10 @@ public class HotelInfo implements Serializable
     private String id;//4   //酒店ID
     private String title;//"某某酒店1  //酒店名称
     private String jl;//12472.47   //当前位置距离酒店距离
-    private int price;//200    //无早最低价格
+    private int    price;//200    //无早最低价格
     private String position_label;//"某某地铁/某某商圈   //位置标签
     private String service_label;//"前台热情/会议酒店" //特色服务标签
-    private String  reviews_label;
+    private String reviews_label;
     private String lat;
     private String lng;
     private String hotel_img;
@@ -55,6 +55,7 @@ public class HotelInfo implements Serializable
     private String isdelete;// 0
     private String count;// 2 //评论总数
 
+    private String invoice;
 
     public HotelInfo(JSONObject obj)
     {
@@ -101,8 +102,18 @@ public class HotelInfo implements Serializable
         this.region = obj.optString("region");
         this.city = obj.optString("city");
         this.province = obj.optString("province");
+        this.invoice = obj.optString("invoice");
     }
 
+    public String getInvoice()
+    {
+        return invoice;
+    }
+
+    public void setInvoice(String invoice)
+    {
+        this.invoice = invoice;
+    }
 
     public String getId()
     {

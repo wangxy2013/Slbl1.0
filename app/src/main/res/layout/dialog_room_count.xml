@@ -29,19 +29,19 @@
         android:textSize="14sp"/>
 
     <EditText
-        android:inputType="number"
-        android:digits="0123456789"
         android:id="@+id/et_room"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="52dp"
         android:layout_marginLeft="@dimen/dm_15"
         android:layout_marginRight="@dimen/dm_15"
         android:layout_marginTop="@dimen/dm_10"
         android:background="@drawable/gray_frame_5dp"
+        android:digits="0123456789"
         android:hint="请输入房间数"
+        android:inputType="number"
         android:padding="@dimen/dm_5"
         android:textColor="@color/black"
-        android:textSize="@dimen/t14"/>
+        android:textSize="@dimen/t16"/>
 
 
     <View

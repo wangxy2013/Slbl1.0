@@ -152,7 +152,7 @@
             android:name=".activity.BookRoomActivity"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden"/>
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
 
         <activity
             android:name=".activity.AddCommentActivity"
@@ -182,7 +182,7 @@
             android:name=".activity.SubmitOrderActivity"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden"/>
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
 
         <activity
             android:name=".activity.LocationActivity"

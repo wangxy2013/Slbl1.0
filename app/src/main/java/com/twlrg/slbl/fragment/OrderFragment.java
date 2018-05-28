@@ -60,10 +60,6 @@ public class OrderFragment extends BaseFragment implements PullToRefreshBase.OnR
     View                      topView;
     @BindView(R.id.pullToRefreshRecyclerView)
     PullToRefreshRecyclerView mPullToRefreshRecyclerView;
-    @BindView(R.id.iv_back)
-    ImageView                 ivBack;
-    @BindView(R.id.tv_title)
-    AutoFitTextView           tvTitle;
     private View rootView = null;
     private Unbinder unbinder;
 
@@ -173,9 +169,6 @@ public class OrderFragment extends BaseFragment implements PullToRefreshBase.OnR
     @Override
     protected void initViewData()
     {
-        ivBack.setVisibility(View.GONE);
-        tvTitle.setText("我的订单");
-
         topView.setVisibility(View.VISIBLE);
         topView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, APPUtils.getStatusBarHeight(getActivity())));
         mPullToRefreshRecyclerView.setPullLoadEnabled(true);
