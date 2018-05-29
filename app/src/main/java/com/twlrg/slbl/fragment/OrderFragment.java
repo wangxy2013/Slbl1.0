@@ -182,7 +182,8 @@ public class OrderFragment extends BaseFragment implements PullToRefreshBase.OnR
     @Override
     protected void initEvent()
     {
-        btnLoad.setOnClickListener(new View.OnClickListener() {
+        btnLoad.setOnClickListener(new View.OnClickListener()
+        {
             @Override
             public void onClick(View v)
             {
@@ -222,6 +223,18 @@ public class OrderFragment extends BaseFragment implements PullToRefreshBase.OnR
 
     private void getOrderList()
     {
+        mOrderAdapter.notifyDataSetChanged();
+        if (orderInfoList.isEmpty())
+        {
+            mRecyclerView.setVisibility(View.GONE);
+            llNoData.setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            mRecyclerView.setVisibility(View.VISIBLE);
+            llNoData.setVisibility(View.GONE);
+        }
+        ((MainActivity) getActivity()).showProgressDialog();
         Map<String, String> valuePairs = new HashMap<>();
         valuePairs.put("uid", ConfigManager.instance().getUserID());
         valuePairs.put("token", ConfigManager.instance().getToken());
@@ -253,6 +266,7 @@ public class OrderFragment extends BaseFragment implements PullToRefreshBase.OnR
     @Override
     public void notify(String action, String resultCode, String resultMsg, Object obj)
     {
+        ((MainActivity) getActivity()).hideProgressDialog();
         if (mRefreshStatus == 1)
         {
             mPullToRefreshRecyclerView.onPullUpRefreshComplete();
