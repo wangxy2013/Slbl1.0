@@ -181,13 +181,12 @@ public class WelComeActivity extends BaseActivity implements SplashView, TIMCall
                     public void onDisconnected(int code, String desc)
                     {
                         Log.e(TAG, "onDisconnected");
-                        ConfigManager.instance().setUserId("");
+                      // ConfigManager.instance().setUserId("");
                     }
 
                     @Override
                     public void onWifiNeedAuth(String name)
                     {
-                        ConfigManager.instance().setUserId("");
                         Log.i(TAG, "onWifiNeedAuth");
                     }
                 });
@@ -265,7 +264,6 @@ public class WelComeActivity extends BaseActivity implements SplashView, TIMCall
     public void onError(int i, String s)
     {
         Log.e(TAG, "login error : code " + i + " " + s);
-        ConfigManager.instance().setUserId("");
         switch (i)
         {
             case 6208:
@@ -280,6 +278,7 @@ public class WelComeActivity extends BaseActivity implements SplashView, TIMCall
 //
 //
 //                });
+                ConfigManager.instance().setUserId("");
                 break;
             //case 6200:
             //    Toast.makeText(this, getString(R.string.login_error_timeout), Toast.LENGTH_SHORT).show();

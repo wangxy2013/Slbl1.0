@@ -1,5 +1,6 @@
 package com.twlrg.slbl.activity;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Message;
 import android.view.View;
@@ -75,6 +76,7 @@ public class FacilitiesActivity extends BaseActivity implements IRequestListener
     public static final  int    REQUEST_FAIL          = 0x02;
     private static final String ADD_COMMENT           = "add_comment";
 
+    @SuppressLint("HandlerLeak")
     private BaseHandler mHandler = new BaseHandler(this)
     {
         @Override
@@ -145,7 +147,7 @@ public class FacilitiesActivity extends BaseActivity implements IRequestListener
     @Override
     protected void initViewData()
     {
-        setStatusBarTextDeep(true);
+        setStatusBarTextDeep(false);
         topView.setVisibility(View.VISIBLE);
         topView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, APPUtils.getStatusBarHeight(this)));
         tvTitle.setText("酒店设施");

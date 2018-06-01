@@ -1,5 +1,6 @@
 package com.twlrg.slbl.activity;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Message;
 import android.view.View;
@@ -52,6 +53,7 @@ public class ForgetPwdActivity extends BaseActivity implements IRequestListener
     private static final String GET_CODE                 = "get_code";
 
 
+    @SuppressLint("HandlerLeak")
     private BaseHandler mHandler = new BaseHandler(this)
     {
         @Override

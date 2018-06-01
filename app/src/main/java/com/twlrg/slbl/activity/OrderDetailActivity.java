@@ -355,7 +355,7 @@ public class OrderDetailActivity extends BaseActivity implements IRequestListene
     protected void initViewData()
     {
         api = WXAPIFactory.createWXAPI(this, ConstantUtil.WX_APPID);
-        setStatusBarTextDeep(true);
+        setStatusBarTextDeep(false);
         topView.setVisibility(View.VISIBLE);
         topView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, APPUtils.getStatusBarHeight(this)));
 
