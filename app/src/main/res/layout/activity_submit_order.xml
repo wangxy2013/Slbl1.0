@@ -253,7 +253,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/dm_15"
-                android:text="请选择您的私人酒店顾问,您的预定有他/她服务"
+                android:text="请选择为你服务的酒店销售经理"
                 android:textColor="@color/black"
                 android:textSize="@dimen/t14"
                 />

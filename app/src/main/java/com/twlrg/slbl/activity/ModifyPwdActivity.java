@@ -1,5 +1,6 @@
 package com.twlrg.slbl.activity;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Message;
 import android.support.v4.content.ContextCompat;
@@ -57,6 +58,7 @@ public class ModifyPwdActivity extends BaseActivity implements IRequestListener
     private static final String USER_LOGIN            = "user_login";
 
 
+    @SuppressLint("HandlerLeak")
     private BaseHandler mHandler = new BaseHandler(this)
     {
         @Override
@@ -108,7 +110,7 @@ public class ModifyPwdActivity extends BaseActivity implements IRequestListener
     protected void initViewData()
     {
         tvTitle.setText("修改密码");
-        setStatusBarTextDeep(true);
+        setStatusBarTextDeep(false);
         topView.setVisibility(View.VISIBLE);
         topView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, APPUtils.getStatusBarHeight(this)));
     }

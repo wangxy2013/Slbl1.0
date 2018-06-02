@@ -3,6 +3,7 @@ package com.twlrg.slbl.json;
 
 import com.twlrg.slbl.entity.CommentInfo;
 import com.twlrg.slbl.entity.OrderInfo;
+import com.twlrg.slbl.entity.ReplyInfo;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -34,6 +35,21 @@ public class CommentListHandler extends JsonHandler
                 for (int i = 0; i < arr.length(); i++)
                 {
                     CommentInfo mCommentInfo = new CommentInfo(arr.optJSONObject(i));
+
+
+                    JSONArray subArr = arr.optJSONObject(i).getJSONArray("sub_data");
+
+                    List<ReplyInfo> replyInfoList = new ArrayList<>();
+
+                    if (null != subArr)
+                    {
+                        for (int j = 0; j < subArr.length(); j++)
+                        {
+                            ReplyInfo mReplyInfo = new ReplyInfo(subArr.getJSONObject(j));
+                            replyInfoList.add(mReplyInfo);
+                        }
+                    }
+                    mCommentInfo.setReplyInfoList(replyInfoList);
                     commentInfoList.add(mCommentInfo);
                 }
             }

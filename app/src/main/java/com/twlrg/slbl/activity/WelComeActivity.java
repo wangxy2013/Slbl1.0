@@ -147,6 +147,7 @@ public class WelComeActivity extends BaseActivity implements SplashView, TIMCall
                     @Override
                     public void onForceOffline()
                     {
+                        ConfigManager.instance().setUserId("");
                         Log.d(TAG, "receive force offline message");
                         Intent intent = new Intent(WelComeActivity.this, DialogActivity.class);
                         startActivity(intent);
@@ -179,7 +180,8 @@ public class WelComeActivity extends BaseActivity implements SplashView, TIMCall
                     @Override
                     public void onDisconnected(int code, String desc)
                     {
-                        Log.i(TAG, "onDisconnected");
+                        Log.e(TAG, "onDisconnected");
+                      // ConfigManager.instance().setUserId("");
                     }
 
                     @Override
@@ -243,7 +245,7 @@ public class WelComeActivity extends BaseActivity implements SplashView, TIMCall
             @Override
             public void onError(int i, String s)
             {
-
+                ConfigManager.instance().setUserId("");
             }
 
             @Override
@@ -266,16 +268,17 @@ public class WelComeActivity extends BaseActivity implements SplashView, TIMCall
         {
             case 6208:
                 //离线状态下被其他终端踢下线
-                IMNotifyDialog dialog = new IMNotifyDialog();
-                dialog.show(getString(R.string.kick_logout), getSupportFragmentManager(), new DialogInterface.OnClickListener()
-                {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which)
-                    {
-                    }
-
-
-                });
+//                IMNotifyDialog dialog = new IMNotifyDialog();
+//                dialog.show(getString(R.string.kick_logout), getSupportFragmentManager(), new DialogInterface.OnClickListener()
+//                {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which)
+//                    {
+//                    }
+//
+//
+//                });
+                ConfigManager.instance().setUserId("");
                 break;
             //case 6200:
             //    Toast.makeText(this, getString(R.string.login_error_timeout), Toast.LENGTH_SHORT).show();

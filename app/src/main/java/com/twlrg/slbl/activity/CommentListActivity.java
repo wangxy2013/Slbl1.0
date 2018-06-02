@@ -1,5 +1,6 @@
 package com.twlrg.slbl.activity;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Message;
 import android.support.v7.widget.LinearLayoutManager;
@@ -65,6 +66,7 @@ public class CommentListActivity extends BaseActivity implements PullToRefreshBa
     private static final int REQUEST_SUCCESS = 0x01;
     private static final int REQUEST_FAIL    = 0x02;
 
+    @SuppressLint("HandlerLeak")
     private BaseHandler mHandler = new BaseHandler(CommentListActivity.this)
     {
         @Override
@@ -123,7 +125,7 @@ public class CommentListActivity extends BaseActivity implements PullToRefreshBa
     @Override
     protected void initViewData()
     {
-        setStatusBarTextDeep(true);
+        setStatusBarTextDeep(false);
         topView.setVisibility(View.VISIBLE);
         topView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, APPUtils.getStatusBarHeight(this)));
         tvTitle.setText("评论");
