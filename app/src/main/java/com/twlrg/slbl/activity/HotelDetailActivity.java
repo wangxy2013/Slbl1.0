@@ -23,6 +23,7 @@ import com.twlrg.slbl.R;
 import com.twlrg.slbl.adapter.ConferenceAdapter;
 import com.twlrg.slbl.adapter.RoomAdapter;
 import com.twlrg.slbl.entity.ConferenceInfo;
+import com.twlrg.slbl.entity.HotelImgInfo;
 import com.twlrg.slbl.entity.HotelInfo;
 import com.twlrg.slbl.entity.RoomInfo;
 import com.twlrg.slbl.http.DataRequest;
@@ -178,6 +179,15 @@ public class HotelDetailActivity extends BaseActivity implements IRequestListene
                     {
                         picList.clear();
                         picList.add(mHotelInfo.getHotel_img());
+
+
+                        List<HotelImgInfo> hotelImgInfoList = mHotelInfo.getHotelImgInfoList();
+
+                        for (int i = 0; i < hotelImgInfoList.size(); i++)
+                        {
+                            picList.add(hotelImgInfoList.get(i).getPic());
+                        }
+
 
                         rbStar.setRating(Float.parseFloat(mHotelInfo.getStar() + ""));
                         tvAddress.setText("地址:" + mHotelInfo.getAddress());

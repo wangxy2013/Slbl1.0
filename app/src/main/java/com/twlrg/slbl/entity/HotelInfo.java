@@ -3,6 +3,7 @@ package com.twlrg.slbl.entity;
 import org.json.JSONObject;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * 作者：王先云 on 2018/4/17 14:34
@@ -55,8 +56,8 @@ public class HotelInfo implements Serializable
     private String isdelete;// 0
     private String count;// 2 //评论总数
 
-    private String invoice;
-
+    private String             invoice;
+    private List<HotelImgInfo> hotelImgInfoList;
     public HotelInfo(JSONObject obj)
     {
         this.id = obj.optString("id");
@@ -526,4 +527,13 @@ public class HotelInfo implements Serializable
         this.reviews_label = reviews_label;
     }
 
+    public List<HotelImgInfo> getHotelImgInfoList()
+    {
+        return hotelImgInfoList;
+    }
+
+    public void setHotelImgInfoList(List<HotelImgInfo> hotelImgInfoList)
+    {
+        this.hotelImgInfoList = hotelImgInfoList;
+    }
 }
