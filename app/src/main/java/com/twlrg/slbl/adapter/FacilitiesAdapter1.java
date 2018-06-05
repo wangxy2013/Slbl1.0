@@ -22,9 +22,9 @@ public class FacilitiesAdapter1 extends BaseAdapter
     private List<String> list;
     private Context      mContext;
 
-    public FacilitiesAdapter1(List<String> list,Context      mContext)
+    public FacilitiesAdapter1(List<String> list, Context mContext)
     {
-this.mContext =mContext;
+        this.mContext = mContext;
         this.list = list;
     }
 

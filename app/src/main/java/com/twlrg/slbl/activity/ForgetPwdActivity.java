@@ -129,6 +129,7 @@ public class ForgetPwdActivity extends BaseActivity implements IRequestListener
 
             Map<String, String> valuePairs = new HashMap<>();
             valuePairs.put("mobile", phone);
+            valuePairs.put("role", "1");
             DataRequest.instance().request(ForgetPwdActivity.this, Urls.getVerifycodeUrl(), this, HttpRequest.POST, GET_CODE, valuePairs,
                     new ResultHandler());
         }

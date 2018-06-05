@@ -136,6 +136,11 @@ public class HotelDetailActivity extends BaseActivity implements IRequestListene
     View         topView;
     @BindView(R.id.iv_arrow_right)
     ImageView    ivArrowRight;
+    @BindView(R.id.rl_comment)
+    RelativeLayout mCommentLayout;
+
+    @BindView(R.id.rl_location)
+    RelativeLayout mLocationLayout;
 
     private String id, city_value, s_date, e_date, lng, lat, title;
     private boolean summary_is_open;
@@ -302,7 +307,8 @@ public class HotelDetailActivity extends BaseActivity implements IRequestListene
         tvBreakfastType33.setOnClickListener(this);
         tvBreakfastType44.setOnClickListener(this);
         mTimeLayout.setOnClickListener(this);
-
+        mCommentLayout.setOnClickListener(this);
+        mLocationLayout.setOnClickListener(this);
         scrollView.setOnScrollListener(new ObservableScrollView.OnScrollListener()
         {
             @Override
@@ -412,7 +418,7 @@ public class HotelDetailActivity extends BaseActivity implements IRequestListene
             finish();
         }
         //地图定位
-        else if (v == ivLocation)
+        else if (v == ivLocation || v == mLocationLayout)
         {
             startActivity(new Intent(HotelDetailActivity.this, LocationActivity.class)
                     .putExtra("LAT", mHotelInfo.getLat())
@@ -422,7 +428,7 @@ public class HotelDetailActivity extends BaseActivity implements IRequestListene
             );
         }
         //评论列表
-        else if (v == tvCommentCount)
+        else if (v == tvCommentCount|| v == mCommentLayout)
         {
             startActivity(new Intent(HotelDetailActivity.this, CommentListActivity.class).putExtra("MERCHANT_ID", id));
         }

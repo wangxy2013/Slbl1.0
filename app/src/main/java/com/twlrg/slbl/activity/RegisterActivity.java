@@ -73,11 +73,11 @@ public class RegisterActivity extends BaseActivity implements IRequestListener
 
                 case REQUEST_REGISTER_SUCCESS:
                     ToastUtil.show(RegisterActivity.this, "注册成功!");
-                    RegisterHandler mRegisterHandler = (RegisterHandler)msg.obj;
+                    RegisterHandler mRegisterHandler = (RegisterHandler) msg.obj;
 
-                    String uid= mRegisterHandler.getUid();
+                    String uid = mRegisterHandler.getUid();
 
-                    if(!StringUtils.stringIsEmpty(uid))
+                    if (!StringUtils.stringIsEmpty(uid))
                     {
                         TLSHelper instance = TLSHelper.getInstance();
                         instance.TLSStrAccReg("slbl_client_" + uid, "slbl123456", new TLSStrAccRegListener()
@@ -169,6 +169,7 @@ public class RegisterActivity extends BaseActivity implements IRequestListener
 
             Map<String, String> valuePairs = new HashMap<>();
             valuePairs.put("mobile", phone);
+            valuePairs.put("role", "1");
             DataRequest.instance().request(RegisterActivity.this, Urls.getVerifycodeUrl(), this, HttpRequest.POST, GET_CODE, valuePairs,
                     new ResultHandler());
         }
