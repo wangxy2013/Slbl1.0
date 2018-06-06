@@ -108,6 +108,7 @@ public class VersionManager implements IRequestListener
     public void init()
     {
         Map<String, String> valuePairs = new HashMap<>();
+        valuePairs.put("role","1");
         DataRequest.instance().request(mContext, Urls.getVersionUrl(), this, HttpRequest.POST, GET_VERSION, valuePairs,
                 new VersionInfoHandler());
     }
@@ -171,10 +172,15 @@ public class VersionManager implements IRequestListener
         {
             try
             {
+                if(StringUtils.stringIsEmpty(apkUrl))
+                {
+                    return;
+                }
                 URL url = new URL(apkUrl);
 
                 HttpURLConnection conn = (HttpURLConnection) url
                         .openConnection();
+                conn.setRequestProperty("Accept-Encoding", "identity");
                 conn.connect();
                 int length = conn.getContentLength();
                 InputStream is = conn.getInputStream();

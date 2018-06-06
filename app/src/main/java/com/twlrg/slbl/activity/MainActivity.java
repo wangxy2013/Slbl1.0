@@ -39,6 +39,7 @@ import com.twlrg.slbl.utils.ConfigManager;
 import com.twlrg.slbl.utils.DialogUtils;
 import com.twlrg.slbl.utils.LogUtil;
 import com.twlrg.slbl.utils.StatusBarUtil;
+import com.twlrg.slbl.utils.VersionManager;
 
 import java.io.File;
 
@@ -141,6 +142,9 @@ public class MainActivity extends BaseActivity
             // fragmentTabHost.getTabWidget().getChildAt(i).setBackgroundResource(R.drawable.main_tab_selector);
         }
         fragmentTabHost.getTabWidget().setDividerDrawable(R.color.transparent);
+
+
+        new VersionManager(this).init();
     }
 
     private View getView(int i)
