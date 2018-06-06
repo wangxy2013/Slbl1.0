@@ -1,6 +1,7 @@
 package com.twlrg.slbl.activity;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
 import android.view.View;
@@ -52,12 +53,14 @@ public class RegisterActivity extends BaseActivity implements IRequestListener
     EditText  etPwd1;
     @BindView(R.id.btn_register)
     Button    btnRegister;
+    private String uid;
+    private static final int REQUEST_REGISTER_SUCCESS = 0x01;
+    public static final  int REQUEST_FAIL             = 0x02;
+    private static final int GET_CODE_SUCCESS         = 0x03;
 
-    private static final int    REQUEST_REGISTER_SUCCESS = 0x01;
-    public static final  int    REQUEST_FAIL             = 0x02;
-    private static final int    GET_CODE_SUCCESS         = 0x03;
-    private static final String USER_REGISTER            = "user_register";
-    private static final String GET_CODE                 = "GET_CODE";
+    private static final int    TTS_REGISTER  = 0x04;
+    private static final String USER_REGISTER = "user_register";
+    private static final String GET_CODE      = "GET_CODE";
 
 
     @SuppressLint("HandlerLeak")
@@ -74,17 +77,23 @@ public class RegisterActivity extends BaseActivity implements IRequestListener
                 case REQUEST_REGISTER_SUCCESS:
                     ToastUtil.show(RegisterActivity.this, "注册成功!");
                     RegisterHandler mRegisterHandler = (RegisterHandler) msg.obj;
+                    uid = mRegisterHandler.getUid();
+                    mHandler.sendEmptyMessageDelayed(TTS_REGISTER, 500);
 
-                    String uid = mRegisterHandler.getUid();
+                    break;
+                case TTS_REGISTER:
 
                     if (!StringUtils.stringIsEmpty(uid))
                     {
+
                         TLSHelper instance = TLSHelper.getInstance();
-                        instance.TLSStrAccReg("slbl_client_" + uid, "slbl123456", new TLSStrAccRegListener()
+                        instance.TLSStrAccReg("slbl_server_" + uid, "slbl123456", new TLSStrAccRegListener()
                         {
                             @Override
                             public void OnStrAccRegSuccess(TLSUserInfo tlsUserInfo)
                             {
+                                hideProgressDialog();
+                                ToastUtil.show(RegisterActivity.this, "注册成功!");
                                 finish();
                                 //LogUtil.d(TAG, "OnStrAccRegSuccess:" + tlsUserInfo.identifier + "");
                             }
@@ -92,24 +101,22 @@ public class RegisterActivity extends BaseActivity implements IRequestListener
                             @Override
                             public void OnStrAccRegFail(TLSErrInfo tlsErrInfo)
                             {
-                                finish();
                                 //LogUtil.d(TAG, "OnStrAccRegFail:" + tlsErrInfo.Msg + " " + tlsErrInfo.ExtraMsg);
+                                mHandler.sendEmptyMessageDelayed(TTS_REGISTER, 500);
 
                             }
 
                             @Override
                             public void OnStrAccRegTimeout(TLSErrInfo tlsErrInfo)
                             {
-                                finish();
+                                mHandler.sendEmptyMessageDelayed(TTS_REGISTER, 500);
                                 //LogUtil.d(TAG, "OnStrAccRegTimeout:" + tlsErrInfo.Msg + " " + tlsErrInfo.ExtraMsg);
                             }
                         });
                     }
 
-                    break;
-
-
                 case REQUEST_FAIL:
+                    hideProgressDialog();
                     ToastUtil.show(RegisterActivity.this, msg.obj.toString());
                     break;
 
@@ -203,6 +210,7 @@ public class RegisterActivity extends BaseActivity implements IRequestListener
                 return;
             }
 
+            showProgressDialog();
             Map<String, String> valuePairs = new HashMap<>();
             valuePairs.put("nickname", phone);
             valuePairs.put("mobile", phone);

@@ -394,9 +394,28 @@ public class UserCenterFragment extends BaseFragment implements View.OnClickList
         }
         else if (v == btnLogout)
         {
-            APPUtils.logout(getActivity());
-            TencentCloud.logout();
-            LoginActivity.start(getActivity(), true);
+
+            DialogUtils.showToastDialog2Button(getActivity(), "是否退出登录账号", new View.OnClickListener() {
+                @Override
+                public void onClick(View v)
+                {
+                    APPUtils.logout(getActivity());
+                    try
+                    {
+
+                        TencentCloud.logout();
+                    }
+                    catch (Exception e)
+                    {
+                        e.printStackTrace();
+                    }
+
+
+
+                    LoginActivity.start(getActivity(), true);
+                }
+            });
+
 
         }
         else if (v == tvModifyPwd)

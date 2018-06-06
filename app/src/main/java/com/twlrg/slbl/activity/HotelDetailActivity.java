@@ -142,7 +142,7 @@ public class HotelDetailActivity extends BaseActivity implements IRequestListene
     @BindView(R.id.rl_location)
     RelativeLayout mLocationLayout;
 
-    private String id, city_value, s_date, e_date, lng, lat, title;
+    private String id, city_value, s_date, e_date, lng, lat, title,price;
     private boolean summary_is_open;
     private static final int GET_DATE_CODE = 0x99;
 
@@ -275,6 +275,7 @@ public class HotelDetailActivity extends BaseActivity implements IRequestListene
         lng = mIntent.getStringExtra("LNG");
         lat = mIntent.getStringExtra("LAT");
         title = mIntent.getStringExtra("TITLE");
+        price= mIntent.getStringExtra("PRICE");
     }
 
     @Override
@@ -404,6 +405,7 @@ public class HotelDetailActivity extends BaseActivity implements IRequestListene
         valuePairs.put("city_value", city_value);
         valuePairs.put("s_date", s_date);
         valuePairs.put("e_date", e_date);
+        valuePairs.put("price", price);
         DataRequest.instance().request(HotelDetailActivity.this, Urls.getHotelDetailUrl(), this, HttpRequest.POST, GET_HOTEL_DETAIL, valuePairs,
                 new HotelDetailHandler());
     }

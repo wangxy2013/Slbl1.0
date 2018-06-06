@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTabHost;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -20,7 +21,9 @@ import com.baidu.location.BDAbstractLocationListener;
 import com.baidu.location.BDLocation;
 import com.baidu.location.Poi;
 import com.kevin.crop.UCrop;
+import com.tencent.imsdk.TIMConnListener;
 import com.tencent.imsdk.TIMConversationType;
+import com.tencent.imsdk.TIMManager;
 import com.twlrg.slbl.MyApplication;
 import com.twlrg.slbl.R;
 import com.twlrg.slbl.fragment.HomeFragment;
@@ -74,6 +77,28 @@ public class MainActivity extends BaseActivity
     {
         setContentView(R.layout.activity_main);
         setTranslucentStatus();
+        TIMManager.getInstance().getUserConfig().setConnectionListener(new TIMConnListener()
+        {
+            @Override
+            public void onConnected()
+            {
+                Log.e("TAG", "onConnected1111111111111111111111111111111");
+            }
+
+            @Override
+            public void onDisconnected(int i, String s)
+            {
+                Log.e("TAG", "onDisconnected1111111111111111111111111111111111111111111111111111");
+                ConfigManager.instance().setUserId("");
+            }
+
+            @Override
+            public void onWifiNeedAuth(String s)
+            {
+                Log.e("TAG", "onWifiNeedAuth1111111111111111111111111111111111111111111111111");
+            }
+        });
+
     }
 
     @Override
