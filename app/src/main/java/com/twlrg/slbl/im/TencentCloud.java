@@ -63,72 +63,89 @@ public class TencentCloud {
     public static void login(final String identifier, final LoginListener listener) {
         TLSHelper instance = TLSHelper.getInstance();
 
+        if(null != instance)
+        {
 
-        if (!instance.needLogin(identifier)) {
-            listener.onSuccess(identifier);
-            return;
-        }
-
-        LogUtil.d(TAG, identifier + " login TLS");
-
-        instance.TLSPwdLogin(identifier, PASSWORD.getBytes(), new TLSPwdLoginListener() {
-            @Override
-            public void OnPwdLoginSuccess(TLSUserInfo tlsUserInfo) {
-                LogUtil.d(TAG, "TLS Success");
-                TLSService tlsService = TLSService.getInstance();
-                UserInfo.getInstance().setUserSig(tlsService.getUserSig(tlsUserInfo.identifier));
-                UserInfo.getInstance().setId(tlsUserInfo.identifier);
-                listener.onSuccess(tlsUserInfo.identifier);
+            if (!instance.needLogin(identifier))
+            {
+                listener.onSuccess(identifier);
+                return;
             }
 
-            @Override
-            public void OnPwdLoginReaskImgcodeSuccess(byte[] bytes) {
-                LogUtil.d(TAG, "TLS OnPwdLoginReaskImgCodeSuccess");
-                listener.onFail("OnPwdLoginReaskImgCodeSuccess", -1);
-            }
+            LogUtil.d(TAG, identifier + " login TLS");
 
-            @Override
-            public void OnPwdLoginNeedImgcode(byte[] bytes, TLSErrInfo tlsErrInfo) {
-                onFailed(tlsErrInfo);
-            }
-
-            @Override
-            public void OnPwdLoginFail(TLSErrInfo tlsErrInfo) {
-                RefreshEvent.getInstance().notify();
-                onFailed(tlsErrInfo);
-            }
-
-            @Override
-            public void OnPwdLoginTimeout(TLSErrInfo tlsErrInfo) {
-                onFailed(tlsErrInfo);
-            }
-
-            void onFailed(TLSErrInfo tlsErrInfo) {
-                String error = TencentCloud.toString(tlsErrInfo);
-
-                LogUtil.d(TAG, "TLS failed:" + error);
-                if (tlsErrInfo.ErrCode == 229) {
-                    //账号未注册
-                    LogUtil.d(TAG, identifier + " not register");
-                    register(identifier, new LoginListener() {
-                        @Override
-                        public void onSuccess(String identifier) {
-                            LogUtil.d(TAG, identifier + " register success ");
-                            login(identifier, listener);
-                        }
-
-                        @Override
-                        public void onFail(String msg, int code2) {
-                            LogUtil.d(TAG, " register fail " + msg);
-                            listener.onFail(msg, code2);
-
-                        }
-                    });
-                } else {
-                    listener.onFail(error, tlsErrInfo.ErrCode);
+            instance.TLSPwdLogin(identifier, PASSWORD.getBytes(), new TLSPwdLoginListener()
+            {
+                @Override
+                public void OnPwdLoginSuccess(TLSUserInfo tlsUserInfo)
+                {
+                    LogUtil.d(TAG, "TLS Success");
+                    TLSService tlsService = TLSService.getInstance();
+                    UserInfo.getInstance().setUserSig(tlsService.getUserSig(tlsUserInfo.identifier));
+                    UserInfo.getInstance().setId(tlsUserInfo.identifier);
+                    listener.onSuccess(tlsUserInfo.identifier);
                 }
-            }
-        });
+
+                @Override
+                public void OnPwdLoginReaskImgcodeSuccess(byte[] bytes)
+                {
+                    LogUtil.d(TAG, "TLS OnPwdLoginReaskImgCodeSuccess");
+                    listener.onFail("OnPwdLoginReaskImgCodeSuccess", -1);
+                }
+
+                @Override
+                public void OnPwdLoginNeedImgcode(byte[] bytes, TLSErrInfo tlsErrInfo)
+                {
+                    onFailed(tlsErrInfo);
+                }
+
+                @Override
+                public void OnPwdLoginFail(TLSErrInfo tlsErrInfo)
+                {
+                    RefreshEvent.getInstance().notify();
+                    onFailed(tlsErrInfo);
+                }
+
+                @Override
+                public void OnPwdLoginTimeout(TLSErrInfo tlsErrInfo)
+                {
+                    onFailed(tlsErrInfo);
+                }
+
+                void onFailed(TLSErrInfo tlsErrInfo)
+                {
+                    String error = TencentCloud.toString(tlsErrInfo);
+
+                    LogUtil.d(TAG, "TLS failed:" + error);
+                    if (tlsErrInfo.ErrCode == 229)
+                    {
+                        //账号未注册
+                        LogUtil.d(TAG, identifier + " not register");
+                        register(identifier, new LoginListener()
+                        {
+                            @Override
+                            public void onSuccess(String identifier)
+                            {
+                                LogUtil.d(TAG, identifier + " register success ");
+                                login(identifier, listener);
+                            }
+
+                            @Override
+                            public void onFail(String msg, int code2)
+                            {
+                                LogUtil.d(TAG, " register fail " + msg);
+                                listener.onFail(msg, code2);
+
+                            }
+                        });
+                    }
+                    else
+                    {
+                        listener.onFail(error, tlsErrInfo.ErrCode);
+                    }
+                }
+            });
+        }
 
 
     }

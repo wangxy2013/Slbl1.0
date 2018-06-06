@@ -80,4 +80,15 @@ public class MessageFragment extends ConversationFragment
         super.onResume();
         mHandler.sendEmptyMessageDelayed(INIT_ONRESUME, 200);
     }
+
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser)
+    {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser)
+        {
+            mHandler.sendEmptyMessageDelayed(INIT_ONRESUME, 200);
+        }
+    }
 }

@@ -1,5 +1,6 @@
 package com.twlrg.slbl.utils;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
@@ -43,7 +44,7 @@ public class VersionManager implements IRequestListener
 
     private Dialog downloadDialog;
     /* 下载包安装路径 */
-    private static final String savePath = "/sdcard/bangfu/";
+    private static final String savePath = "/sdcard/slbl/";
 
     private static final String saveFileName = savePath
             + "svmuu.apk";
@@ -63,6 +64,7 @@ public class VersionManager implements IRequestListener
 
     private boolean interceptFlag = false;
 
+    @SuppressLint("HandlerLeak")
     private Handler mHandler = new Handler()
     {
         public void handleMessage(Message msg)

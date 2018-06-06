@@ -34,6 +34,7 @@ import com.twlrg.slbl.im.ui.ChatActivity;
 import com.twlrg.slbl.im.ui.ConversationFragment;
 import com.twlrg.slbl.im.ui.customview.DialogActivity;
 import com.twlrg.slbl.service.LocationService;
+import com.twlrg.slbl.utils.APPUtils;
 import com.twlrg.slbl.utils.ConfigManager;
 import com.twlrg.slbl.utils.DialogUtils;
 import com.twlrg.slbl.utils.LogUtil;
@@ -90,6 +91,7 @@ public class MainActivity extends BaseActivity
             {
                 Log.e("TAG", "onDisconnected1111111111111111111111111111111111111111111111111111");
                 ConfigManager.instance().setUserId("");
+
             }
 
             @Override
