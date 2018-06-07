@@ -70,10 +70,14 @@ public class ForgetPwdActivity extends BaseActivity implements IRequestListener
                     break;
 
                 case REQUEST_FAIL:
+                    hideProgressDialog();
+                    tvGetCode.setEnabled(true);
                     ToastUtil.show(ForgetPwdActivity.this, msg.obj.toString());
                     break;
 
                 case GET_CODE_SUCCESS:
+                    hideProgressDialog();
+                    tvGetCode.setEnabled(true);
                     ToastUtil.show(ForgetPwdActivity.this, "验证码已发送");
                     break;
             }
@@ -126,7 +130,8 @@ public class ForgetPwdActivity extends BaseActivity implements IRequestListener
                 ToastUtil.show(this, "请输入正确的手机号");
                 return;
             }
-
+            showProgressDialog();
+            tvGetCode.setEnabled(false);
             Map<String, String> valuePairs = new HashMap<>();
             valuePairs.put("mobile", phone);
             valuePairs.put("role", "1");

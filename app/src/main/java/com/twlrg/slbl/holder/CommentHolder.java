@@ -14,6 +14,7 @@ import com.twlrg.slbl.entity.CommentInfo;
 import com.twlrg.slbl.listener.MyItemClickListener;
 import com.twlrg.slbl.utils.Urls;
 import com.twlrg.slbl.widget.DividerDecoration;
+import com.twlrg.slbl.widget.EmptyDecoration;
 import com.twlrg.slbl.widget.FullyLinearLayoutManager;
 
 
@@ -29,7 +30,7 @@ public class CommentHolder extends RecyclerView.ViewHolder
     private TextView            mUserNameTv;
     private TextView            mContentTv;
     private TextView            mTimeTv;
-
+    private View            mLine;
     public CommentHolder(View rootView, Context mContext)
     {
         super(rootView);
@@ -39,8 +40,9 @@ public class CommentHolder extends RecyclerView.ViewHolder
         mTimeTv = (TextView) rootView.findViewById(R.id.tv_time);
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.rv_reply);
         mUserPicIv = (ImageView) rootView.findViewById(R.id.iv_user_head);
+        mLine= rootView.findViewById(R.id.line);
         mRecyclerView.setLayoutManager(new FullyLinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
-        mRecyclerView.addItemDecoration(new DividerDecoration(mContext));
+        mRecyclerView.addItemDecoration(new EmptyDecoration(mContext,""));
 
     }
 
@@ -52,6 +54,15 @@ public class CommentHolder extends RecyclerView.ViewHolder
         mContentTv.setText(mCommentInfo.getContent());
         mTimeTv.setText(mCommentInfo.getCreate_time());
 
+
+        if (mCommentInfo.getReplyInfoList().isEmpty())
+        {
+            mLine.setVisibility(View.GONE);
+        }
+        else
+        {
+            mLine.setVisibility(View.VISIBLE);
+        }
 
             mReplyTv.setVisibility(View.GONE);
 
