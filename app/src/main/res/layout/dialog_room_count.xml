@@ -31,7 +31,7 @@
     <EditText
         android:id="@+id/et_room"
         android:layout_width="match_parent"
-        android:layout_height="52dp"
+        android:layout_height="46dp"
         android:layout_marginLeft="@dimen/dm_15"
         android:layout_marginRight="@dimen/dm_15"
         android:layout_marginTop="@dimen/dm_10"
