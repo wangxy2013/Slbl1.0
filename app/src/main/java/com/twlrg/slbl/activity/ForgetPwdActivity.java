@@ -70,13 +70,11 @@ public class ForgetPwdActivity extends BaseActivity implements IRequestListener
                     break;
 
                 case REQUEST_FAIL:
-                    hideProgressDialog();
                     tvGetCode.setEnabled(true);
                     ToastUtil.show(ForgetPwdActivity.this, msg.obj.toString());
                     break;
 
                 case GET_CODE_SUCCESS:
-                    hideProgressDialog();
                     tvGetCode.setEnabled(true);
                     ToastUtil.show(ForgetPwdActivity.this, "验证码已发送");
                     break;
@@ -168,7 +166,7 @@ public class ForgetPwdActivity extends BaseActivity implements IRequestListener
                 return;
             }
 
-
+            showProgressDialog();
             Map<String, String> valuePairs = new HashMap<>();
             valuePairs.put("mobile", phone);
             valuePairs.put("pwd", pwd);
@@ -184,6 +182,7 @@ public class ForgetPwdActivity extends BaseActivity implements IRequestListener
     @Override
     public void notify(String action, String resultCode, String resultMsg, Object obj)
     {
+        hideProgressDialog();
         if (USER_SAVE_PWD.equals(action))
         {
             if (ConstantUtil.RESULT_SUCCESS.equals(resultCode))
