@@ -17,6 +17,7 @@ import com.twlrg.slbl.http.IRequestListener;
 import com.twlrg.slbl.im.TencentCloud;
 import com.twlrg.slbl.json.RegisterHandler;
 import com.twlrg.slbl.json.ResultHandler;
+import com.twlrg.slbl.utils.ConfigManager;
 import com.twlrg.slbl.utils.ConstantUtil;
 import com.twlrg.slbl.utils.LogUtil;
 import com.twlrg.slbl.utils.StringUtils;
@@ -54,6 +55,11 @@ public class RegisterActivity extends BaseActivity implements IRequestListener
     @BindView(R.id.btn_register)
     Button    btnRegister;
     private String uid;
+
+    private String phone;
+    private String pwd;
+
+
     private static final int REQUEST_REGISTER_SUCCESS = 0x01;
     public static final  int REQUEST_FAIL             = 0x02;
     private static final int GET_CODE_SUCCESS         = 0x03;
@@ -75,9 +81,10 @@ public class RegisterActivity extends BaseActivity implements IRequestListener
 
 
                 case REQUEST_REGISTER_SUCCESS:
-                    ToastUtil.show(RegisterActivity.this, "注册成功!");
                     RegisterHandler mRegisterHandler = (RegisterHandler) msg.obj;
                     uid = mRegisterHandler.getUid();
+                    ConfigManager.instance().setMobile(phone);
+                    ConfigManager.instance().setUserPwd(pwd);
                     mHandler.sendEmptyMessageDelayed(TTS_REGISTER, 500);
 
                     break;
@@ -87,7 +94,7 @@ public class RegisterActivity extends BaseActivity implements IRequestListener
                     {
 
                         TLSHelper instance = TLSHelper.getInstance();
-                        instance.TLSStrAccReg("slbl_server_" + uid, "slbl123456", new TLSStrAccRegListener()
+                        instance.TLSStrAccReg("slbl_client_" + uid, "slbl123456", new TLSStrAccRegListener()
                         {
                             @Override
                             public void OnStrAccRegSuccess(TLSUserInfo tlsUserInfo)
@@ -114,13 +121,16 @@ public class RegisterActivity extends BaseActivity implements IRequestListener
                             }
                         });
                     }
-
+                    break;
                 case REQUEST_FAIL:
                     hideProgressDialog();
+                    tvGetCode.setEnabled(true);
                     ToastUtil.show(RegisterActivity.this, msg.obj.toString());
                     break;
 
                 case GET_CODE_SUCCESS:
+                    hideProgressDialog();
+                    tvGetCode.setEnabled(true);
                     ToastUtil.show(RegisterActivity.this, "验证码已发送");
                     break;
             }
@@ -173,7 +183,8 @@ public class RegisterActivity extends BaseActivity implements IRequestListener
                 ToastUtil.show(this, "请输入正确的手机号");
                 return;
             }
-
+            tvGetCode.setEnabled(false);
+            showProgressDialog();
             Map<String, String> valuePairs = new HashMap<>();
             valuePairs.put("mobile", phone);
             valuePairs.put("role", "1");
@@ -182,9 +193,9 @@ public class RegisterActivity extends BaseActivity implements IRequestListener
         }
         else if (v == btnRegister)
         {
-            String phone = etPhone.getText().toString();
+            phone = etPhone.getText().toString();
             String code = etCode.getText().toString();
-            String pwd = etPwd.getText().toString();
+            pwd = etPwd.getText().toString();
             String pwd1 = etPwd1.getText().toString();
 
 

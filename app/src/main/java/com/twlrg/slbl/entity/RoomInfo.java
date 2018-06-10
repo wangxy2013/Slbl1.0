@@ -35,9 +35,10 @@ public class RoomInfo implements Serializable
     private String pic6;///Uploads/room/4/59016503241ce.jpg
     private String status;//0,
     private String isdelete;//0,
-    private int price;//200,
+    private int    price;//200,
     private String price_type;//wz
     private List<String> picList = new ArrayList<>();
+
     public RoomInfo(JSONObject obj)
     {
         this.id = obj.optString("id");
@@ -61,33 +62,34 @@ public class RoomInfo implements Serializable
         this.status = obj.optString("status");
         this.isdelete = obj.optString("isdelete");
         this.price_type = obj.optString("price_type");
-        this.price=obj.optInt("price");
+        this.price = obj.optInt("price");
 
     }
 
     public List<String> getPicList()
     {
-        if(!StringUtils.stringIsEmpty(pic1))
+        picList.clear();
+        if (!StringUtils.stringIsEmpty(pic1))
         {
             picList.add(pic1);
         }
-        if(!StringUtils.stringIsEmpty(pic2))
+        if (!StringUtils.stringIsEmpty(pic2))
         {
             picList.add(pic2);
         }
-        if(!StringUtils.stringIsEmpty(pic3))
+        if (!StringUtils.stringIsEmpty(pic3))
         {
             picList.add(pic3);
         }
-        if(!StringUtils.stringIsEmpty(pic4))
+        if (!StringUtils.stringIsEmpty(pic4))
         {
             picList.add(pic4);
         }
-        if(!StringUtils.stringIsEmpty(pic5))
+        if (!StringUtils.stringIsEmpty(pic5))
         {
             picList.add(pic5);
         }
-        if(!StringUtils.stringIsEmpty(pic6))
+        if (!StringUtils.stringIsEmpty(pic6))
         {
             picList.add(pic6);
         }

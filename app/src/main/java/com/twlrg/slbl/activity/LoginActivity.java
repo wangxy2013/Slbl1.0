@@ -191,10 +191,16 @@ public class LoginActivity extends BaseActivity implements IRequestListener
     @Override
     protected void initViewData()
     {
+
+    }
+
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
         etPhone.setText(ConfigManager.instance().getMobile());
         etPwd.setText(ConfigManager.instance().getUserPwd());
     }
-
 
     @Override
     public void onClick(View v)

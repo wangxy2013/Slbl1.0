@@ -44,9 +44,9 @@
             android:layout_marginLeft="@dimen/dm_15"
             android:layout_marginRight="@dimen/dm_15"
             android:text="取消"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textSize="@dimen/t14"
-            android:visibility="gone"/>
+            android:visibility="visible"/>
     </RelativeLayout>
 
 
