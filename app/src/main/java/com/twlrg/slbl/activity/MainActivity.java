@@ -84,13 +84,13 @@ public class MainActivity extends BaseActivity
             @Override
             public void onConnected()
             {
-                Log.e("TAG", "onConnected1111111111111111111111111111111");
+                Log.e("TAG", "onConnected");
             }
 
             @Override
             public void onDisconnected(int i, String s)
             {
-                Log.e("TAG", "onDisconnected1111111111111111111111111111111111111111111111111111");
+                Log.e("TAG", "onDisconnected");
                 ConfigManager.instance().setUserId("");
 
             }

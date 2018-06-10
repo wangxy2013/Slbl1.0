@@ -17,6 +17,7 @@ import android.os.Message;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -117,7 +118,7 @@ public class UserCenterFragment extends BaseFragment implements View.OnClickList
     private SelectPicturePopupWindow mSelectPicturePopupWindow;
     private                Bitmap bitmap                                  = null;
     protected static final int    REQUEST_STORAGE_READ_ACCESS_PERMISSION  = 101;
-    protected static final int    REQUEST_STORAGE_WRITE_ACCESS_PERMISSION = 102;
+    protected static final int    CAMERA_PERMISSIONS_REQUEST_CODE = 102;
     private static final   int    GALLERY_REQUEST_CODE                    = 9001;    // 相册选图标记
     private static final   int    CAMERA_REQUEST_CODE                     = 9002;    // 相机拍照标记
 
@@ -487,15 +488,16 @@ public class UserCenterFragment extends BaseFragment implements View.OnClickList
 
     private void takePhoto()
     {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN // Permission was added in API Level 16
-                && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED)
+        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED
+                || ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
         {
-            ((MainActivity) getActivity()).requestPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                    getString(R.string.permission_write_storage_rationale),
-                    REQUEST_STORAGE_WRITE_ACCESS_PERMISSION);
-        }
-        else
+
+            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.CAMERA))
+            {
+                ToastUtil.show(getActivity(),"您已经拒绝过一次");
+            }
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE}, CAMERA_PERMISSIONS_REQUEST_CODE );
+        }else
         {
             mSelectPicturePopupWindow.dismissPopupWindow();
             Intent takeIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -629,7 +631,7 @@ public class UserCenterFragment extends BaseFragment implements View.OnClickList
                     pickFromGallery();
                 }
                 break;
-            case REQUEST_STORAGE_WRITE_ACCESS_PERMISSION:
+            case CAMERA_PERMISSIONS_REQUEST_CODE:
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED)
                 {
                     takePhoto();
