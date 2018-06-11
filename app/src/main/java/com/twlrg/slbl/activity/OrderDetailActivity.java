@@ -227,7 +227,14 @@ public class OrderDetailActivity extends BaseActivity implements IRequestListene
                                 break;
                         }
 
+                        btnCancel.setEnabled("1".equals(mOrderInfo.getIs_cancel()));
 
+                        if (!"1".equals(mOrderInfo.getIs_pay()))
+                        {
+                            btnCancel.setVisibility(View.GONE);
+                            btnStatus.setText("已取消");
+                            btnStatus.setEnabled(false);
+                        }
                     }
 
                     break;
@@ -410,7 +417,8 @@ public class OrderDetailActivity extends BaseActivity implements IRequestListene
                     valuePairs.put("token", ConfigManager.instance().getToken());
                     valuePairs.put("uid", ConfigManager.instance().getUserID());
                     valuePairs.put("order_id", order_id);
-                    DataRequest.instance().request(OrderDetailActivity.this, Urls.getOrderCancelUrl(), OrderDetailActivity.this, HttpRequest.POST, ORDER_CANCEL, valuePairs,
+                    DataRequest.instance().request(OrderDetailActivity.this, Urls.getOrderCancelUrl(), OrderDetailActivity.this, HttpRequest.POST,
+                            ORDER_CANCEL, valuePairs,
                             new ResultHandler());
                 }
             });

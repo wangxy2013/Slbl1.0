@@ -85,43 +85,16 @@ public class RegisterActivity extends BaseActivity implements IRequestListener
                     uid = mRegisterHandler.getUid();
                     ConfigManager.instance().setMobile(phone);
                     ConfigManager.instance().setUserPwd(pwd);
-                    mHandler.sendEmptyMessageDelayed(TTS_REGISTER, 500);
+
+                    Intent mIntent = new Intent();
+                    mIntent.setAction("REGISTER_IM");
+                    mIntent.putExtra("UID", uid);
+                    sendBroadcast(mIntent);
+                    ToastUtil.show(RegisterActivity.this, "注册成功!");
+                    finish();
 
                     break;
-                case TTS_REGISTER:
 
-                    if (!StringUtils.stringIsEmpty(uid))
-                    {
-
-                        TLSHelper instance = TLSHelper.getInstance();
-                        instance.TLSStrAccReg("slbl_client_" + uid, "slbl123456", new TLSStrAccRegListener()
-                        {
-                            @Override
-                            public void OnStrAccRegSuccess(TLSUserInfo tlsUserInfo)
-                            {
-                                hideProgressDialog();
-                                ToastUtil.show(RegisterActivity.this, "注册成功!");
-                                finish();
-                                //LogUtil.d(TAG, "OnStrAccRegSuccess:" + tlsUserInfo.identifier + "");
-                            }
-
-                            @Override
-                            public void OnStrAccRegFail(TLSErrInfo tlsErrInfo)
-                            {
-                                //LogUtil.d(TAG, "OnStrAccRegFail:" + tlsErrInfo.Msg + " " + tlsErrInfo.ExtraMsg);
-                                mHandler.sendEmptyMessageDelayed(TTS_REGISTER, 500);
-
-                            }
-
-                            @Override
-                            public void OnStrAccRegTimeout(TLSErrInfo tlsErrInfo)
-                            {
-                                mHandler.sendEmptyMessageDelayed(TTS_REGISTER, 500);
-                                //LogUtil.d(TAG, "OnStrAccRegTimeout:" + tlsErrInfo.Msg + " " + tlsErrInfo.ExtraMsg);
-                            }
-                        });
-                    }
-                    break;
                 case REQUEST_FAIL:
                     hideProgressDialog();
                     tvGetCode.setEnabled(true);

@@ -411,7 +411,7 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="@dimen/dm_1"
             android:layout_weight="3"
-            android:background="@color/green"
+            android:background="@drawable/order_btn_selector"
             android:text="取消预订"
             android:textColor="@color/white"
             android:textSize="@dimen/t16"

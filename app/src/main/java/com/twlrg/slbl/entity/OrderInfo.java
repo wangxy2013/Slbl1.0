@@ -61,7 +61,9 @@ public class OrderInfo
     private String position;
     private String nickname;
     private String sale_mobile;
+    private String is_cancel;//1表示可取消，0不可取消
 
+    private String is_pay;//1可支付
 
     public OrderInfo(JSONObject obj)
     {
@@ -117,7 +119,8 @@ public class OrderInfo
         this.buyer_email = obj.optString("buyer_email");
         this.notify_time = obj.optString("notify_time");
         this.cancel_policy = obj.optString("cancel_policy");
-
+        this.is_cancel = obj.optString("is_cancel");
+        this.is_pay = obj.optString("is_pay");
     }
 
     public String getCancel_policy()
@@ -628,5 +631,25 @@ public class OrderInfo
     public void setRemark(String remark)
     {
         this.remark = remark;
+    }
+
+    public String getIs_cancel()
+    {
+        return is_cancel;
+    }
+
+    public void setIs_cancel(String is_cancel)
+    {
+        this.is_cancel = is_cancel;
+    }
+
+    public String getIs_pay()
+    {
+        return is_pay;
+    }
+
+    public void setIs_pay(String is_pay)
+    {
+        this.is_pay = is_pay;
     }
 }
