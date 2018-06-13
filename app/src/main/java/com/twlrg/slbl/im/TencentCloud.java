@@ -1,9 +1,7 @@
 package com.twlrg.slbl.im;
 
 /*
- * Copyright:	炫彩互动网络科技有限公司
- * Author: 		朱超
- * Description:	
+ * Description:
  * History:		2018/05/11 5.6.6 
  */
 

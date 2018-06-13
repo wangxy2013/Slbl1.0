@@ -101,6 +101,7 @@ public class SubmitOrderActivity extends BaseActivity implements IRequestListene
     private WxpayBroadCastReceiver mWxpayBroadCastReceiver;
 
 
+    private boolean isSubOreder;
     private static final int REQUEST_SUCCESS          = 0x01;
     public static final  int REQUEST_FAIL             = 0x02;
     private static final int GET_SALE_SUCCESS         = 0x03;
@@ -134,7 +135,7 @@ public class SubmitOrderActivity extends BaseActivity implements IRequestListene
 
                 case REQUEST_SUCCESS:
                     //ToastUtil.show(SubmitOrderActivity.this, "操作成功!");
-
+                    isSubOreder = true;
                     DialogUtils.showPayDialog(SubmitOrderActivity.this, new MyItemClickListener()
                     {
                         @Override
@@ -380,14 +381,37 @@ public class SubmitOrderActivity extends BaseActivity implements IRequestListene
             else
             {
 
+                if (isSubOreder)
+                {
+                    DialogUtils.showPayDialog(SubmitOrderActivity.this, new MyItemClickListener()
+                    {
+                        @Override
+                        public void onItemClick(View view, int position)
+                        {
+                            if (position == 0)
+                            {
+                                toWxpay();
+                            }
+                            else
+                            {
+                                toAlipay();
+                            }
+                        }
+                    });
+                }
+                else
+                {
+                    isSubOreder = false;
+                    showProgressDialog();
+                    Map<String, String> valuePairs = new HashMap<>();
+                    valuePairs.put("order_id", orderId);
+                    valuePairs.put("sale_uid", getSaleUid());
+                    valuePairs.put("remark", etMark.getText().toString());
+                    DataRequest.instance().request(SubmitOrderActivity.this, Urls.getSelectSaleUrl(), SubmitOrderActivity.this, HttpRequest.POST, SUB_ORDER,
+                            valuePairs, new ResultHandler());
+                }
 
-                showProgressDialog();
-                Map<String, String> valuePairs = new HashMap<>();
-                valuePairs.put("order_id", orderId);
-                valuePairs.put("sale_uid", getSaleUid());
-                valuePairs.put("remark", etMark.getText().toString());
-                DataRequest.instance().request(SubmitOrderActivity.this, Urls.getSelectSaleUrl(), SubmitOrderActivity.this, HttpRequest.POST, SUB_ORDER,
-                        valuePairs, new ResultHandler());
+
             }
 
 
