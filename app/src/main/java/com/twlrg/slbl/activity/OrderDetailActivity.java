@@ -196,6 +196,12 @@ public class OrderDetailActivity extends BaseActivity implements IRequestListene
                                     btnCancel.setVisibility(View.VISIBLE);
                                     btnStatus.setText("去支付");
                                     btnStatus.setEnabled(true);
+                                    if (!"1".equals(mOrderInfo.getIs_pay()))
+                                    {
+                                        btnCancel.setVisibility(View.GONE);
+                                        btnStatus.setText("已取消");
+                                        btnStatus.setEnabled(false);
+                                    }
                                 }
 
                                 break;
@@ -229,12 +235,6 @@ public class OrderDetailActivity extends BaseActivity implements IRequestListene
 
                         btnCancel.setEnabled("1".equals(mOrderInfo.getIs_cancel()));
 
-                        if (!"1".equals(mOrderInfo.getIs_pay()))
-                        {
-                            btnCancel.setVisibility(View.GONE);
-                            btnStatus.setText("已取消");
-                            btnStatus.setEnabled(false);
-                        }
                     }
 
                     break;
@@ -402,7 +402,7 @@ public class OrderDetailActivity extends BaseActivity implements IRequestListene
         }
         else if (v == ivMessage)
         {
-            ChatActivity.navToChat(this, "slbl_server_" + mOrderInfo.getSale_uid(), TIMConversationType.C2C);
+            ChatActivity.navToChat(this, "slbl_serve_" + mOrderInfo.getSale_uid(), TIMConversationType.C2C);
         }
         else if (v == btnCancel)//取消订单
         {
