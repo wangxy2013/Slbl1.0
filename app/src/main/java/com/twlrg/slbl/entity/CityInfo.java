@@ -22,7 +22,7 @@ public class CityInfo implements Comparable<CityInfo>,Serializable
     {
         this.id = obj.optString("id");
         this.name=obj.optString("name");
-        mPinyin = PinYinUtil.toPinyin(name);
+        mPinyin = PinYinUtil.convertChineseToPinyin(name);
     }
 
     public String getId()
