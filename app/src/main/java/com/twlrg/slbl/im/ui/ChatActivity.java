@@ -17,9 +17,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -56,7 +58,9 @@ import com.twlrg.slbl.im.model.VoiceMessage;
 import com.twlrg.slbl.im.utils.FileUtil;
 import com.twlrg.slbl.im.utils.MediaUtil;
 import com.twlrg.slbl.im.utils.RecorderUtil;
+import com.twlrg.slbl.utils.APPUtils;
 import com.twlrg.slbl.utils.LogUtil;
+import com.twlrg.slbl.utils.StatusBarUtil;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -72,6 +76,7 @@ public class ChatActivity extends FragmentActivity implements ChatView
     private ListView      listView;
     private ChatPresenter presenter;
     private ChatInput     input;
+    private View          topView;
     private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
     private static final int IMAGE_STORE                         = 200;
     private static final int FILE_CODE                           = 300;
@@ -118,7 +123,6 @@ public class ChatActivity extends FragmentActivity implements ChatView
         setContentView(R.layout.activity_chat);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
-
         mMyBroadCastReceiver = new MyBroadCastReceiver();
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(USER_LOGOUT);
@@ -130,6 +134,14 @@ public class ChatActivity extends FragmentActivity implements ChatView
         input = (ChatInput) findViewById(R.id.input_panel);
         input.setChatView(this);
         adapter = new ChatAdapter(this, R.layout.item_message, messageList);
+
+        StatusBarUtil.setTranslucentStatus(this, true);
+        StatusBarUtil.setStatusBarTextColor(this, false);
+        topView = (View) findViewById(R.id.topView);
+        topView.setVisibility(View.VISIBLE);
+        topView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, APPUtils.getStatusBarHeight(this)));
+
+
         listView = (ListView) findViewById(R.id.list);
         listView.setAdapter(adapter);
         listView.setTranscriptMode(ListView.TRANSCRIPT_MODE_NORMAL);

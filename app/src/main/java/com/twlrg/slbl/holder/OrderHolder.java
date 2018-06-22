@@ -75,7 +75,15 @@ public class OrderHolder extends RecyclerView.ViewHolder
                 }
                 else
                 {
-                    status = "待支付";
+                    if("1".equals(mOrderInfo.getIs_pay()))
+                    {
+                        status = "待支付";
+                    }
+                    else
+                    {
+                        status = "已取消";
+                    }
+
                 }
 
                 break;
