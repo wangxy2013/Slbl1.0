@@ -76,7 +76,6 @@ public class ChatActivity extends FragmentActivity implements ChatView
     private ListView      listView;
     private ChatPresenter presenter;
     private ChatInput     input;
-    private View          topView;
     private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
     private static final int IMAGE_STORE                         = 200;
     private static final int FILE_CODE                           = 300;
@@ -122,6 +121,7 @@ public class ChatActivity extends FragmentActivity implements ChatView
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+        StatusBarUtil.setColor(this, R.color.black);
 
         mMyBroadCastReceiver = new MyBroadCastReceiver();
         IntentFilter intentFilter = new IntentFilter();
@@ -135,11 +135,8 @@ public class ChatActivity extends FragmentActivity implements ChatView
         input.setChatView(this);
         adapter = new ChatAdapter(this, R.layout.item_message, messageList);
 
-        StatusBarUtil.setTranslucentStatus(this, true);
+       // StatusBarUtil.setTranslucentStatus(this, true);
         StatusBarUtil.setStatusBarTextColor(this, false);
-        topView = (View) findViewById(R.id.topView);
-        topView.setVisibility(View.VISIBLE);
-        topView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, APPUtils.getStatusBarHeight(this)));
 
 
         listView = (ListView) findViewById(R.id.list);
