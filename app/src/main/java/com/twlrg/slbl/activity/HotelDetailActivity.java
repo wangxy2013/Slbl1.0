@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Message;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -201,7 +202,7 @@ public class HotelDetailActivity extends BaseActivity implements IRequestListene
                         tvCommentCount.setText(mHotelInfo.getCount() + "条评论");
                         tvStartDate.setText(s_date);
                         tvEndDate.setText(e_date);
-                        tvSummary.setText(mHotelInfo.getSummary());
+                        tvSummary.setText(Html.fromHtml(mHotelInfo.getSummary()));
                         tvSummary.setLines(3);
 
                         int width = APPUtils.getScreenWidth(HotelDetailActivity.this);

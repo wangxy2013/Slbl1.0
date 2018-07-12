@@ -97,7 +97,7 @@ public class ConferenceHolder extends RecyclerView.ViewHolder
         int price = mConference.getPrice();
         String priceStr = price + "";
 
-        if (price > 10000)
+        if (price >= 10000)
         {
             double n = (double) price / 10000;
             priceStr = n + "万";
@@ -112,7 +112,7 @@ public class ConferenceHolder extends RecyclerView.ViewHolder
         mBanquetTv.setText("宴会" + mConference.getBanquet() + "人");
         mCkgTv.setText(mConference.getCkg());
 
-        if (StringUtils.stringIsEmpty(mConference.getLed()))
+        if ("0".equals(mConference.getLed()))
         {
             mLedTv.setText("");
         }
