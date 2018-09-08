@@ -74,7 +74,7 @@ public class LoginActivity extends BaseActivity implements IRequestListener
     TextView  tvForgetPwd;
 
     String mUserName, mPwd;
-
+    private String  userId;
     private RegisterImBroadcast mRegisterImBroadcast;
     private String REGISTER_IM = "REGISTER_IM";
     private String registerUid;
@@ -97,7 +97,9 @@ public class LoginActivity extends BaseActivity implements IRequestListener
 
 
                 case REQUEST_LOGIN_SUCCESS:
-
+                    LoginHandler mLoginHandler1   = (LoginHandler)msg.obj;
+                    userId = mLoginHandler1.getUserId();
+                    ConfigManager.instance().setIdentifier(userId);
                     ConfigManager.instance().setUserPwd(mPwd);
                     ConfigManager.instance().setMobile(mUserName);
                     sendEmptyMessage(LOGIN_IM);
@@ -196,7 +198,7 @@ public class LoginActivity extends BaseActivity implements IRequestListener
 
     private void modifyUserProfile()
     {
-
+        ConfigManager.instance().setUserId(userId);
         String name = ConfigManager.instance().getUserNickName();
         String userPic = Urls.getImgUrl(ConfigManager.instance().getUserPic());
         FriendshipManagerPresenter.setMyInfo(name, userPic, new TIMCallBack()

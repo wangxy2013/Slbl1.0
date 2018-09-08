@@ -2,6 +2,7 @@ package com.twlrg.slbl;
 
 import android.app.Application;
 import android.app.Service;
+import android.os.StrictMode;
 import android.os.Vibrator;
 
 
@@ -22,7 +23,6 @@ import com.twlrg.slbl.utils.StringUtils;
  */
 public class MyApplication extends Application
 {
-    public         LocationService locationService;
     public         Vibrator        mVibrator;
     private static MyApplication   instance;
 
@@ -36,13 +36,13 @@ public class MyApplication extends Application
         instance = this;
         APPUtils.configImageLoader(getApplicationContext());
         ConfigManager.instance().init(this);
-        /***
-         * 初始化定位sdk，建议在Application中创建
-         */
-        locationService = new LocationService(getApplicationContext());
         mVibrator = (Vibrator) getApplicationContext().getSystemService(Service.VIBRATOR_SERVICE);
         SDKInitializer.initialize(getApplicationContext());
         TencentCloud.init(this);
+
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
+        builder.detectFileUriExposure();
     }
 
 
@@ -61,5 +61,6 @@ public class MyApplication extends Application
     public static MyApplication getContext(){
         return instance;
     }
+
 
 }

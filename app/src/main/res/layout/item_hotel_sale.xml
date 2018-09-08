@@ -35,7 +35,9 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/dm_15"
-                android:text="111"
+                android:text="销售总监"
+                android:maxLength="5"
+                android:maxLines="1"
                 android:textColor="@color/black"
                 android:textSize="@dimen/t14"/>
 
@@ -45,8 +47,11 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_toRightOf="@+id/tv_salesperson"
-                android:text="销售总监"
-                android:textColor="@color/black"
+                android:text="销售总销售总监销售总监销售总监销售总监监"
+                android:maxLines="1"
+                android:maxLength="10"
+                android:layout_marginLeft="@dimen/dm_5"
+                android:textColor="@color/blue"
                 android:textSize="@dimen/t14"/>
         </RelativeLayout>
         <TextView
@@ -66,17 +71,18 @@
         android:id="@+id/iv_message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
+        android:layout_marginTop="@dimen/dm_30"
         android:layout_marginRight="@dimen/dm_40"
         android:layout_toLeftOf="@+id/iv_phone"
         android:src="@drawable/ic_message_on"/>
 
     <ImageView
+        android:layout_marginTop="@dimen/dm_30"
         android:id="@+id/iv_phone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+
         android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
         android:src="@drawable/ic_phone"/>
 
 </RelativeLayout>

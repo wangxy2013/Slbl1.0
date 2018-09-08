@@ -119,7 +119,10 @@ public class ConfigManager
     public String getIdentifier(){
         return mSharedPreferences.getString(IDENTIFIER,"");
     }
-
+    public void setIdentifier(String userId)
+    {
+        mSharedPreferences.edit().putString(IDENTIFIER, TencentCloud.UID_PREFIX + userId).commit();
+    }
     public void setUUID(String uuid)
     {
         mSharedPreferences.edit().putString(PREF_UUID, uuid).commit();

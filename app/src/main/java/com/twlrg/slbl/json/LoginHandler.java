@@ -14,14 +14,21 @@ import org.json.JSONObject;
 public class LoginHandler extends JsonHandler
 {
 
+    private String userId;
 
+    public String getUserId()
+    {
+        return userId;
+    }
     @Override
     protected void parseJson(JSONObject jsonObj) throws Exception
     {
         try
         {
+
             JSONObject obj = jsonObj.optJSONObject("data");
-            ConfigManager.instance().setUserId(obj.optString("uid"));
+            userId = obj.optString("uid");
+            //ConfigManager.instance().setUserId(obj.optString("uid"));
             ConfigManager.instance().setUserName(obj.optString("name"));
             ConfigManager.instance().setToken(obj.optString("token"));
             ConfigManager.instance().setUserNickName(obj.optString("nickname"));

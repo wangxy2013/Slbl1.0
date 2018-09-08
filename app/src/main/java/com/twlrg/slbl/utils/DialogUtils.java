@@ -366,7 +366,7 @@ public class DialogUtils
     public static void showPriceDetailDialog(final Context mContext, List<OrderInfo> orderInfoList)
     {
         final Dialog dialog = new Dialog(mContext);
-        dialog.setCancelable(false);
+        dialog.setCancelable(true);
         View v = LayoutInflater.from(mContext).inflate(R.layout.dialog_order_detail, null);
         dialog.setContentView(v);
 
